@@ -35,7 +35,7 @@ export default {
   plugins: ['~/plugins/plugin.client.js'],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
-  components: [{ path: '~/components', pathPrefix: false }],
+  components: [{ path: '~/components', pathPrefix: false, extensions: ['vue'] }],
 
   loadingIndicator: false,
 
@@ -75,29 +75,42 @@ export default {
       config.resolve.alias['vue'] = 'vue/dist/vue.esm.js'
 
       config.module.rules.push({
-        test: /\.(ogg|mp3|wav)$/i,
+        test: /\.(ogg|mp3|wav|glb|hdr)$/i,
         loader: 'file-loader'
       })
 
-      let file = config.module.rules.find(rule => {
+      config.module.rules.push({
+        test: /\.(png|jpg|bin)$/i,
+        loader: 'file-loader',
+        include: /gltf/,
+        options: {
+          esModule: false
+        }
+      })
+
+      config.module.rules.push({
+        test: /\.gltf$/i,
+        use: [
+          {
+            loader: 'file-loader',
+            options: { esModule: false }
+          },
+          {
+            loader: '@vxna/gltf-loader'
+          }
+        ]
+      })
+
+      const file = config.module.rules.find(rule => {
         return rule.test.test('.png')
       })
-      file.use[0].options.limit = 100000
+      file.exclude = [/gltf/]
+      // file.use[0].options.limit = 100000
 
       config.module.rules.push({
         test: /\.(md)$/i,
         loader: 'raw-loader'
       })
-
-      // Run ESLint on save
-      if (isDev && process.client) {
-        config.module.rules.push({
-          enforce: 'pre',
-          test: /\.(js|vue)$/,
-          loader: 'eslint-loader',
-          exclude: /(node_modules)/
-        })
-      }
     }
   }
 }

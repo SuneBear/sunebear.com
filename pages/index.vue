@@ -1,7 +1,7 @@
 <template lang="pug">
 .page.page-index(
 )
-  | Hello World
+  the-sinking-isle
 </template>
 
 <script>
