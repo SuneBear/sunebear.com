@@ -1,0 +1,28 @@
+{
+  "name": "sunebear.com",
+  "scripts": {
+    "dev": "nuxt",
+    "build": "NODE_ENV=production nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate"
+  },
+  "dependencies": {
+    "animejs": "^3.2.0",
+    "axios": "^0.21.1",
+    "howler": "^2.2.1",
+    "lodash.debounce": "^4.0.8",
+    "lodash.throttle": "^4.1.1",
+    "lodash.uniqby": "^4.7.0",
+    "nuxt": "^2.0.0",
+    "three": "^0.133.0",
+    "tone": "^14.7.77",
+    "viewport-units-buggyfill": "^0.6.2"
+  },
+  "devDependencies": {
+    "pug": "^2.0.3",
+    "pug-plain-loader": "^1.0.0",
+    "raw-loader": "^4.0.2",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.2"
+  }
+}
