@@ -1,3 +1,5 @@
+// @TODO:
+// - do more in lifecycles, like register/remove data, events
 export default class Module {
 
   constructor(sketch, attributes) {
@@ -29,12 +31,17 @@ export default class Module {
     }
   }
 
-  stop() {
+  play() {
+    this.enabled = true
+  }
+
+  pause() {
     this.enabled = false
   }
 
-  play() {
-    this.enabled = true
+  stop() {
+    this.pause()
+    this.audio.stopAll()
   }
 
   resize() {
@@ -44,7 +51,6 @@ export default class Module {
   update(delta, elapsedTime) {
 
   }
-
 }
 
 Module.isModule = true
@@ -87,7 +93,7 @@ export class ModuleManager {
   }
 
   remove(Module) {
-    const module = this.getModule(Module)
+    const module = this.get(Module)
 
     if (module === undefined) {
       console.warn(
@@ -96,11 +102,16 @@ export class ModuleManager {
       return
     }
 
+    module.stop()
     this.modules.splice(this.modules.indexOf(module), 1)
   }
 
   play() {
     this.modules.map((module) => module.play())
+  }
+
+  pause() {
+    this.modules.map((module) => module.pause())
   }
 
   stop() {
@@ -120,5 +131,9 @@ export class ModuleManager {
   }
 
   // @TODO: Add destory method if necessary
-
+  destroy() {
+    this.modules.map((module) => {
+      this.remove(module)
+    })
+  }
 }

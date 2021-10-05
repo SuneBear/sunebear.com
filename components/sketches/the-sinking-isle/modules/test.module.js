@@ -11,8 +11,15 @@ export default class Test extends Module {
     this.raycaster = new THREE.Raycaster()
     this.maxWorldSize = this.config.worldSize = 0.95 / 2
 
+    this.setupEvents()
     this.setupTextures()
     this.setupMesh()
+  }
+
+  setupEvents() {
+    this.control.on('tapdown', () => {
+      this.audio.play('pin')
+    })
   }
 
   setupTextures() {
@@ -41,6 +48,18 @@ export default class Test extends Module {
     this.scene.add(
       this.mesh
     )
+
+  }
+
+  play() {
+    super.play()
+    this.audio.play('testAudio', { loop: true })
+  }
+
+  stop() {
+    super.stop()
+    this.control.off('tapdown')
+    this.scene.remove(this.mesh)
   }
 
   update() {

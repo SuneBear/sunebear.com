@@ -32,6 +32,7 @@ class TheSinkingIsleSketch {
       height: window.innerHeight,
       pixelRatio: Math.min(Math.max(window.devicePixelRatio, 1), 2),
       worldSize: 4,
+      enablePlayground: true
     }
     this.debug = null
     this.states = null
@@ -66,6 +67,7 @@ class TheSinkingIsleSketch {
     this.config = { ...this.config, ...config }
 
     await this.loadAssets()
+    this.setupEvents()
     this.setupAudio()
     this.setupDebug()
     this.setupCamera()
@@ -73,7 +75,7 @@ class TheSinkingIsleSketch {
     this.setupPlayer()
     this.setupOtherModules()
 
-    this.update()
+    this.play()
   }
 
   async loadAssets() {
@@ -82,8 +84,18 @@ class TheSinkingIsleSketch {
     await this.asset.load()
   }
 
-  async setupAudio() {
-    this.audio = new AudioManager(this.asset)
+  setupEvents() {
+    this.$vm.$watch('isPlaying', () => {
+      if (this.$vm.isPlaying) {
+        this.play()
+      } else {
+        this.pause()
+      }
+    })
+  }
+
+  setupAudio() {
+    this.audio = new AudioManager(this.asset.getAudioItems())
   }
 
   setupDebug() {
@@ -95,6 +107,21 @@ class TheSinkingIsleSketch {
       this.debug.containerElem_.style.zIndex = '3'
       this.states = new StatsManager(true)
     }
+
+    if (this.debug) {
+      const folder = this.debug.addFolder({
+        title: 'Dev',
+        expanded: true
+      })
+      folder.addInput(this.config, 'enablePlayground').on('change', (e) => {
+        if (this.config.enablePlayground) {
+          this.module.add(TestModule)
+        } else {
+          this.module.remove(TestModule)
+        }
+      })
+      folder.addInput(this.$vm, 'isPlaying')
+    }
   }
 
   setupCamera() {
@@ -105,9 +132,7 @@ class TheSinkingIsleSketch {
   setupRenderer() {
     const rendererModule = this.module.add(RendererModule)
     this.renderer = rendererModule.instance
-
     this.control = new ControlManager(this.renderer.domElement)
-
     this.container.appendChild(this.renderer.domElement)
   }
 
@@ -118,7 +143,9 @@ class TheSinkingIsleSketch {
 
   setupOtherModules() {
     this.module.add(EnviromentModule)
-    this.module.add(TestModule)
+    if (this.config.enablePlayground) {
+      this.module.add(TestModule)
+    }
   }
 
   resize() {
@@ -131,6 +158,20 @@ class TheSinkingIsleSketch {
     this.config.height = boundings.height
 
     this.module.resize()
+  }
+
+  play() {
+    this.update()
+    this.module.play()
+  }
+
+  pause() {
+    this.audio.stopAll()
+    this.module.pause()
+  }
+
+  stop() {
+    this.module.stop()
   }
 
   update() {

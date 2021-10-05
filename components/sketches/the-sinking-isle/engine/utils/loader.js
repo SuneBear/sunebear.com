@@ -30,12 +30,11 @@ export default class Loader extends EventEmitter {
 
     // Audios
     this.loaders.push({
-      extensions: ['ogg', 'mp3'],
+      extensions: ['ogg', 'mp3', 'wav'],
       action: async _resource => {
-        const buffer = Tone.Buffer
-
-        const buff = await buffer.load(_resource.source)
-
+        const player = new Tone.Player
+        const buff = await player.load(_resource.source)
+        buff.toDestination()
         this.fileLoadEnd(_resource, buff)
       }
     })
@@ -136,7 +135,7 @@ export default class Loader extends EventEmitter {
 
     for (const _resource of _resources) {
       this.toLoad++
-      const extensionMatch = _resource.source.match(/\.([a-z]+)$/)
+      const extensionMatch = _resource.source.match(/\.([0-9a-z]+)$/)
 
       if (typeof extensionMatch[1] !== 'undefined') {
         const extension = extensionMatch[1]

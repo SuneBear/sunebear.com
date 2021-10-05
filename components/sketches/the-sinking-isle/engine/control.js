@@ -39,6 +39,7 @@ export default class Control extends EventEmitter {
     this.handleTouchstart = this.handleTouchstart.bind(this)
     this.handleTouchmove = this.handleTouchmove.bind(this)
     this.handleTouchend = this.handleTouchend.bind(this)
+    // Using tap to combine mouse and touch
     this.handleTap = this.handleTap.bind(this)
 
     this.listenEvents()
@@ -188,6 +189,7 @@ export default class Control extends EventEmitter {
     this.tapState.pressed = true
     this.processTapEvent(e)
     this.trigger('mousedown', [this.tapState])
+    this.trigger('tapdown', [this.tapState])
   }
 
   handleMousemove(e) {
@@ -208,6 +210,7 @@ export default class Control extends EventEmitter {
     this.tapState.pressed = false
     this.processTapEvent(e)
     this.trigger('mouseup', [this.tapState])
+    this.trigger('tapup', [this.tapState])
   }
 
   handleContextmenu(e) {
@@ -236,6 +239,7 @@ export default class Control extends EventEmitter {
     }
     this.tapState.multitouch = e.touches.length > 1
     this.trigger('touchstart', [this.tapState])
+    this.trigger('tapdown', [this.tapState])
   }
 
   handleTouchmove(e) {
@@ -305,6 +309,7 @@ export default class Control extends EventEmitter {
 
     this.tapState.multitouch = e.touches.length > 1
     this.trigger('touchend', [this.tapState])
+    this.trigger('tapup', [this.tapState])
   }
 
   handleTap(e) {

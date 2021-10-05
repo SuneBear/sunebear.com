@@ -18,6 +18,7 @@ export default [
     items:
     [
       { name: 'testAudio', source: require('./audios/test.ogg').default },
+      { name: 'pin', source: require('./audios/pin.mp3').default }
     ]
   }
 ]

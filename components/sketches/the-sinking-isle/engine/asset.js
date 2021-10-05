@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import EventEmitter from './utils/event-emitter'
 import Loader from './utils/loader'
+import * as Tone from 'tone'
 
 export default class Assets extends EventEmitter {
   constructor(_assets) {
@@ -49,6 +50,16 @@ export default class Assets extends EventEmitter {
     this.loader.on('error', error => {
       this.trigger('error', [error])
     })
+  }
+
+  getAudioItems() {
+    const items = {}
+    Object.entries(this.items).map(item => {
+      if (item[1] instanceof Tone.Player) {
+        items[item[0]] = item[1]
+      }
+    })
+    return items
   }
 
   async loadAssets(assets) {
