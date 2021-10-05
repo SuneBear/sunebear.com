@@ -4,8 +4,10 @@ export default class Sizes extends EventEmitter {
   /**
    * Constructor
    */
-  constructor() {
+  constructor(options = {}) {
     super()
+
+    this.options = options
 
     // Viewport size
     this.viewport = {}
@@ -28,6 +30,7 @@ export default class Sizes extends EventEmitter {
    * Resize
    */
   resize() {
+    const { onResize } = this.options
     document.body.appendChild(this.$sizeViewport)
     this.viewport.width = this.$sizeViewport.offsetWidth
     this.viewport.height = this.$sizeViewport.offsetHeight
@@ -35,6 +38,8 @@ export default class Sizes extends EventEmitter {
 
     this.width = window.innerWidth
     this.height = window.innerHeight
+
+    onResize && onResize()
 
     this.trigger('resize')
   }

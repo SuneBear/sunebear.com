@@ -10,13 +10,8 @@ export default class Assets extends EventEmitter {
     this.items = {}
 
     // Loader
-    this.loader = new Loader({ renderer: this.renderer })
-
-    this.groups = {}
-    this.groups.assets = [..._assets]
-    this.groups.loaded = []
-    this.groups.current = null
-    this.loadNextGroup()
+    this.loader = new Loader()
+    this.loadAssets(_assets)
 
     // Loader file end event
     this.loader.on('fileEnd', (_resource, _data) => {
@@ -51,9 +46,39 @@ export default class Assets extends EventEmitter {
       }
     })
 
-    this.loader.on('error', (error) => {
-      this.trigger('error', [ error ])
+    this.loader.on('error', error => {
+      this.trigger('error', [error])
     })
+  }
+
+  async loadAssets(assets) {
+    if (assets.length) {
+      this.groups = {}
+      this.groups.assets = [...assets]
+      this.groups.loaded = []
+      this.groups.current = null
+      this.loadNextGroup()
+    }
+
+    return new Promise((resolve, reject) => {
+      this.on('end', () => {
+        resolve()
+      })
+      this.on('error', error => {
+        reject(error)
+      })
+    })
+  }
+
+  async load(asset) {
+    const assets = []
+    if (asset) {
+      assets[0] = {
+        name: 'single',
+        items: [asset]
+      }
+    }
+    await this.loadAssets(assets)
   }
 
   loadNextGroup() {

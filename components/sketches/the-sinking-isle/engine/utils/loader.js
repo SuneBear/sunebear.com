@@ -130,6 +130,10 @@ export default class Loader extends EventEmitter {
    * Load
    */
   load(_resources = []) {
+    if (!Array.isArray(_resources)) {
+      _resources = [_resources]
+    }
+
     for (const _resource of _resources) {
       this.toLoad++
       const extensionMatch = _resource.source.match(/\.([a-z]+)$/)

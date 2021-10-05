@@ -4,12 +4,14 @@ import { Pane } from 'tweakpane'
 import { ModuleManager } from './engine/module'
 import SizesManager from './engine/sizes'
 import AssetManager from './engine/asset'
+import ControlManager from './engine/control'
 import AudioManager from './engine/audio'
 import StatsManager from './engine/stats'
 import { Random, random } from './engine/utils'
 
 import CameraModule from './modules/camera.module'
 import RendererModule from './modules/renderer.module'
+import PlayerModule from './modules/player.module'
 import EnviromentModule from './modules/enviroment.module'
 import TestModule from './modules/test.module'
 
@@ -18,13 +20,18 @@ import assets from './assets'
 class TheSinkingIsleSketch {
 
   constructor () {
+    // Simulate bind decorator
+    this.resize = this.resize.bind(this)
+    this.update = this.update.bind(this)
+
     // Dev, Config
     this.config = {
       seed: Random.getRandomSeed(),
       debug: true,
       width: window.innerWidth,
       height: window.innerHeight,
-      pixelRatio: Math.min(Math.max(window.devicePixelRatio, 1), 2)
+      pixelRatio: Math.min(Math.max(window.devicePixelRatio, 1), 2),
+      worldSize: 4,
     }
     this.debug = null
     this.states = null
@@ -33,11 +40,15 @@ class TheSinkingIsleSketch {
     this.scene = new THREE.Scene()
     this.camera = null
     this.renderer = null
+    this.player = null
     this.time = this.clock = new THREE.Clock()
-    this.sizes = new SizesManager()
+    this.sizes = new SizesManager({
+      onResize: this.resize
+    })
     this.asset = null
-    this.audio = new AudioManager(this)
+    this.audio = null
     this.module = new ModuleManager(this)
+    this.control = null
 
     // DOM & State Machine
     this.container = null
@@ -55,32 +66,24 @@ class TheSinkingIsleSketch {
     this.config = { ...this.config, ...config }
 
     await this.loadAssets()
-    this.listenEvents()
+    this.setupAudio()
     this.setupDebug()
     this.setupCamera()
     this.setupRenderer()
+    this.setupPlayer()
     this.setupOtherModules()
 
     this.update()
   }
 
-  listenEvents() {
-    this.sizes.on('resize', () => {
-      this.resize()
-    })
-  }
-
   async loadAssets() {
     this.asset = new AssetManager(assets)
 
-    return new Promise((resolve, reject) => {
-      this.asset.on('end', () => {
-        resolve()
-      })
-      this.asset.on('error', (error) => {
-        reject(error)
-      })
-    })
+    await this.asset.load()
+  }
+
+  async setupAudio() {
+    this.audio = new AudioManager(this.asset)
   }
 
   setupDebug() {
@@ -103,7 +106,14 @@ class TheSinkingIsleSketch {
     const rendererModule = this.module.add(RendererModule)
     this.renderer = rendererModule.instance
 
+    this.control = new ControlManager(this.renderer.domElement)
+
     this.container.appendChild(this.renderer.domElement)
+  }
+
+  setupPlayer() {
+    const playerModule = this.module.add(PlayerModule)
+    this.player = playerModule.instance
   }
 
   setupOtherModules() {
@@ -112,6 +122,10 @@ class TheSinkingIsleSketch {
   }
 
   resize() {
+    if (!this.container) {
+      return
+    }
+
     const boundings = this.container.getBoundingClientRect()
     this.config.width = boundings.width
     this.config.height = boundings.height
@@ -126,7 +140,7 @@ class TheSinkingIsleSketch {
     this.module.update(this.delta, this.elapsed)
 
     if (this.$vm.isPlaying) {
-      requestAnimationFrame(this.update.bind(this))
+      requestAnimationFrame(this.update)
     }
   }
 

@@ -10,6 +10,8 @@ export default class Module {
     this.camera = this.sketch.camera
     this.renderer = this.sketch.renderer
 
+    this.control = this.sketch.control
+    this.audio = this.sketch.audio
     this.asset = this.sketch.asset
     this.time = this.sketch.time
     this.sizes = this.sketch.sizes

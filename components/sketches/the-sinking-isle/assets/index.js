@@ -1,7 +1,7 @@
 // Notice:
 // - Unique name is required
 // - add ".default" when require gltf and glb files
-// @TODO: auto require files
+// @TODO: auto require files, catetory by load stages: preload, postload
 
 export default [
   {

@@ -39,9 +39,9 @@ export default class CameraModule extends Module {
     this.modes.debug.instance = this.instance.clone()
     this.modes.debug.instance.rotation.reorder('YXZ')
     this.modes.debug.instance.position.set(
-      -3.6075070194579104,
-      -0.5992302447775956,
-      -3.8236586756402806
+      0,
+      10,
+      5
     )
 
     this.modes.debug.orbitControls = new OrbitControls(
@@ -49,6 +49,7 @@ export default class CameraModule extends Module {
       this.container
     )
     this.modes.debug.orbitControls.enabled = this.modes.debug.active
+    this.modes.debug.orbitControls.enableRotate = false
     this.modes.debug.orbitControls.screenSpacePanning = true
     this.modes.debug.orbitControls.enableKeys = false
     this.modes.debug.orbitControls.zoomSpeed = 0.25
