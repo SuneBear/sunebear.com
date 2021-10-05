@@ -17,7 +17,8 @@ export default {
       isLoading: true,
       isInited: false,
       isError: false,
-      isPlaying: true
+      isPlaying: true,
+      isMuteAudio: false
     }
   },
 

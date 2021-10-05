@@ -7,7 +7,7 @@ import AssetManager from './engine/asset'
 import ControlManager from './engine/control'
 import AudioManager from './engine/audio'
 import StatsManager from './engine/stats'
-import { Random, random } from './engine/utils'
+import { Random, autobind, random } from './engine/utils'
 
 import CameraModule from './modules/camera.module'
 import RendererModule from './modules/renderer.module'
@@ -20,10 +20,6 @@ import assets from './assets'
 class TheSinkingIsleSketch {
 
   constructor () {
-    // Simulate bind decorator
-    this.resize = this.resize.bind(this)
-    this.update = this.update.bind(this)
-
     // Dev, Config
     this.config = {
       seed: Random.getRandomSeed(),
@@ -92,10 +88,22 @@ class TheSinkingIsleSketch {
         this.pause()
       }
     })
+
+    this.$vm.$watch('isMuteAudio', () => {
+      if (this.$vm.isMuteAudio) {
+        this.audio.mute()
+      } else {
+        this.audio.unmute()
+      }
+    })
   }
 
   setupAudio() {
     this.audio = new AudioManager(this.asset.getAudioItems())
+
+    if (this.$vm.isMuteAudio) [
+      this.audio.mute()
+    ]
   }
 
   setupDebug() {
@@ -121,6 +129,7 @@ class TheSinkingIsleSketch {
         }
       })
       folder.addInput(this.$vm, 'isPlaying')
+      folder.addInput(this.$vm, 'isMuteAudio')
     }
   }
 
@@ -148,6 +157,7 @@ class TheSinkingIsleSketch {
     }
   }
 
+  @autobind
   resize() {
     if (!this.container) {
       return
@@ -163,10 +173,11 @@ class TheSinkingIsleSketch {
   play() {
     this.update()
     this.module.play()
+    this.audio.resume()
   }
 
   pause() {
-    this.audio.stopAll()
+    this.audio.pause()
     this.module.pause()
   }
 
@@ -174,11 +185,11 @@ class TheSinkingIsleSketch {
     this.module.stop()
   }
 
+  @autobind
   update() {
     this.delta = this.time.getDelta()
-    this.elapsed = this.time.oldTime
 
-    this.module.update(this.delta, this.elapsed)
+    this.module.update(this.delta, this.time.elapsedTime, this.clock.oldTime)
 
     if (this.$vm.isPlaying) {
       requestAnimationFrame(this.update)

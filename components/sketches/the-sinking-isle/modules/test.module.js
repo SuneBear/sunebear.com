@@ -1,23 +1,26 @@
 import * as THREE from 'three'
+import anime from 'animejs'
 import Module from '../engine/module'
-import { math } from '../engine/utils'
+import { lock, math, getEasePlayhead } from '../engine/utils'
 
 export default class Test extends Module {
   constructor(sketch) {
     super(sketch)
+
+    this.upMoveElapsed = 0
+    this.needTransitionIn = true
 
     this.mousePlane = new THREE.Plane(new THREE.Vector3(-0, -1, -0), -0)
     this.mousePlaneTarget = new THREE.Vector3()
     this.raycaster = new THREE.Raycaster()
     this.maxWorldSize = this.config.worldSize = 0.95 / 2
 
-    this.setupEvents()
     this.setupTextures()
-    this.setupMesh()
+    this.setupInstance()
   }
 
   setupEvents() {
-    this.control.on('tapdown', () => {
+    this.control.on('tapdown.test', () => {
       this.audio.play('pin')
     })
   }
@@ -31,7 +34,7 @@ export default class Test extends Module {
     this.textures.color.encoding = THREE.sRGBEncoding
   }
 
-  setupMesh() {
+  setupInstance() {
     const geometry = new THREE.BoxGeometry(0.3, 0.3, 0.3)
     const material = new THREE.MeshPhysicalMaterial({
       transmission: 0.5,
@@ -40,29 +43,49 @@ export default class Test extends Module {
       transparent: true
     })
 
-    this.mesh = new THREE.Mesh(
+    this.instance = this.mesh = new THREE.Mesh(
       geometry,
       material
     )
+  }
 
-    this.scene.add(
-      this.mesh
-    )
+  @lock
+  async transitionIn() {
+    if (!this.needTransitionIn) {
+      return
+    }
 
+    this.instance.scale.set(0, 0, 0)
+    this.scene.add(this.instance)
+    const animer = anime({
+      targets: this.instance.scale,
+      x: 1,
+      y: 1,
+      z: 1,
+      duration: 2000,
+      delay: 500
+    })
+    await animer.finished
+    this.needTransitionIn = false
   }
 
   play() {
     super.play()
+    this.setupEvents()
     this.audio.play('testAudio', { loop: true })
   }
 
-  stop() {
-    super.stop()
-    this.control.off('tapdown')
-    this.scene.remove(this.mesh)
+  pause() {
+    super.pause()
+    this.control.off('tapdown.test')
   }
 
-  update() {
+  update(delta) {
+    this.transitionIn()
+
+    this.upMoveElapsed += delta
+    this.mesh.position.y = 2 * getEasePlayhead({ elapsed: this.upMoveElapsed, endTime: 2 })
+
     if (this.control.isPressed('leftArrow')) {
       this.mesh.position.x -= 0.01
     }

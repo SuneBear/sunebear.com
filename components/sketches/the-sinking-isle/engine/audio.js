@@ -6,6 +6,8 @@ export default class Audio {
     this.players = {}
 
     this.setupPlayers(audioPlayers)
+    Tone.context.lookAhead = 0
+    Tone.Transport.start()
   }
 
   setupPlayers(items) {
@@ -17,23 +19,48 @@ export default class Audio {
 
   // @TODO:
   // - Support lock option, ignore duplicate play
-  // - Support resume option and pause method
+  // - Config audio options in assets map, store default audio options in players
   play(name, options = {}) {
-    const { offset, lock, loop } = options
     const player = this.players[name]
-    let start = player.now()
+    let start = Tone.Transport.seconds || player.now()
 
     if (!player) {
       console.warn(`Invaid player name: ${name}`)
     }
 
+    options = {
+      ...player.defaultOptions,
+      ...options
+    }
+    const { delay, fadeInDuration, lock, loop } = options
+
     player.loop = loop
 
-    if (player.state !== 'stopped') {
-      start += 0.1
+    if (fadeInDuration) {
+      player.fadeIn = fadeInDuration
     }
 
-    player.start(start, offset)
+    if (player.state !== 'stopped') {
+      start += 0.001
+    }
+
+    player.start(start, delay)
+  }
+
+  pause() {
+    Tone.Transport.pause()
+  }
+
+  resume() {
+    Tone.Transport.start()
+  }
+
+  mute() {
+    Tone.Destination.mute = true
+  }
+
+  unmute() {
+    Tone.Destination.mute = false
   }
 
   stop(name) {

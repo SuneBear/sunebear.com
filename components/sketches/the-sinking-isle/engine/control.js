@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import EventEmitter from './utils/event-emitter'
+import { autobind } from './utils/decorators'
 
 // Currently support keyboard, mouse, touch inputs
 export default class Control extends EventEmitter {
@@ -30,17 +31,16 @@ export default class Control extends EventEmitter {
     this.isEnableTap = true
     this.needPressdMove = true
 
-    this.handleKeydown = this.handleKeydown.bind(this)
-    this.handleKeyup = this.handleKeyup.bind(this)
-    this.handleMousemove = this.handleMousemove.bind(this)
-    this.handleMousedown = this.handleMousedown.bind(this)
-    this.handleMouseup = this.handleMouseup.bind(this)
-    this.handleContextmenu = this.handleContextmenu.bind(this)
-    this.handleTouchstart = this.handleTouchstart.bind(this)
-    this.handleTouchmove = this.handleTouchmove.bind(this)
-    this.handleTouchend = this.handleTouchend.bind(this)
-    // Using tap to combine mouse and touch
-    this.handleTap = this.handleTap.bind(this)
+    // this.handleKeydown = this.handleKeydown.bind(this)
+    // this.handleKeyup = this.handleKeyup.bind(this)
+    // this.handleMousemove = this.handleMousemove.bind(this)
+    // this.handleMousedown = this.handleMousedown.bind(this)
+    // this.handleMouseup = this.handleMouseup.bind(this)
+    // this.handleContextmenu = this.handleContextmenu.bind(this)
+    // this.handleTouchstart = this.handleTouchstart.bind(this)
+    // this.handleTouchmove = this.handleTouchmove.bind(this)
+    // this.handleTouchend = this.handleTouchend.bind(this)
+    // this.handleTap = this.handleTap.bind(this)
 
     this.listenEvents()
   }
@@ -156,6 +156,15 @@ export default class Control extends EventEmitter {
       typeof arg === 'number' ? keyCodesMap[arg] : swappedKeyCodesMap[arg]
   })()
 
+  processTapEvent(e) {
+    this.tapState.clientX = e.clientX
+    this.tapState.clientY = e.clientY
+    this.tapState.x = (e.clientX / this.$canvas.clientWidth) * 2 - 1
+    this.tapState.y = -(e.clientY / this.$canvas.clientHeight) * 2 + 1
+    return this.tapState
+  }
+
+  @autobind
   handleKeydown(e) {
     const keyCode = e.keyCode
 
@@ -168,20 +177,14 @@ export default class Control extends EventEmitter {
     }
   }
 
-  processTapEvent(e) {
-    this.tapState.clientX = e.clientX
-    this.tapState.clientY = e.clientY
-    this.tapState.x = (e.clientX / this.$canvas.clientWidth) * 2 - 1
-    this.tapState.y = -(e.clientY / this.$canvas.clientHeight) * 2 + 1
-    return this.tapState
-  }
-
+  @autobind
   handleKeyup(e) {
     const keyCode = e.keyCode
     this.pressedKeys[keyCode] = false
     this.trigger('keyup', [this.keymap(keyCode)])
   }
 
+  @autobind
   handleMousedown(e) {
     if (this.shouldIgnoreTap(e)) {
       return
@@ -192,6 +195,7 @@ export default class Control extends EventEmitter {
     this.trigger('tapdown', [this.tapState])
   }
 
+  @autobind
   handleMousemove(e) {
     if (this.shouldIgnoreTap(e)) {
       return
@@ -203,6 +207,7 @@ export default class Control extends EventEmitter {
     this.trigger('mousemove', [this.tapState])
   }
 
+  @autobind
   handleMouseup(e) {
     if (this.shouldIgnoreTap(e)) {
       return
@@ -213,6 +218,7 @@ export default class Control extends EventEmitter {
     this.trigger('tapup', [this.tapState])
   }
 
+  @autobind
   handleContextmenu(e) {
     if (process.env.NODE_ENV !== 'development') {
       e.preventDefault()
@@ -220,6 +226,7 @@ export default class Control extends EventEmitter {
     }
   }
 
+  @autobind
   handleTouchstart(e) {
     this.tapState.hasTouchEvents = true
 
@@ -242,6 +249,7 @@ export default class Control extends EventEmitter {
     this.trigger('tapdown', [this.tapState])
   }
 
+  @autobind
   handleTouchmove(e) {
     if (this.shouldIgnoreTap(e)) {
       return
@@ -263,6 +271,7 @@ export default class Control extends EventEmitter {
     this.trigger('touchmove', [this.tapState])
   }
 
+  @autobind
   handleTouchend(e) {
     if (this.shouldIgnoreTap(e)) {
       return
@@ -312,6 +321,8 @@ export default class Control extends EventEmitter {
     this.trigger('tapup', [this.tapState])
   }
 
+  // Using tap to combine mouse and touch
+  @autobind
   handleTap(e) {
     this.trigger('tap', [e])
   }

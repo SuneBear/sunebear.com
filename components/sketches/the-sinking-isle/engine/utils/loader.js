@@ -34,7 +34,7 @@ export default class Loader extends EventEmitter {
       action: async _resource => {
         const player = new Tone.Player
         const buff = await player.load(_resource.source)
-        buff.toDestination()
+        buff.toDestination().sync()
         this.fileLoadEnd(_resource, buff)
       }
     })

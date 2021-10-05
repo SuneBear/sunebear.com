@@ -1,5 +1,5 @@
 // @TODO:
-// - do more in lifecycles, like register/remove data, events
+// - Do more in lifecycles, like register/remove data, events, animations
 export default class Module {
 
   constructor(sketch, attributes) {
@@ -41,16 +41,16 @@ export default class Module {
 
   stop() {
     this.pause()
+    if (this.instance) {
+      this.scene.remove(this.instance)
+    }
     this.audio.stopAll()
+    // @TODO: Stop all running animations
   }
 
-  resize() {
+  resize() {}
 
-  }
-
-  update(delta, elapsedTime) {
-
-  }
+  update(delta, elapsed, timestamp) {}
 }
 
 Module.isModule = true
@@ -122,10 +122,10 @@ export class ModuleManager {
     this.modules.map((module) => module.resize())
   }
 
-  update(delta, elaspedTime) {
+  update(delta, elapsed, timestamp) {
     this.modules.map((module) => {
       if (module.enabled) {
-        module.update(delta, elaspedTime)
+        module.update(delta, elapsed, timestamp)
       }
     })
   }
