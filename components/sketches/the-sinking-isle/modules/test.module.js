@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import anime from 'animejs'
 import Module from '../engine/module'
-import { lock, math, getEasePlayhead } from '../engine/utils'
+import { Color, lock, math, getEasePlayhead } from '../engine/utils'
 
 export default class Test extends Module {
   constructor(sketch) {

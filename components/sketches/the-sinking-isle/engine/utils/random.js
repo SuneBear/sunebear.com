@@ -1,4 +1,6 @@
+import SimplexNoise from 'simplex-noise'
 import PCG, { getRandomState } from './prng-pcg'
+import { devLog } from './dev'
 
 const SEED_STATE = new Uint16Array([9697, 37140, 38490, 15272])
 const SEED_PCG = PCG(SEED_STATE)
@@ -7,28 +9,34 @@ const defined = (a, b) => {
   return typeof a === 'undefined' ? b : a
 }
 
-export const Random = (seed) => {
+export const Random = seed => {
   if (seed) {
-    console.log('Fixed Random Seed:', [...seed])
+    devLog('Fixed Random Seed:', [...seed])
   }
 
   if (!seed) {
     seed = Random.nextSeed()
-    console.log('Next Random Seed:', [...seed])
+    devLog('Next Random Seed:', [...seed])
   }
 
   const prng = PCG(seed)
+  let noiseGenerator = new SimplexNoise(seed)
   let _nextGaussian = null
   let _hasNextGaussian = false
 
   return {
     seed(v) {
       prng.seed(v)
+      noiseGenerator = null
       _nextGaussian = null
       _hasNextGaussian = false
     },
     value,
     valueNonZero: valueNonZero,
+    noise1D: noise1D,
+    noise2D: noise2D,
+    noise3D: noise3D,
+    noise4D: noise4D,
     sign: sign,
     boolean: boolean,
     chance: chance,
@@ -48,6 +56,7 @@ export const Random = (seed) => {
     gaussian: gaussian
   }
 
+  // Type: Value Noise
   function value() {
     return prng.next()
   }
@@ -56,6 +65,62 @@ export const Random = (seed) => {
     var u = 0
     while (u === 0) u = value()
     return u
+  }
+
+  // Type: Gradient Noise
+  function noise1D(x, frequency, amplitude) {
+    if (!isFinite(x))
+      throw new TypeError('x component for noise() must be finite')
+    frequency = defined(frequency, 1)
+    amplitude = defined(amplitude, 1)
+    return amplitude * noiseGenerator.noise2D(x * frequency, 0)
+  }
+
+  function noise2D(x, y, frequency, amplitude) {
+    if (!isFinite(x))
+      throw new TypeError('x component for noise() must be finite')
+    if (!isFinite(y))
+      throw new TypeError('y component for noise() must be finite')
+    frequency = defined(frequency, 1)
+    amplitude = defined(amplitude, 1)
+    return amplitude * noiseGenerator.noise2D(x * frequency, y * frequency)
+  }
+
+  function noise3D(x, y, z, frequency, amplitude) {
+    if (!isFinite(x))
+      throw new TypeError('x component for noise() must be finite')
+    if (!isFinite(y))
+      throw new TypeError('y component for noise() must be finite')
+    if (!isFinite(z))
+      throw new TypeError('z component for noise() must be finite')
+    frequency = defined(frequency, 1)
+    amplitude = defined(amplitude, 1)
+    return (
+      amplitude *
+      noiseGenerator.noise3D(x * frequency, y * frequency, z * frequency)
+    )
+  }
+
+  function noise4D(x, y, z, w, frequency, amplitude) {
+    if (!isFinite(x))
+      throw new TypeError('x component for noise() must be finite')
+    if (!isFinite(y))
+      throw new TypeError('y component for noise() must be finite')
+    if (!isFinite(z))
+      throw new TypeError('z component for noise() must be finite')
+    if (!isFinite(w))
+      throw new TypeError('w component for noise() must be finite')
+    frequency = defined(frequency, 1)
+    amplitude = defined(amplitude, 1)
+    return (
+      amplitude *
+      noiseGenerator.noise4D(
+        x * frequency,
+        y * frequency,
+        z * frequency,
+        w * frequency
+      )
+    )
   }
 
   function sign() {
