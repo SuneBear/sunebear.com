@@ -15,16 +15,26 @@ export default {
   data(){
     return {
       isLoading: true,
+      loadProgress: 0,
       isInited: false,
       isError: false,
       isPlaying: true,
-      isMuteAudio: false
+      isMuteAudio: true,
     }
   },
 
   computed: {
     enableDebug() {
       return __DEBUG__ || this.$route.query.debug
+    }
+  },
+
+  watch: {
+    loadProgress() {
+      if (this.loadProgress >=1) {
+        console.log('Sketch loaded')
+        loadingSketch.destory()
+      }
     }
   },
 
@@ -49,7 +59,8 @@ export default {
       }
 
       loadingSketch.init({
-        container: this.$refs.canvasWrapper
+        container: this.$refs.canvasWrapper,
+        $vm: this
       })
       this.isError = false
       this.isLoading = true
@@ -63,7 +74,6 @@ export default {
           container: this.$refs.canvasWrapper,
           $vm: this
         })
-        loadingSketch.destory()
         this.isInited = true
       } catch(error) {
         console.log('Init sektch error', error)
@@ -88,6 +98,11 @@ export default {
     height: 100%
     left: 0
     top: 0
+    transition: opacity 1000ms, transform 1000ms
+
+    &.fade-out
+      opacity: 0
+      transform: scale(1.5)
 
   .dom-wrapper
     z-index: 2

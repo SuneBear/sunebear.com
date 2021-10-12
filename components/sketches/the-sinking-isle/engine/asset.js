@@ -52,6 +52,14 @@ export default class Assets extends EventEmitter {
     })
   }
 
+  getLoadPreogress() {
+    if (!this.groups.current?.toLoad) {
+      return 1
+    }
+
+    return this.groups.current.loaded / this.groups.current.toLoad
+  }
+
   getAudioItems() {
     const items = {}
     Object.entries(this.items).map(item => {
@@ -72,7 +80,7 @@ export default class Assets extends EventEmitter {
     }
 
     return new Promise((resolve, reject) => {
-      this.on('end', () => {
+      this.on('groupEnd', () => {
         resolve()
       })
       this.on('error', error => {

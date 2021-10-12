@@ -5,20 +5,26 @@
 
 export default [
   {
-    name: 'visual',
+    name: 'preload',
     data: {},
     items:
     [
+      // Texture
       { name: 'testTexture', source: require('./textures/test.png'), type: 'texture' },
+
+      // Model
       { name: 'testModel', source: require('./gltfs/test.glb').default },
+
+      // Audio
+      { name: 'testAudio', source: require('./audios/test.ogg').default },
+      { name: 'pin', source: require('./audios/pin.mp3').default }
     ]
   },
   {
-    name: 'audio',
+    name: 'postload',
     items:
     [
-      { name: 'testAudio', source: require('./audios/test.ogg').default },
-      { name: 'pin', source: require('./audios/pin.mp3').default }
+
     ]
   }
 ]

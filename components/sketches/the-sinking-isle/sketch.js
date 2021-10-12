@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import { Pane } from 'tweakpane'
+import anime from 'animejs'
 
 import { ModuleManager } from './engine/module'
 import SizesManager from './engine/sizes'
@@ -76,6 +77,21 @@ class TheSinkingIsleSketch {
 
   async loadAssets() {
     this.asset = new AssetManager(assets)
+
+    this.asset.on('progress', () => {
+      if (this.progressAnimer) {
+        this.progressAnimer.pause()
+      }
+      this.progressAnimer = anime({
+        targets: this.$vm,
+        easing: 'linear',
+        duration: 3000,
+        loadProgress: this.asset.getLoadPreogress()
+      })
+    })
+    this.asset.on('error', (error) => {
+      console.log('Asset error', error)
+    })
 
     await this.asset.load()
   }
