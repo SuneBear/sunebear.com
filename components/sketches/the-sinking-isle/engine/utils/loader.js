@@ -7,7 +7,21 @@ import { BasisTextureLoader } from 'three/examples/jsm/loaders/BasisTextureLoade
 import * as Tone from 'tone'
 import EventEmitter from './event-emitter'
 
+const getPreloadWrapper = () => {
+  let $wrapper = document.querySelector('.preload-wrapper')
+
+  if (!$wrapper) {
+    $wrapper = document.createElement('DIV')
+    $wrapper.setAttribute('class', 'preload-wrapper')
+    $wrapper.setAttribute('style', 'position: absolute;overflow: hidden;left: -9999px;top: -9999px;height: 1px;width: 1px')
+    document.body.appendChild($wrapper)
+  }
+
+  return $wrapper
+}
+
 // @TODO: handle load error
+// @TODO: support font loader for DOM & Three.js
 export default class Loader extends EventEmitter {
   /**
    * Constructor
@@ -47,6 +61,8 @@ export default class Loader extends EventEmitter {
 
         image.addEventListener('load', () => {
           this.fileLoadEnd(_resource, image)
+          const $wrapper = getPreloadWrapper()
+          $wrapper.appendChild(image)
         })
 
         image.addEventListener('error', () => {

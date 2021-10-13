@@ -44,6 +44,23 @@ export default {
     host: '0'
   },
 
+  modules: [
+    '@nuxtjs/i18n'
+  ],
+
+  i18n: {
+    defaultLocale: 'zh-Hans',
+    strategy: 'no_prefix',
+    langDir: '~/locales/',
+    locales: [
+      { code: 'zh-Hans', iso: 'zh-Hans', file: 'zh-Hans.js', dir: 'ltr' },
+      { code: 'en-US', iso: 'en-US', file: 'en-US.js', dir: 'ltr' }
+    ],
+    vueI18n: {
+      fallbackLocale: 'zh-Hans'
+    }
+  },
+
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     publicPath: '/_nuxt/',

@@ -2,6 +2,7 @@
 .sketch.sketch-the-sinking-isle(
 )
   .dom-wrapper
+    .sketch-title.is-absolute-center {{ $t('tsi.sketch.title') }}
   .canvas-wrapper(
     ref="canvasWrapper"
   )
@@ -33,7 +34,7 @@ export default {
     loadProgress() {
       if (this.loadProgress >=1) {
         console.log('Sketch loaded')
-        loadingSketch.destory()
+        // loadingSketch.destory()
       }
     }
   },
@@ -105,8 +106,24 @@ export default {
       transform: scale(1.5)
 
   .dom-wrapper
-    z-index: 2
+    z-index: 233
     pointer-events: none
+    color: #383838
+
+    .is-absolute-center
+      position: absolute
+      top: 50%
+      left: 50%
+      transform: translate3d(-50%, 50%, 0)
+
+    .sketch-title
+      display: none
+      font-weight: 100
+      font-size: 28px
+      margin-top: -10px
+
+      /[lang="zh-Hans"] &
+        font-size: 24px
 
   .canvas-wrapper
     canvas:first-child
