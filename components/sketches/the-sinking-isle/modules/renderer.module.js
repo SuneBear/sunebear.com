@@ -1,8 +1,14 @@
 import * as THREE from 'three'
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js'
+import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js'
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
+import { CopyShader } from 'three/examples/jsm/shaders/CopyShader.js'
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js'
+
 import Module from '../engine/module'
+import { RENDER_LAYERS } from '../utils/constants'
+import vertexShader from '../shaders/base.vert'
+import fragmentShader from '../shaders/post-processing.frag'
 
 export default class Renderer extends Module {
   constructor(sketch) {
@@ -32,6 +38,7 @@ export default class Renderer extends Module {
         .on('change', () => {
           this.instance.setClearColor(this.clearColor, 1)
         })
+      this.debugFolder.addInput(this, 'usePostprocess')
     }
 
     // Renderer
@@ -39,7 +46,8 @@ export default class Renderer extends Module {
       alpha: false,
       antialias: true
     })
-    this.module = this
+    this.instance.module = this
+    this.instance.autoClear = false
     this.instance.domElement.style.position = 'absolute'
     this.instance.domElement.style.top = 0
     this.instance.domElement.style.left = 0
@@ -93,19 +101,20 @@ export default class Renderer extends Module {
      * Render pass
      */
     // Render pass
-    this.postProcess.renderPass = new RenderPass(
-      this.scene,
-      this.camera
-    )
+    this.postProcess.renderPass = new RenderPass(this.scene, this.camera)
+
+    const effectCopy = new ShaderPass(CopyShader)
+    effectCopy.renderToScreen = false
 
     // Bloom pass
     this.postProcess.unrealBloomPass = new UnrealBloomPass(
       new THREE.Vector2(this.sizes.width, this.sizes.height),
-      0.32,
-      0.52,
+      0.12,
+      0.22,
       0.2
     )
-    this.postProcess.unrealBloomPass.enabled = false
+
+    this.postProcess.unrealBloomPass.enabled = true
 
     if (this.debug) {
       const debugFolder = this.debugFolder.addFolder({
@@ -152,6 +161,32 @@ export default class Renderer extends Module {
         encoding: THREE.sRGBEncoding
       }
     )
+    this.postProcess.bloomComposer = new EffectComposer(
+      this.instance,
+      this.renderTarget
+    )
+    this.postProcess.bloomComposer.renderToScreen = false
+    this.postProcess.bloomComposer.addPass(this.postProcess.renderPass)
+    this.postProcess.bloomComposer.addPass(this.postProcess.unrealBloomPass)
+    this.postProcess.bloomComposer.addPass(effectCopy)
+
+    // Final Pass
+    this.postProcess.finalPass = new ShaderPass(
+      new THREE.ShaderMaterial({
+        uniforms: {
+          baseTexture: { value: null },
+          bloomTexture: {
+            value: this.postProcess.bloomComposer.renderTarget2.texture
+          },
+          enableGrayMode: {
+            value: false
+          }
+        },
+        vertexShader,
+        fragmentShader
+      }),
+      'baseTexture'
+    )
     this.postProcess.composer = new EffectComposer(
       this.instance,
       this.renderTarget
@@ -160,7 +195,20 @@ export default class Renderer extends Module {
     this.postProcess.composer.setPixelRatio(this.config.pixelRatio)
 
     this.postProcess.composer.addPass(this.postProcess.renderPass)
-    this.postProcess.composer.addPass(this.postProcess.unrealBloomPass)
+    this.postProcess.composer.addPass(this.postProcess.finalPass)
+    this.postProcess.composer.addPass(effectCopy)
+
+    if (this.debug) {
+      const debugFolder = this.debugFolder.addFolder({
+        title: 'FinalPostProcessing'
+      })
+
+      debugFolder.addInput(
+        this.postProcess.finalPass.uniforms.enableGrayMode,
+        'value',
+        { label: 'enableGrayMode' }
+      )
+    }
   }
 
   resize() {
@@ -180,7 +228,15 @@ export default class Renderer extends Module {
 
     this.submitFrame.preRender()
 
+    this.instance.clear()
     if (this.usePostprocess) {
+      // Render single layer
+      this.camera.layers.set(RENDER_LAYERS.BLOOM)
+      this.postProcess.bloomComposer.render()
+      this.instance.clearDepth()
+
+      // Render all layers
+      this.camera.layers.enableAll()
       this.postProcess.composer.render()
     } else {
       this.instance.render(this.scene, this.camera)

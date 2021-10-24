@@ -3,6 +3,7 @@ import Module from '../engine/module'
 
 import { EnvWaterPlaneObject } from '../objects/env-water-plane.object'
 
+// @TODO: Render world boundary
 export default class Enviroment extends Module {
   constructor(sketch) {
     super(sketch)
@@ -17,7 +18,7 @@ export default class Enviroment extends Module {
 
   setupWater() {
     this.water = new EnvWaterPlaneObject({
-      planeSize: this.config.worldSize,
+      planeSize: this.config.worldSize * 1.5,
       uniforms: this.enviromentTrace.getTraceUniforms()
     })
     this.scene.add(this.water)
