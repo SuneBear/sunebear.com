@@ -3,10 +3,10 @@ import StatsJs from 'stats.js'
 export default class Stats {
   constructor(_active) {
     this.instance = new StatsJs()
-    this.instance.showPanel(3)
+    this.instance.showPanel(0)
 
     this.active = false
-    this.max = 40
+    this.max = 80
     this.ignoreMaxed = true
 
     if (_active) {
@@ -35,6 +35,7 @@ export default class Stats {
     this.render.panel = this.instance.addPanel(
       new StatsJs.Panel('Render (ms)', '#f8f', '#212')
     )
+    this.render.panel.dom.style.display = 'none'
 
     const webGL2 =
       typeof WebGL2RenderingContext !== 'undefined' &&
@@ -88,6 +89,7 @@ export default class Stats {
         this.render.query
       )
     }
+    this.instance.begin()
   }
 
   afterRender() {
@@ -99,14 +101,8 @@ export default class Stats {
     if (this.queryCreated) {
       this.render.context.endQuery(this.render.extension.TIME_ELAPSED_EXT)
     }
-  }
 
-  update() {
-    if (!this.active) {
-      return
-    }
-
-    this.instance.update()
+    this.instance.end()
   }
 
   destroy() {

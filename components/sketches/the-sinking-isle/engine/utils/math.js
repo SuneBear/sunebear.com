@@ -9,9 +9,11 @@ export const clamp = (value, min, max) => {
   return value
 }
 
-export const saturate = (value, min, max) => {
+export const saturate = value => {
   return clamp(value, 0, 1)
 }
+
+export const clamp01 = saturate
 
 // Get the linear interpolation between two value
 export const lerp = (min, max, t) => {
@@ -50,8 +52,44 @@ export const damp = (a, b, lambda, dt) => {
   return lerp(a, b, 1 - Math.exp(-lambda * dt))
 }
 
+export const dampVector = (a, b, power, dt, output = a) => {
+  output.x = damp(a.x, b.x, power, dt)
+  output.y = damp(a.y, b.y, power, dt)
+  output.z = damp(a.z, b.z, power, dt)
+  return output
+}
+
 export const map = (value, low1, high1, low2, high2) => {
-  return low2 + (high2 - low2) * (value - low1) / (high1 - low1)
+  return low2 + ((high2 - low2) * (value - low1)) / (high1 - low1)
+}
+
+export const mapRange = (
+  value,
+  inputMin,
+  inputMax,
+  outputMin,
+  outputMax,
+  clamp
+) => {
+  // Reference:
+  // https://openframeworks.cc/documentation/math/ofMath/
+  if (Math.abs(inputMin - inputMax) < Number.EPSILON) {
+    return outputMin
+  } else {
+    var outVal =
+      ((value - inputMin) / (inputMax - inputMin)) * (outputMax - outputMin) +
+      outputMin
+    if (clamp) {
+      if (outputMax < outputMin) {
+        if (outVal < outputMax) outVal = outputMax
+        else if (outVal > outputMin) outVal = outputMin
+      } else {
+        if (outVal > outputMax) outVal = outputMax
+        else if (outVal < outputMin) outVal = outputMin
+      }
+    }
+    return outVal
+  }
 }
 
 export const deltaAngle = (current, target) => {
@@ -64,7 +102,7 @@ export const repeat = (t, length) => {
   return t - Math.floor(t / length) * length
 }
 
-export const wrapAngle = (angle) => {
+export const wrapAngle = angle => {
   let n = repeat(angle, Math.PI * 2)
   if (n > Math.PI) n -= Math.PI * 2
   return n

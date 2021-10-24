@@ -1,6 +1,8 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+
 import Module from '../engine/module'
+import { math } from '../engine/utils'
 
 export default class CameraModule extends Module {
   constructor(sketch) {
@@ -11,17 +13,19 @@ export default class CameraModule extends Module {
 
     this.setInstance()
     this.setModes()
+    this.setupPlayerFollowSystem()
   }
 
   setInstance() {
     // Set up
     this.instance = new THREE.PerspectiveCamera(
-      25,
+      30,
       this.config.width / this.config.height,
       0.1,
-      150
+      1000
     )
     this.instance.rotation.reorder('YXZ')
+    this.instance.module = this
 
     this.scene.add(this.instance)
   }
@@ -40,8 +44,8 @@ export default class CameraModule extends Module {
     this.modes.debug.instance.rotation.reorder('YXZ')
     this.modes.debug.instance.position.set(
       0,
-      10,
-      5
+      20,
+      10
     )
 
     this.modes.debug.orbitControls = new OrbitControls(
@@ -57,6 +61,39 @@ export default class CameraModule extends Module {
     this.modes.debug.orbitControls.update()
   }
 
+  setupPlayerFollowSystem() {
+    this.currentTarget = new THREE.Vector3()
+    this.currentUIZoom = 0
+    this.userZoomDistance = 10
+    this.curPreset = {
+      zoom: 1.33,
+      fov: 30,
+      near: 0.1,
+      far: 1000
+    }
+    this.offset = new THREE.Vector3(1, 1, 1)
+    this.offset.applyAxisAngle(new THREE.Vector3(0, 1, 0), math.degToRad(45 * -1))
+    this.postOffset = new THREE.Vector3(0, 0, 0)
+    this.frustum = new THREE.Frustum()
+    this.projScreenMatrix = new THREE.Matrix4()
+    this.first = true
+
+    this.playerFollow = {
+      currentTarget: new THREE.Vector3(),
+      currentPosition: new THREE.Vector3(),
+      currentDistance: 12,
+      distanceSpring: 5,
+      minSpeedZoomDistance: 0,
+      maxSpeedZoomDistance: 1,
+      speedZoomDistance: 0,
+      speedZoomSpringIn: 0.25,
+      speedZoomSpringOut: 4,
+      shake: 0,
+      shakeSpeed: 1,
+      shakeTime: 0,
+    }
+  }
+
   resize() {
     this.instance.aspect = this.config.width / this.config.height
     this.instance.updateProjectionMatrix()
@@ -68,14 +105,114 @@ export default class CameraModule extends Module {
     this.modes.debug.instance.updateProjectionMatrix()
   }
 
-  update() {
+  update(delta) {
     // Update debug orbit controls
     this.modes.debug.orbitControls.update()
+
+    this.updateFocusTargetSystem(delta)
+    this.updatePlayerFollowSystem(delta)
 
     // Apply coordinates
     this.instance.position.copy(this.modes[this.mode].instance.position)
     this.instance.quaternion.copy(this.modes[this.mode].instance.quaternion)
+    this.instance.updateMatrix() // To be used in projection
     this.instance.updateMatrixWorld() // To be used in projection
+  }
+
+  updateFocusTargetSystem (delta) {
+    if (!this.$vm.cameraTarget instanceof THREE.Vector3) {
+      return
+    }
+  }
+
+  updatePlayerFollowSystem(delta) {
+    if (this.$vm.cameraTarget !== 'player') {
+      return
+    }
+
+    const camera = this.modes[this.mode].instance
+    this.currentTarget.copy(this.player.targetPos)
+
+    this.playerFollow.shakeTime += delta * this.playerFollow.shakeSpeed
+
+    if (this.player.forceApplied) {
+      this.playerFollow.speedZoomDistance = math.damp(
+        this.playerFollow.speedZoomDistance,
+        this.playerFollow.maxSpeedZoomDistance,
+        this.playerFollow.speedZoomSpringIn,
+        delta
+      )
+    } else {
+      this.playerFollow.speedZoomDistance = math.damp(
+        this.playerFollow.speedZoomDistance,
+        this.playerFollow.minSpeedZoomDistance,
+        this.playerFollow.speedZoomSpringOut,
+        delta
+      )
+    }
+
+    if (this.first) {
+      this.playerFollow.currentDistance =
+        this.userZoomDistance + this.playerFollow.speedZoomDistance
+      this.first = false
+    }
+
+    // Follow Target
+    const cameraZoomOut = this.$vm.isShowPanel
+    const uiZoom = cameraZoomOut ? 2 : 0
+    this.currentUIZoom = math.damp(this.currentUIZoom, uiZoom, 2, delta)
+    this.playerFollow.currentDistance = math.damp(
+      this.playerFollow.currentDistance,
+      this.userZoomDistance +
+        this.playerFollow.speedZoomDistance +
+        this.currentUIZoom,
+      this.playerFollow.distanceSpring,
+      delta
+    )
+
+    camera.position.copy(this.currentTarget)
+    camera.position.addScaledVector(
+      this.offset,
+      this.curPreset.zoom * this.playerFollow.currentDistance
+    )
+    this.playerFollow.currentTarget.copy(this.currentTarget)
+    camera.lookAt(this.currentTarget)
+    camera.position.add(this.postOffset)
+
+    // Camera shake
+    const ampl = this.playerFollow.shake
+    const shakeTime = this.playerFollow.shakeTime
+    camera.position.x += this.random.noise3D(shakeTime, camera.position.y, camera.position.z) * ampl
+    camera.position.y += this.random.noise3D(camera.position.x, shakeTime, camera.position.z) * ampl
+    camera.position.z += this.random.noise3D(camera.position.x, camera.position.y, shakeTime) * ampl
+
+    // Apply preset
+    camera.fov = this.curPreset.fov
+    camera.near = this.curPreset.near
+    camera.far = this.curPreset.far
+    camera.matrixAutoUpdate = false
+
+    // Camera zoom
+    let cameraZoom = 1
+    const minZoom = 0.85
+    const maxZoom = 1.5
+    const constantZoomFactor = 0.9
+    const targetZoomAtAspect = 0.9
+    const targetAspect = 1440 / 900
+    const currentAspect = this.config.width / this.config.height
+    const targetFactor = currentAspect / targetAspect
+    cameraZoom = math.clamp(targetZoomAtAspect * targetFactor, minZoom, maxZoom) * constantZoomFactor
+    camera.zoom = cameraZoom
+
+    camera.updateMatrix()
+    camera.updateMatrixWorld()
+    camera.updateProjectionMatrix()
+
+    this.projScreenMatrix.multiplyMatrices(
+      camera.projectionMatrix,
+      camera.matrixWorldInverse
+    )
+    this.frustum.setFromProjectionMatrix(this.projScreenMatrix)
   }
 
   destroy() {

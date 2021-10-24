@@ -1,0 +1,43 @@
+varying vec2 vUv;
+varying float vDataScale;
+
+#ifdef HAS_ANGLE
+attribute float angle;
+varying float vAngle;
+#endif
+varying vec3 vWorldPosition;
+#ifdef HAS_TRACE_MAP
+varying vec2 vTraceUv;
+uniform sampler2D envTraceMap;
+uniform mat4 envTraceProjection;
+uniform mat4 envTraceView;
+uniform vec2 environmentSize;
+#endif
+uniform mat3 uvTransform;
+uniform vec2 uvScale;
+uniform float uvRepeatScale;
+
+void main () {
+  vec4 worldPos = modelMatrix * vec4(position.xyz, 1.0);
+  #ifdef HAS_ANGLE
+  vAngle = angle;
+  #endif
+  #ifdef HAS_TRACE_MAP
+  vec2 worldPosUV = uv;
+  worldPosUV.y = 1.0 - worldPosUV.y;
+  vec2 dataWorldPos = (worldPosUV * 2.0 - 1.0) * environmentSize / 2.0;
+  vec4 vDataUvPos4 = envTraceProjection * envTraceView * vec4(dataWorldPos.xy, 0.0, 1.0);
+  vec2 vDataScreen = vDataUvPos4.xy / vDataUvPos4.w;
+  vTraceUv = vDataScreen.xy * 0.5 + 0.5;
+  vec3 dCol = texture2D(envTraceMap, vTraceUv).rgb;
+  float dirAngle = (dCol.g * 2.0 - 1.0) * 3.14;
+  vec2 curDirection2D = vec2(dCol.gb) * 2.0 - 1.0;
+  vec3 curDirection = vec3(curDirection2D.x, 0.0, curDirection2D.y);
+  float dScale = dCol.r;
+  float dataScale = 1.0 + dScale * 0.0;
+  vDataScale = dScale;
+  #endif
+  vUv = uv;
+  vWorldPosition = worldPos.xyz;
+  gl_Position = projectionMatrix * viewMatrix * worldPos;
+}

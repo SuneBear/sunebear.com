@@ -8,12 +8,14 @@ import AssetManager from './engine/asset'
 import ControlManager from './engine/control'
 import AudioManager from './engine/audio'
 import StatsManager from './engine/stats'
-import { Random, autobind, random } from './engine/utils'
+import { Random, autobind, math } from './engine/utils'
 
 import CameraModule from './modules/camera.module'
+import SubmitFrameModule from './modules/submit-frame.module'
 import RendererModule from './modules/renderer.module'
 import PlayerModule from './modules/player.module'
 import EnviromentModule from './modules/enviroment.module'
+import EnviromentTraceDataTexutreModule from './modules/enviroment-trace.module'
 import TestModule from './modules/test.module'
 
 import assets from './assets'
@@ -28,11 +30,11 @@ class TheSinkingIsleSketch {
       width: window.innerWidth,
       height: window.innerHeight,
       pixelRatio: Math.min(Math.max(window.devicePixelRatio, 1), 2),
-      worldSize: 4,
-      enablePlayground: true
+      worldSize: 100,
+      enablePlayground: false
     }
     this.debug = null
-    this.states = null
+    this.stats = null
 
     // Renderer and Managers
     this.scene = new THREE.Scene()
@@ -70,6 +72,7 @@ class TheSinkingIsleSketch {
     this.setupCamera()
     this.setupRenderer()
     this.setupPlayer()
+    this.setupEnviroment()
     this.setupOtherModules()
 
     this.play()
@@ -129,7 +132,7 @@ class TheSinkingIsleSketch {
       this.debug = new Pane()
       this.debug.containerElem_.style.width = '320px'
       this.debug.containerElem_.style.zIndex = '3'
-      this.states = new StatsManager(true)
+      this.stats = new StatsManager(true)
     }
 
     if (this.debug) {
@@ -155,6 +158,10 @@ class TheSinkingIsleSketch {
   }
 
   setupRenderer() {
+    const submitFrameModule = this.module.add(SubmitFrameModule)
+    this.submitFrame = submitFrameModule
+    this.module.set({ submitFrame: submitFrameModule })
+
     const rendererModule = this.module.add(RendererModule)
     this.renderer = rendererModule.instance
     this.control = new ControlManager(this.renderer.domElement)
@@ -164,10 +171,15 @@ class TheSinkingIsleSketch {
   setupPlayer() {
     const playerModule = this.module.add(PlayerModule)
     this.player = playerModule.instance
+    this.module.set({ player: this.player })
+  }
+
+  setupEnviroment() {
+    this.enviromentTrace = this.module.add(EnviromentTraceDataTexutreModule)
+    this.module.add(EnviromentModule)
   }
 
   setupOtherModules() {
-    this.module.add(EnviromentModule)
     if (this.config.enablePlayground) {
       this.module.add(TestModule)
     }
@@ -203,7 +215,10 @@ class TheSinkingIsleSketch {
 
   @autobind
   update() {
-    this.delta = this.time.getDelta()
+    // const delta = this.time.getDelta()
+    const delta = 1 / 40
+    // Clamp delta time for long frames
+    this.delta = math.clamp(delta, 1 / 40, 1 / 20)
 
     this.module.update(this.delta, this.time.elapsedTime, this.clock.oldTime)
 

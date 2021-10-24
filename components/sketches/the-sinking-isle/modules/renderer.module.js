@@ -12,7 +12,8 @@ export default class Renderer extends Module {
 
     if (this.debug) {
       this.debugFolder = this.debug.addFolder({
-        title: 'renderer'
+        title: 'renderer',
+        expanded: false
       })
     }
 
@@ -38,6 +39,7 @@ export default class Renderer extends Module {
       alpha: false,
       antialias: true
     })
+    this.module = this
     this.instance.domElement.style.position = 'absolute'
     this.instance.domElement.style.top = 0
     this.instance.domElement.style.left = 0
@@ -103,7 +105,7 @@ export default class Renderer extends Module {
       0.52,
       0.2
     )
-    this.postProcess.unrealBloomPass.enabled = true
+    this.postProcess.unrealBloomPass.enabled = false
 
     if (this.debug) {
       const debugFolder = this.debugFolder.addFolder({
@@ -171,16 +173,24 @@ export default class Renderer extends Module {
     this.postProcess.composer.setPixelRatio(this.config.pixelRatio)
   }
 
-  update() {
+  update(delta) {
     if (this.stats) {
       this.stats.beforeRender()
     }
+
+    this.submitFrame.preRender()
 
     if (this.usePostprocess) {
       this.postProcess.composer.render()
     } else {
       this.instance.render(this.scene, this.camera)
     }
+
+    // Let's assume frame tasks should always happen
+    const task = this.submitFrame.nextFrameTask()
+    if (task) task(delta)
+
+    this.submitFrame.postRender()
 
     if (this.stats) {
       this.stats.afterRender()

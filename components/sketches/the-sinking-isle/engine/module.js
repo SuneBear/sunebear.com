@@ -1,3 +1,5 @@
+import * as THREE from 'three'
+
 // @TODO:
 // - Do more in lifecycles, like register/remove data, events, animations
 export default class Module {
@@ -6,17 +8,21 @@ export default class Module {
     this.sketch = sketch
 
     this.debug = this.sketch.debug
+    this.stats = this.sketch.stats
     this.config = this.sketch.config
-
-    this.scene = this.sketch.scene
-    this.camera = this.sketch.camera
-    this.renderer = this.sketch.renderer
 
     this.control = this.sketch.control
     this.audio = this.sketch.audio
     this.asset = this.sketch.asset
     this.time = this.sketch.time
     this.sizes = this.sketch.sizes
+
+    this.scene = this.sketch.scene
+    this.camera = this.sketch.camera
+    this.renderer = this.sketch.renderer
+    this.submitFrame = this.sketch.submitFrame
+    this.player = this.sketch.player || new THREE.Object3D()
+    this.enviromentTrace = this.sketch.enviromentTrace
 
     this.container = this.sketch.container
     this.$vm = this.sketch.$vm
@@ -120,6 +126,12 @@ export class ModuleManager {
 
   resize() {
     this.modules.map((module) => module.resize())
+  }
+
+  set(object) {
+    this.modules.map((module) => {
+      Object.assign(module, object)
+    })
   }
 
   update(delta, elapsed, timestamp) {

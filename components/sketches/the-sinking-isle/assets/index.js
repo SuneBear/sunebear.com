@@ -11,6 +11,7 @@ export default [
     [
       // Texture
       { name: 'testTexture', source: require('./textures/test.png'), type: 'texture' },
+      { name: 'softCircleTexture', source: require('./textures/soft-circle.png'), type: 'texture' },
 
       // Model
       { name: 'testModel', source: require('./gltfs/test.glb').default },

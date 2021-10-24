@@ -15,18 +15,30 @@ import { loadingSketch } from './loading-2d-sketch'
 export default {
   data(){
     return {
+      isNeedLoading: false,
       isLoading: true,
       loadProgress: 0,
       isInited: false,
       isError: false,
       isPlaying: true,
       isMuteAudio: true,
+      enableUserInput: true,
+      enablePlayerDrift: false,
+      cameraTarget: 'player'
     }
   },
 
   computed: {
     enableDebug() {
       return __DEBUG__ || this.$route.query.debug
+    },
+
+    enableUserMove() {
+      return this.enableUserInput
+    },
+
+    isShowPanel() {
+      return false
     }
   },
 
@@ -34,7 +46,7 @@ export default {
     loadProgress() {
       if (this.loadProgress >=1) {
         console.log('Sketch loaded')
-        // loadingSketch.destory()
+        loadingSketch.destory()
       }
     }
   },
@@ -59,10 +71,12 @@ export default {
         return
       }
 
-      loadingSketch.init({
-        container: this.$refs.canvasWrapper,
-        $vm: this
-      })
+      if (this.isNeedLoading) {
+        loadingSketch.init({
+          container: this.$refs.canvasWrapper,
+          $vm: this
+        })
+      }
       this.isError = false
       this.isLoading = true
 
@@ -70,7 +84,7 @@ export default {
         window.TONE_SILENCE_LOGGING = true
         // Export sketch to window
         const { theSinkingIsleSketch } = await import('./sketch')
-        window.theSinkingIsleSketch = theSinkingIsleSketch
+        window.sketch = window.theSinkingIsleSketch = theSinkingIsleSketch
         await theSinkingIsleSketch.init({
           container: this.$refs.canvasWrapper,
           $vm: this
