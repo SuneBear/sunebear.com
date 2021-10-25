@@ -18,7 +18,7 @@ export default class Enviroment extends Module {
 
   setupWater() {
     this.water = new EnvWaterPlaneObject({
-      planeSize: this.config.worldSize * 1.5,
+      planeSize: this.config.worldSize * 2,
       uniforms: this.enviromentTrace.getTraceUniforms()
     })
     this.scene.add(this.water)

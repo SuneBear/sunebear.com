@@ -1,6 +1,7 @@
 import * as THREE from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+import { __DEBUG__ } from '~/utils/dev'
 
+import { OrbitControls } from '../utils/hack-deps/three/orbit-controls'
 import Module from '../engine/module'
 import { math } from '../engine/utils'
 
@@ -9,7 +10,7 @@ export default class CameraModule extends Module {
     super(sketch)
 
     // Set up
-    this.mode = 'debug' // defaultCamera \ debugCamera
+    this.mode = __DEBUG__ ? 'debug' : 'default' // defaultCamera \ debugCamera
 
     this.setInstance()
     this.setModes()
@@ -23,6 +24,11 @@ export default class CameraModule extends Module {
       this.config.width / this.config.height,
       0.1,
       1000
+    )
+    this.instance.position.set(
+      -0.4,
+      12.8,
+      17.9
     )
     this.instance.rotation.reorder('YXZ')
     this.instance.module = this
@@ -42,22 +48,19 @@ export default class CameraModule extends Module {
     this.modes.debug = {}
     this.modes.debug.instance = this.instance.clone()
     this.modes.debug.instance.rotation.reorder('YXZ')
-    this.modes.debug.instance.position.set(
-      0,
-      20,
-      10
-    )
 
     this.modes.debug.orbitControls = new OrbitControls(
       this.modes.debug.instance,
       this.container
     )
     this.modes.debug.orbitControls.enabled = this.modes.debug.active
-    this.modes.debug.orbitControls.enableRotate = false
-    this.modes.debug.orbitControls.screenSpacePanning = true
+    this.modes.debug.orbitControls.enableRotate = true
+    this.modes.debug.orbitControls.enableZoom = true
+    this.modes.debug.orbitControls.enablePan = false
+    this.modes.debug.orbitControls.screenSpacePanning = false
+    this.modes.debug.orbitControls.enableDamping = true
     this.modes.debug.orbitControls.enableKeys = false
     this.modes.debug.orbitControls.zoomSpeed = 0.25
-    this.modes.debug.orbitControls.enableDamping = true
     this.modes.debug.orbitControls.update()
   }
 
@@ -92,6 +95,8 @@ export default class CameraModule extends Module {
       shakeSpeed: 1,
       shakeTime: 0,
     }
+
+    // this.modes.debug.orbitControls.target = this.playerFollow.currentTarget
   }
 
   resize() {
@@ -106,15 +111,13 @@ export default class CameraModule extends Module {
   }
 
   update(delta) {
-    // Update debug orbit controls
-    this.modes.debug.orbitControls.update()
-
     this.updateFocusTargetSystem(delta)
     this.updatePlayerFollowSystem(delta)
 
+    // Update debug orbit controls
+    this.modes.debug.orbitControls.update()
+
     // Apply coordinates
-    this.instance.position.copy(this.modes[this.mode].instance.position)
-    this.instance.quaternion.copy(this.modes[this.mode].instance.quaternion)
     this.instance.updateMatrix() // To be used in projection
     this.instance.updateMatrixWorld() // To be used in projection
   }
@@ -130,7 +133,8 @@ export default class CameraModule extends Module {
       return
     }
 
-    const camera = this.modes[this.mode].instance
+    const camera = this.instance
+    const controlCamera = this.modes[this.mode].instance
     this.currentTarget.copy(this.player.targetPos)
 
     this.playerFollow.shakeTime += delta * this.playerFollow.shakeSpeed
@@ -177,7 +181,10 @@ export default class CameraModule extends Module {
     )
     this.playerFollow.currentTarget.copy(this.currentTarget)
     camera.lookAt(this.currentTarget)
-    camera.position.add(this.postOffset)
+    if (__DEBUG__) {
+      camera.position.add(controlCamera.position)
+      camera.quaternion.copy(controlCamera.quaternion)
+    }
 
     // Camera shake
     const ampl = this.playerFollow.shake
@@ -193,7 +200,7 @@ export default class CameraModule extends Module {
     camera.matrixAutoUpdate = false
 
     // Camera zoom
-    let cameraZoom = 1
+    let cameraZoom = controlCamera.zoom
     const minZoom = 0.85
     const maxZoom = 1.5
     const constantZoomFactor = 0.9
@@ -201,13 +208,14 @@ export default class CameraModule extends Module {
     const targetAspect = 1440 / 900
     const currentAspect = this.config.width / this.config.height
     const targetFactor = currentAspect / targetAspect
-    cameraZoom = math.clamp(targetZoomAtAspect * targetFactor, minZoom, maxZoom) * constantZoomFactor
+    cameraZoom += math.clamp(targetZoomAtAspect * targetFactor, minZoom, maxZoom) * constantZoomFactor
     camera.zoom = cameraZoom
 
-    camera.updateMatrix()
-    camera.updateMatrixWorld()
+    if (__DEBUG__) {
+      controlCamera.updateMatrix()
+      controlCamera.updateMatrixWorld()
+    }
     camera.updateProjectionMatrix()
-
     this.projScreenMatrix.multiplyMatrices(
       camera.projectionMatrix,
       camera.matrixWorldInverse

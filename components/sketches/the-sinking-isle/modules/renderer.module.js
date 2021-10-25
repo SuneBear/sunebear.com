@@ -6,9 +6,9 @@ import { CopyShader } from 'three/examples/jsm/shaders/CopyShader.js'
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js'
 
 import Module from '../engine/module'
-import { RENDER_LAYERS } from '../utils/constants'
 import vertexShader from '../shaders/base.vert'
 import fragmentShader from '../shaders/post-processing.frag'
+import { RENDER_LAYERS } from '../utils/constants'
 
 export default class Renderer extends Module {
   constructor(sketch) {

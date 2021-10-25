@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js'
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js'
 import { BasisTextureLoader } from 'three/examples/jsm/loaders/BasisTextureLoader.js'
@@ -123,6 +124,18 @@ export default class Loader extends EventEmitter {
       extensions: ['fbx'],
       action: _resource => {
         fbxLoader.load(_resource.source, _data => {
+          this.fileLoadEnd(_resource, _data)
+        })
+      }
+    })
+
+    // OBJ
+    const objLoader = new OBJLoader()
+
+    this.loaders.push({
+      extensions: ['obj'],
+      action: _resource => {
+        objLoader.load(_resource.source, _data => {
           this.fileLoadEnd(_resource, _data)
         })
       }

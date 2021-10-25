@@ -98,8 +98,8 @@ export default class Control extends EventEmitter {
 
   shouldIgnoreTap(e) {
     // Only enable left mouse
-    if (e.button !== 0) {
-      return
+    if (e.button !== 0 && e.type === 'mousedown') {
+      return true
     }
     return !this.isEnableTap
   }
