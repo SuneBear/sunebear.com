@@ -23,6 +23,9 @@ export default class Assets extends EventEmitter {
         if (!(data instanceof THREE.Texture)) {
           data = new THREE.Texture(_data)
         }
+        if (_resource.options) {
+          Object.assign(data, _resource.options)
+        }
         data.needsUpdate = true
       }
 

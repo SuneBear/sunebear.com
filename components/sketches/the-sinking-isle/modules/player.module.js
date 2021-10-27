@@ -76,8 +76,9 @@ export default class Player extends Module {
     this.instance.direction = this.spring.direction
   }
 
-  update(delta) {
+  update(delta, elapsed) {
     this.updateMoveTargetSystem(delta)
+    this.playerObject.update(delta, elapsed)
   }
 
   updateMoveTargetSystem(delta) {
@@ -250,6 +251,17 @@ export default class Player extends Module {
           smoothTarget
         )
       }
+      // Clamp Target
+      smoothTarget.x = math.clamp(
+        smoothTarget.x,
+        -this.maxWorldSize / 2,
+        this.maxWorldSize / 2
+      )
+      smoothTarget.z = math.clamp(
+        smoothTarget.z,
+        -this.maxWorldSize / 2,
+        this.maxWorldSize / 2
+      )
       spring.target.copy(smoothTarget).sub(this.targetPos)
       const distSq = spring.target.lengthSq()
       if (distSq >= this.maxRadialDistSq) {
@@ -283,15 +295,5 @@ export default class Player extends Module {
       delta
     )
     playerMesh.position.copy(spring.position)
-    playerMesh.position.x = math.clamp(
-      playerMesh.position.x,
-      -this.maxWorldSize / 2,
-      this.maxWorldSize / 2
-    )
-    playerMesh.position.z = math.clamp(
-      playerMesh.position.z,
-      -this.maxWorldSize / 2,
-      this.maxWorldSize / 2
-    )
   }
 }

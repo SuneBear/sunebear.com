@@ -92,7 +92,7 @@ export default {
       config.resolve.alias['vue'] = 'vue/dist/vue.esm.js'
 
       config.module.rules.push({
-        test: /\.(ogg|mp3|wav|glb|hdr)$/i,
+        test: /\.(ogg|mp3|wav|glb|hdr|obj)$/i,
         loader: 'file-loader'
       })
 

@@ -3,5 +3,6 @@ export const RENDER_LAYERS = {
   DEFAULT: 0,
   // Effects
   BLOOM: 0,
-  GRAY: 2
+  GRAY: 2,
+  WATER: 3
 }

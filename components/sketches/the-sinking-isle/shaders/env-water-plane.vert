@@ -1,4 +1,5 @@
 varying vec2 vUv;
+varying vec2 vTextureUv;
 varying float vDataScale;
 
 #ifdef HAS_ANGLE
@@ -16,9 +17,14 @@ uniform vec2 environmentSize;
 uniform mat3 uvTransform;
 uniform vec2 uvScale;
 uniform float uvRepeatScale;
+uniform float time;
+
+#define vertWaveScale 0.2
 
 void main () {
   vec4 worldPos = modelMatrix * vec4(position.xyz, 1.0);
+  // Distort Wave, need increase geometry segments
+  worldPos.z += cos(worldPos.x*5.0 + time) * vertWaveScale * sin(worldPos.y * 5.0 + time);
   #ifdef HAS_ANGLE
   vAngle = angle;
   #endif
@@ -38,6 +44,8 @@ void main () {
   vDataScale = dScale;
   #endif
   vUv = uv;
+  vTextureUv = uv * uvScale * uvRepeatScale;
+  vTextureUv = (uvTransform * vec3(vTextureUv, 1.0)).xy;
   vWorldPosition = worldPos.xyz;
   gl_Position = projectionMatrix * viewMatrix * worldPos;
 }

@@ -14,6 +14,7 @@ export function PlayerPhysicsSpring() {
   const stiffness = 0.15
   const restingDistance = 1
   const EPSILON = 0.000001
+  const zeroVec3D = new THREE.Vector3()
   const tmpVec3D = new THREE.Vector3()
   // const moveDistThreshold = 11;
   // const moveDistThresholdSq = moveDistThreshold * moveDistThreshold;
@@ -32,9 +33,9 @@ export function PlayerPhysicsSpring() {
     get moveToTarget() {
       return moveToTarget
     },
-    set moveToTarget(v) {
+    set moveToTarget(bool) {
       // let old = moveToTarget;
-      moveToTarget = v
+      moveToTarget = bool
       // if (old !== v) {
       //   continueMovingToTarget = v;
       // }
@@ -60,7 +61,7 @@ export function PlayerPhysicsSpring() {
       } else {
         math.dampVector(
           rawVelocity,
-          new Vector3(0, 0, 0),
+          zeroVec3D,
           0.5,
           dt,
           rawVelocity

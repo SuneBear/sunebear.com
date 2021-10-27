@@ -4,6 +4,7 @@ import easeDisappear from 'eases/sine-in'
 import Module from '../engine/module'
 import { math, ObjectPool } from '../engine/utils'
 import { EnvTracePrticleObject } from '../objects/env-trace-particle.object'
+import { removeFromArray } from '../utils/three-util'
 
 export default class EnviromentTrace extends Module {
   constructor(sketch) {
@@ -41,7 +42,6 @@ export default class EnviromentTrace extends Module {
     this.hasLastPosition = false
 
     this.particlePool = new ObjectPool({
-      initialCapacity: 100,
       create: () => {
         const mesh = new EnvTracePrticleObject({
           map: this.softMap
@@ -171,8 +171,14 @@ export default class EnviromentTrace extends Module {
       mesh.scale.setScalar(math.lerp(p.minSize, p.size, Math.pow(p.alpha, 1)))
     })
 
-    const { orthoCam, projection, view } = this
+    this.activeParticles.map((mesh, i) => {
+      if (!mesh.userData.active) {
+        this.particlePool.release(mesh)
+        removeFromArray(this.activeParticles, i)
+      }
+    })
 
+    const { orthoCam, projection, view } = this
     orthoCam.position.set(target.x, target.z, 0)
     orthoCam.updateProjectionMatrix()
     orthoCam.updateMatrixWorld()

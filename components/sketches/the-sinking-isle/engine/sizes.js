@@ -43,4 +43,17 @@ export default class Sizes extends EventEmitter {
 
     this.trigger('resize')
   }
+
+  getObjectScreenPosition(object) {
+    const tempV = new THREE.Vector3()
+    object.getWorldPosition(tempV)
+    tempV.project(this.camera)
+    return {
+      x: (tempV.x *  .5 + .5) * this.viewport.width,
+      y: (tempV.y * -.5 + .5) * this.viewport.height
+    }
+  }
+
+  // @TODO
+  getObjectScreenScale(object) {}
 }

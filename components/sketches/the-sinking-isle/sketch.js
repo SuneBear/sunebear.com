@@ -176,7 +176,7 @@ class TheSinkingIsleSketch {
 
   setupEnviroment() {
     this.enviromentTrace = this.module.add(EnviromentTraceDataTexutreModule)
-    this.module.add(EnviromentModule)
+    this.enviroment = this.module.add(EnviromentModule)
   }
 
   setupOtherModules() {
@@ -219,6 +219,7 @@ class TheSinkingIsleSketch {
     const delta = 1 / 40
     // Clamp delta time for long frames
     this.delta = math.clamp(delta, 1 / 40, 1 / 20)
+    this.time.elapsedTime += this.delta
 
     this.module.update(this.delta, this.time.elapsedTime, this.clock.oldTime)
 

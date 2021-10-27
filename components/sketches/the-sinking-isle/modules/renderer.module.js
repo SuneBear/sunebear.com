@@ -14,7 +14,7 @@ export default class Renderer extends Module {
   constructor(sketch) {
     super(sketch)
 
-    this.usePostprocess = true
+    this.usePostprocess = false
 
     if (this.debug) {
       this.debugFolder = this.debug.addFolder({
@@ -38,7 +38,11 @@ export default class Renderer extends Module {
         .on('change', () => {
           this.instance.setClearColor(this.clearColor, 1)
         })
-      this.debugFolder.addInput(this, 'usePostprocess')
+      this.debugFolder
+        .addInput(this, 'usePostprocess')
+        .on('change', () => {
+          this.postProcess.bloomComposer.renderTarget2.dispose()
+        })
     }
 
     // Renderer
@@ -234,7 +238,6 @@ export default class Renderer extends Module {
       this.camera.layers.set(RENDER_LAYERS.BLOOM)
       this.postProcess.bloomComposer.render()
       this.instance.clearDepth()
-
       // Render all layers
       this.camera.layers.enableAll()
       this.postProcess.composer.render()

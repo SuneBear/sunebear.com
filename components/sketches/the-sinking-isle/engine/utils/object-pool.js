@@ -11,13 +11,13 @@ export class ObjectPool {
 
   constructor(opt = {}) {
     const {
+      name = undefined,
+      initialCapacity = 50,
+      maxCapacity = 100,
       renew = ret,
       create = und,
       release = ret,
-      dispose = ret,
-      initialCapacity,
-      name = undefined,
-      maxCapacity = Infinity
+      dispose = ret
     } = opt
     this.name = name
     if (LOGGING) globalPoolSet.add(this)
@@ -26,6 +26,7 @@ export class ObjectPool {
     this._release = release.bind(this)
     this._dispose = dispose.bind(this)
     this.pool = []
+    this.lastItem = null
     this.capacity = 0
     this.maxCapacity = maxCapacity
     if (typeof initialCapacity !== 'undefined') {
@@ -39,10 +40,17 @@ export class ObjectPool {
       this.expand(Math.round(this.capacity * 0.2) + 1)
     }
     // reached max capacity and no more left...
-    if (this.pool.length === 0) return undefined
+    if (this.pool.length === 0) {
+      return this.lastItem
+    }
     const item = this.pool.pop()
-    this._renew(item)
+    this.renew(item)
     return item
+  }
+
+  renew(item) {
+    this.lastItem = item
+    this._renew(item)
   }
 
   release(item) {
