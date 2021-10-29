@@ -1,10 +1,10 @@
 const path = require('path')
 
 process.env.DEBUG = 'nuxt:*'
-const $isProd = (process.env.NODE_ENV = 'production')
+const $isProd = process.env.NODE_ENV === 'production'
 
 export default {
-  ssr: false,
+  ssr: $isProd,
 
   generate: {
     dir: 'dist'
@@ -12,9 +12,13 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'SuneBear',
+    title: 'Loading',
+    titleTemplate: '%s - Sunebear',
     htmlAttrs: {
       lang: 'zh-Hans'
+    },
+    bodyAttrs: {
+      class: 'v-application'
     },
     meta: [
       { charset: 'utf-8' },
@@ -29,10 +33,16 @@ export default {
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: ['~/styles/main.styl'],
+  css: ['~/styles/main.styl', '~/styles/deps/vuetify.sass'],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: ['~/plugins/plugin.client.js'],
+  plugins: [
+    {
+      src: '~/plugins/element-ui.js',
+      ssr: true
+    },
+    '~/plugins/plugin.client.js'
+  ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: [{ path: '~/components', pathPrefix: false, extensions: ['vue'] }],
@@ -108,7 +118,7 @@ export default {
       config.module.rules.push({
         test: /\.(png|jpg|bin)$/i,
         loader: 'file-loader',
-        include: /gltf/,
+        include: /gltfs/,
         options: {
           esModule: false
         }
@@ -130,7 +140,7 @@ export default {
       const file = config.module.rules.find(rule => {
         return rule.test.test('.png')
       })
-      file.exclude = [/gltf/]
+      file.exclude = [/gltfs/]
       // file.use[0].options.limit = 100000
 
       config.module.rules.push({

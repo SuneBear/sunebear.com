@@ -29,7 +29,9 @@ export default class Assets extends EventEmitter {
         data.needsUpdate = true
       }
 
-      this.items[_resource.name] = data
+      if (_resource.name) {
+        this.items[_resource.name] = data
+      }
 
       // Progress and event
       this.groups.current.loaded++

@@ -6,6 +6,10 @@ import { sleep } from './engine/utils/async'
 class LoadingSketch {
 
   constructor() {
+    if (process.server) {
+      return
+    }
+
     this.$canvas = document.createElement('CANVAS')
     this.context = this.$canvas.getContext('2d')
     this.$container = null

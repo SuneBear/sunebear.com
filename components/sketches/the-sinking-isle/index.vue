@@ -1,7 +1,7 @@
 <template lang="pug">
 .sketch.sketch-the-sinking-isle(
 )
-  .dom-wrapper
+  .dom-wrapper( :class="{ 'is-inited': isInited }" )
     .sketch-title.is-absolute-center {{ $t('tsi.sketch.title') }}
   .canvas-wrapper(
     ref="canvasWrapper"
@@ -123,6 +123,10 @@ export default {
     z-index: 233
     pointer-events: none
     color: #383838
+    opacity: 0
+
+    &.is-inited
+      opacity: 1
 
     .is-absolute-center
       position: absolute
@@ -143,4 +147,7 @@ export default {
     canvas:first-child
       z-index: 2
 
+// Tweakpane
+.tp-dfwv
+  left: 8px
 </style>

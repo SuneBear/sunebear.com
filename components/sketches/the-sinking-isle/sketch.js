@@ -132,7 +132,8 @@ class TheSinkingIsleSketch {
       this.debug = new Pane()
       this.debug.containerElem_.style.width = '320px'
       this.debug.containerElem_.style.zIndex = '3'
-      this.stats = new StatsManager(true)
+      // Replaced stats.js with tweakpane/plugin-essentials
+      this.stats = new StatsManager(false)
     }
 
     if (this.debug) {

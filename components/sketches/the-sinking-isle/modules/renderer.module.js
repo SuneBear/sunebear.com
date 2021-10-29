@@ -4,6 +4,7 @@ import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js'
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
 import { CopyShader } from 'three/examples/jsm/shaders/CopyShader.js'
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js'
+import * as EssentialsPlugin from '@tweakpane/plugin-essentials'
 
 import Module from '../engine/module'
 import vertexShader from '../shaders/base.vert'
@@ -17,10 +18,15 @@ export default class Renderer extends Module {
     this.usePostprocess = false
 
     if (this.debug) {
+      this.debug.registerPlugin(EssentialsPlugin)
       this.debugFolder = this.debug.addFolder({
         title: 'renderer',
         expanded: false
       })
+      this.fpsGraph = this.debugFolder.addBlade({
+        view: 'fpsgraph',
+        label: 'fpsGraph'
+      });
     }
 
     this.setInstance()
@@ -31,13 +37,13 @@ export default class Renderer extends Module {
     this.clearColor = '#000000'
 
     if (this.debug) {
-      this.debugFolder
-        .addInput(this, 'clearColor', {
-          view: 'color'
-        })
-        .on('change', () => {
-          this.instance.setClearColor(this.clearColor, 1)
-        })
+      // this.debugFolder
+      //   .addInput(this, 'clearColor', {
+      //     view: 'color'
+      //   })
+      //   .on('change', () => {
+      //     this.instance.setClearColor(this.clearColor, 1)
+      //   })
       this.debugFolder
         .addInput(this, 'usePostprocess')
         .on('change', () => {
@@ -230,6 +236,10 @@ export default class Renderer extends Module {
       this.stats.beforeRender()
     }
 
+    if (this.fpsGraph) {
+      this.fpsGraph.begin()
+    }
+
     this.submitFrame.preRender()
 
     this.instance.clear()
@@ -253,6 +263,10 @@ export default class Renderer extends Module {
 
     if (this.stats) {
       this.stats.afterRender()
+    }
+
+    if (this.fpsGraph) {
+      this.fpsGraph.end()
     }
   }
 

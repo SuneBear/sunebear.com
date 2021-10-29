@@ -54,6 +54,17 @@ export default class Loader extends EventEmitter {
       }
     })
 
+    // FontFaces
+    this.loaders.push({
+      extensions: ['woff', 'woff2', 'ttf', 'otf'],
+      action: async _resource => {
+        const font = new FontFace(_resource.family, `url(${_resource.source})`, _resource.options || _resource.descriptors)
+        await font.load()
+        document.fonts.add(font)
+        this.fileLoadEnd(_resource, font)
+      }
+    })
+
     // Images
     this.loaders.push({
       extensions: ['jpg', 'png'],

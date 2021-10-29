@@ -36,8 +36,8 @@ export default class Sizes extends EventEmitter {
     this.viewport.height = this.$sizeViewport.offsetHeight
     document.body.removeChild(this.$sizeViewport)
 
-    this.width = window.innerWidth
-    this.height = window.innerHeight
+    this.width = this.viewport.width
+    this.height = this.viewport.height
 
     onResize && onResize()
 

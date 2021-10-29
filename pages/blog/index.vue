@@ -1,7 +1,6 @@
 <template lang="pug">
-.page.page-index(
+.page.page-blog(
 )
-  the-sinking-isle
 </template>
 
 <script>
@@ -9,7 +8,7 @@ export default {
 
   head() {
     return {
-      title: this.$t('tsi.sketch.title')
+      title: 'Blog'
     }
   }
 
@@ -17,6 +16,6 @@ export default {
 </script>
 
 <style lang="stylus">
-.page-index
+.page-blog
   null
 </style>
