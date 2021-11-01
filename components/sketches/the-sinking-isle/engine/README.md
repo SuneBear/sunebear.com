@@ -2,6 +2,7 @@
 
 The engine is consist of a set of managers and utils. Large-scale sketch can be split up into different modules. The Managers build a bridge between modules.
 
+@TODO: Move the engine to root dir
 
 ## References
 

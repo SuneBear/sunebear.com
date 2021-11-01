@@ -4,7 +4,7 @@ process.env.DEBUG = 'nuxt:*'
 const $isProd = process.env.NODE_ENV === 'production'
 
 export default {
-  ssr: $isProd,
+  ssr: true,
 
   generate: {
     dir: 'dist'
@@ -13,7 +13,7 @@ export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'Loading',
-    titleTemplate: '%s - Sunebear',
+    titleTemplate: '%s - SuneBear',
     htmlAttrs: {
       lang: 'zh-Hans'
     },
@@ -45,7 +45,9 @@ export default {
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
-  components: [{ path: '~/components', pathPrefix: false, extensions: ['vue'] }],
+  components: [
+    { path: '~/components', pathPrefix: false, extensions: ['vue'] }
+  ],
 
   loadingIndicator: false,
 
@@ -54,9 +56,14 @@ export default {
     host: '0'
   },
 
-  modules: [
-    '@nuxtjs/i18n'
-  ],
+  buildModules: ['@nuxtjs/svg-sprite'],
+  svgSprite: {
+    elementClass: 'svg-symbol',
+    spriteClassPrefix: 'symbol-',
+    publicPath: '/_nuxt/'
+  },
+
+  modules: ['@nuxtjs/i18n', '@nuxt/content'],
 
   i18n: {
     defaultLocale: 'zh-Hans',
@@ -109,10 +116,7 @@ export default {
       config.module.rules.push({
         test: /\.(glsl|vs|fs|vert|frag)$/,
         exclude: /node_modules/,
-        use: [
-          'raw-loader',
-          'glslify-loader'
-        ]
+        use: ['raw-loader', 'glslify-loader']
       })
 
       config.module.rules.push({

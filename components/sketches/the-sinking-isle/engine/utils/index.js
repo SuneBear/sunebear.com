@@ -1,5 +1,6 @@
 // Export utils to external
-export * as math from './math'
+import * as math from './math'
+export { math }
 export * from './random'
 export * from './decorators'
 export * from './tween'

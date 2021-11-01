@@ -1,0 +1,141 @@
+
+  <svg
+    width='100%'
+    height='100%'
+    viewBox='0 0 1000 1000'
+    xmlns='http://www.w3.org/2000/svg'
+  >
+  <defs>
+
+    <filter id='doodle'>
+      <feTurbulence
+        result='TURBULENCE'
+        baseFrequency='0'
+        numOctaves='1'
+        seed='1'
+      />
+      <feDisplacementMap in='SourceGraphic' in2='TURBULENCE' scale='20' />
+    </filter>
+
+    <filter id='offset-1'>
+      <feOffset dx='30' dy='0' result='OFFSET-1'/>
+    </filter>
+
+    <filter id='offset-2'>
+      <feOffset dx='20' dy='0' result='OFFSET-2'/>
+    </filter>
+
+    <filter id='offset-3'>
+      <feOffset dx='0' dy='50' result='OFFSET-3'/>
+    </filter>
+
+    <mask id='brush-mask'>
+      <rect x='0' y='0' width='1000' height='1000' fill='white' filterUnits='userSpaceOnUse'/>
+
+  <circle
+    cx='587'
+    cy='409'
+    r='5px'
+    fill='black'
+    filter='url(#doodle)'
+  />
+  <circle
+    cx='763'
+    cy='366'
+    r='8px'
+    fill='black'
+    filter='url(#doodle)'
+  />
+  <circle
+    cx='272'
+    cy='742'
+    r='8px'
+    fill='black'
+    filter='url(#doodle)'
+  />
+  <circle
+    cx='775'
+    cy='289'
+    r='10px'
+    fill='black'
+    filter='url(#doodle)'
+  />
+
+
+    <g filter='url(#offset-3)'>
+      <path
+        fill='none'
+        stroke-width='6px'
+        stroke='none'
+        d='M866.5 709 Q 728.3805150401275 891.9127397816226 500.5 916.5'
+        filter='url(#doodle)'
+      />
+    </g>
+
+
+    <g filter='url(#offset-3)'>
+      <path
+        fill='none'
+        stroke-width='7px'
+        stroke='none'
+        d='M137 707.5 Q 42.50237235820097 498.16426876887 134 287.5'
+        filter='url(#doodle)'
+      />
+    </g>
+
+
+    <g filter='url(#offset-3)'>
+      <path
+        fill='none'
+        stroke-width='9px'
+        stroke='none'
+        d='M491 90 Q 717.9187921724517 122.591015004072 860 302.5'
+        filter='url(#doodle)'
+      />
+    </g>
+
+
+    </mask>
+
+
+  <filter id='grain' x='-500' y='-500' width='2000' height='2000' filterUnits='userSpaceOnUse'>
+    <feFlood flood-color='#ffffff' result='neutral-gray' />
+
+    <feTurbulence
+      in='neutral-gray'
+      type='fractalNoise'
+      baseFrequency='0.00001'
+      numOctaves='100'
+      stitchTiles='stitch'
+      result='NOISE'
+    />
+
+    <feColorMatrix
+      in='NOISE'
+      type='saturate'
+      values='0'
+      result='DESATURATED_NOISE'
+    ></feColorMatrix>
+
+    <feComponentTransfer in='DESATURATED_NOISE' result='THE_NOISE'>
+      <feFuncA type='table' tableValues='0 0 0.5 0'></feFuncA>
+    </feComponentTransfer>
+
+    <feBlend
+      in='SourceGraphic'
+      in2='THE_NOISE'
+      mode='soft-light'
+      result='NOISY_IMAGE'
+    />
+  </filter>
+      <clipPath id='shape'>
+        <path fill='currentColor' d='M866.5,709Q741,918,500.5,916.5Q260,915,137,707.5Q14,500,134,287.5Q254,75,491,90Q728,105,860,302.5Q992,500,866.5,709Z'></path>
+      </clipPath>
+    </defs>
+
+    <g filter='url(#grain)' fill="#000000" mask='url(#brush-mask)'>
+      <rect x='0' y='0' width='1000' height='1000' fill='black' filter='url(#doodle)'/>
+      />
+    </g>
+
+  </svg>

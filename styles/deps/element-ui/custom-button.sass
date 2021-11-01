@@ -1,0 +1,122 @@
+$--color-disabled-bg-red: #cfbebe
+$--color-disabled-shadow-red: #947d7d
+$--color-disabled-color-red: $--color-white
+
+=buttonStatusColor($bg-color, $border-color, $font-color, $disabled-bg-color, $disabled-border-color, $disabled-font-color)
+  border: 1px solid $border-color
+
+  &.is-disabled
+    &,
+    &:focus,
+    &:hover,
+    &:active
+      background: $disabled-bg-color !important
+      color: $disabled-font-color !important
+      border-color: $disabled-border-color
+      transform: translateY(0px)
+
+    &.is-round
+      box-shadow: none
+
+  &,
+  &:focus
+    background-color: $bg-color
+    color: $font-color
+    border-color: $border-color
+
+  &:hover,
+  &:active
+    $next-bg-color: $bg-color
+
+    // Spec handle for white color
+    @if lightness($bg-color) > 99%
+      $next-bg-color: scale-color($bg-color, $lightness: -10%)
+    @else
+      $next-bg-color: scale-color($bg-color, $lightness: +20%)
+    $next-border-color: $border-color
+    @if lightness($border-color) > 99%
+      $next-border-color: scale-color($border-color, $lightness: -10%)
+    @else
+      $next-border-color: scale-color($border-color, $lightness: +20%)
+
+    // Spec handle for ghost
+    @if $bg-color == transparent
+      background-color: rgba($border-color, 10%)
+    @else
+      background-color: $next-bg-color
+    color: $font-color
+    border-color: $next-border-color
+
+  &:active
+    color: $font-color
+    @if $bg-color == transparent
+      background-color: rgba($border-color, 20%)
+    @else
+      background-color: $bg-color
+    border-color: $border-color
+
+.el-button
+  padding: 0 16px 0 16px
+  height: 38px
+  border: 0 none
+  font-size: 14px
+  font-family: inherit
+
+  .el-loading-mask
+    border-radius: 11px
+    margin: 1px
+
+    > .el-loading-spinner
+      transform: scale(0.5) translateY(-10%)
+
+  &--big
+    padding: 0 24px 0 24px
+    height: 54px
+    font-size: 18px
+    border-width: 3px !important
+    border-radius: 15px / 20px
+
+    &,
+    [class^='el-icon-']
+      font-weight: bold
+
+  &--medium
+    font-size: 16px
+    font-weight: 400
+    border-width: 2px !important
+    border-radius: 7px / 10px
+
+    &,
+    [class^='el-icon-']
+      font-weight: 400
+
+  &--small,
+  &--mini
+    padding: 1px 12px 1px
+    font-size: 14px
+    height: 28px
+    border-radius: 7px / 10px
+
+    > span
+      position: relative
+      top: 0.5px
+
+  &--mini
+    font-size: 12px
+
+    &,
+    [class^='el-icon-']
+      font-weight: 400
+
+.el-button--default,
+.el-button--secondary
+  +buttonStatusColor($--color-secondary, $--color-secondary, $--color-primary,#bbb,#bbb,#fff)
+
+.el-button--primary
+  +buttonStatusColor($--color-primary, $--color-primary, $--color-secondary,#bbb,#bbb,#fff)
+
+.el-button--primary-ghost
+  +buttonStatusColor(transparent, $--color-primary, $--color-primary, transparent,#888,#aaa)
+
+.el-button--brand
+  +buttonStatusColor($--color-brand, $--color-brand, $--color-white, $--color-disabled-bg-red, $--color-disabled-bg-red, $--color-disabled-color-red)

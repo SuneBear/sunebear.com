@@ -1,0 +1,51 @@
+.el-notification
+  background: var(--secondary)
+  padding-top: 12px
+  padding-bottom: 12px
+  margin-top: 12px
+  margin-right: 14px
+  border-radius: 10px
+  border: none
+  max-width: 70vw
+  overflow: inherit
+
+  @include box-bop-shadow
+
+  & + &
+    margin-top: 8px
+
+  &__group
+    margin-left: 7px
+
+  &__title
+    position: relative
+    z-index: 2
+
+  &__content
+    line-height: 1.5 !important
+    font-weight: 500
+    word-break: break-word
+    padding-right: 10px
+    padding-bottom: 4px
+    position: relative
+    z-index: 2
+    text-align: initial
+
+  &__closeBtn
+    font-weight: 500
+    font-size: 18px
+    width: 26px
+    height: 26px
+    border-radius: 5px
+    text-align: center
+    line-height: 26px
+    top: 15px
+    right: 15px
+    z-index: 3
+    background: rgba(0, 0, 0, 0.1)
+
+    &:hover
+      opacity: 0.8
+
+    &:active
+      background: rgba(0, 0, 0, 0.2)

@@ -1,0 +1,33 @@
+.el-message
+  max-width: 90vw
+  min-width: 300px
+  border: none
+  border-radius: 8px
+  padding: 16px 24px
+  margin-top: 4px
+  overflow: inherit
+
+  @include box-bop-shadow
+
+  // @TODO: Add message icon
+  &__icon
+    display: none
+
+  &__content
+    position: relative
+    z-index: 3
+    color: var(--primary) !important
+    line-height: 1.5 !important
+
+  &--info
+    box-shadow: inset 0px -6px 0px #dfe4ef
+
+  &--error
+    &:after
+      background-color: #f3cdc6
+    box-shadow: inset 0px -6px 0px #f7d8d8
+
+  &--success
+    &:after
+      background-color: #d4f3c6
+    box-shadow: inset 0px -6px 0px #c2e1b2

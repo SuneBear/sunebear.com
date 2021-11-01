@@ -1,34 +1,37 @@
 import * as THREE from 'three'
 
+// @Hack: Import this for IntelliSense
+import { theSinkingIsleSketch } from '../sketch'
+
 // @TODO:
 // - Do more in lifecycles, like register/remove data, events, animations
 export default class Module {
 
-  constructor(sketch, attributes) {
+  constructor(sketch = theSinkingIsleSketch, attributes) {
     this.sketch = sketch
 
-    this.debug = this.sketch.debug
-    this.stats = this.sketch.stats
-    this.config = this.sketch.config
+    this.debug = sketch.debug
+    this.stats = sketch.stats
+    this.config = sketch.config
 
-    this.control = this.sketch.control
-    this.audio = this.sketch.audio
-    this.asset = this.sketch.asset
-    this.time = this.sketch.time
-    this.sizes = this.sketch.sizes
+    this.control = sketch.control
+    this.audio = sketch.audio
+    this.asset = sketch.asset
+    this.time = sketch.time
+    this.sizes = sketch.sizes
 
-    this.scene = this.sketch.scene
-    this.camera = this.sketch.camera
-    this.renderer = this.sketch.renderer
-    this.submitFrame = this.sketch.submitFrame
-    this.player = this.sketch.player || new THREE.Object3D()
-    this.enviroment = this.sketch.enviroment
-    this.enviromentTrace = this.sketch.enviromentTrace
+    this.scene = sketch.scene
+    this.camera = sketch.camera
+    this.renderer = sketch.renderer
+    this.submitFrame = sketch.submitFrame
+    this.player = sketch.player || new THREE.Object3D()
+    this.enviroment = sketch.enviroment
+    this.enviromentTrace = sketch.enviromentTrace
 
-    this.container = this.sketch.container
-    this.$vm = this.sketch.$vm
+    this.container = sketch.container
+    this.$vm = sketch.$vm
 
-    this.random = this.sketch.random
+    this.random = sketch.random
 
     this.enabled = true
     this.priority = 0

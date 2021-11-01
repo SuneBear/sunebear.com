@@ -3,7 +3,34 @@ $--font-path: '~element-ui/lib/theme-chalk/fonts'
 // All Variables
 // @REF: https://github.com/ElementUI/theme-chalk/blob/master/src/common/var.scss
 $--color-primary: #000
+$--color-secondary: #fff
 $--color-text-primary: #000
-$--border-radius-base: 0
+$--color-brand: #48dcce
+$--border-width-base: 3px
+$--border-radius-base: 10px
+
+// Mixin
+@mixin box-bop-shadow
+  &:after,
+  &:before
+    content: ''
+    position: absolute
+    inset: 0
+    border-radius: 10px
+
+  &:after
+    background-color: scale-color($--color-brand, $lightness: 93%)
+    border: 2px solid var(--primary)
+
+  &:before
+    background-color: transparent
+    background-image: radial-gradient(transparent 1px ,var(--primary) 1px)
+    opacity: 0.9
+    background-position: 100% 100%
+    background-size: 4px 4px
+    transform: translate(4px, 4px)
 
 @import '~element-ui/packages/theme-chalk/src/index'
+@import './custom-button'
+@import './custom-notification'
+@import './custom-message'

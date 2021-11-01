@@ -10,7 +10,7 @@ export default class CameraModule extends Module {
     super(sketch)
 
     // Set up
-    this.mode = __DEBUG__ ? 'debug' : 'default' // defaultCamera \ debugCamera
+    this.mode = 'debug' // default | debug
 
     this.setInstance()
     this.setModes()
@@ -54,8 +54,8 @@ export default class CameraModule extends Module {
       this.container
     )
     this.modes.debug.orbitControls.enabled = this.modes.debug.active
-    this.modes.debug.orbitControls.enableRotate = true
-    this.modes.debug.orbitControls.enableZoom = true
+    this.modes.debug.orbitControls.enableRotate = __DEBUG__
+    this.modes.debug.orbitControls.enableZoom = __DEBUG__
     this.modes.debug.orbitControls.enablePan = false
     this.modes.debug.orbitControls.screenSpacePanning = false
     this.modes.debug.orbitControls.enableDamping = true
@@ -181,10 +181,8 @@ export default class CameraModule extends Module {
     )
     this.playerFollow.currentTarget.copy(this.currentTarget)
     camera.lookAt(this.currentTarget)
-    if (__DEBUG__) {
-      camera.position.add(controlCamera.position)
-      camera.quaternion.copy(controlCamera.quaternion)
-    }
+    camera.position.add(controlCamera.position)
+    camera.quaternion.copy(controlCamera.quaternion)
 
     // Camera shake
     const ampl = this.playerFollow.shake

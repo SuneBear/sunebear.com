@@ -103,8 +103,11 @@ export default {
 
 <style lang="stylus">
 .sketch-the-sinking-isle
-  width: 100vw
-  height: 100vh
+  position absolute
+  width: 100%
+  height: 100%
+  left: 0
+  top: 0
 
   > *,
   .canvas-wrapper canvas
@@ -147,7 +150,4 @@ export default {
     canvas:first-child
       z-index: 2
 
-// Tweakpane
-.tp-dfwv
-  left: 8px
 </style>
