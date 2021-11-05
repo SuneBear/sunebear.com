@@ -1,0 +1,22 @@
+// Keyframes
+@keyframes squiggly-anim
+
+  0%
+    -webkit-transform: none
+    transform: none
+
+  100%
+    transform: skew(1.5deg,.2deg) translate(0,-1.5px)
+
+// Atomic
+.transition
+  transition: 300ms
+
+.animation
+  webkit-animation-fill-mode: both
+  animation-duration: var(--duration, 300ms)
+  animation-delay: var(--delay, 0ms)
+
+.squiggly
+.squiggly-hover:hover
+  animation: squiggly-anim .25s steps(2) infinite

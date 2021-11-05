@@ -114,8 +114,40 @@ export const lerpAngle = (a, b, t) => {
   return a + delta * clamp01(t)
 }
 
+export const lerpArray = (min, max, t, out) => {
+  out = out || []
+  if (min.length !== max.length) {
+    throw new TypeError(
+      'min and max array are expected to have the same length'
+    )
+  }
+  for (var i = 0; i < min.length; i++) {
+    out[i] = lerp(min[i], max[i], t)
+  }
+  return out
+}
+
 export const dampAngle = (a, b, lambda, dt) => {
   const delta = deltaAngle(a, b)
   const t = 1 - Math.exp(-lambda * dt)
   return a + delta * t
+}
+
+export const linspace = (n = 0, opts = {}) => {
+  if (typeof n !== 'number')
+    throw new TypeError('Expected n argument to be a number')
+  opts = opts || {}
+  if (typeof opts === 'boolean') {
+    opts = { endpoint: true }
+  }
+  const offset = opts.offset || 0
+  if (opts.endpoint) {
+    return [...Array(n)].map(function(_, i) {
+      return n <= 1 ? 0 : (i + offset) / (n - 1)
+    })
+  } else {
+    return [...Array(n)].map(function(_, i) {
+      return (i + offset) / n
+    })
+  }
 }

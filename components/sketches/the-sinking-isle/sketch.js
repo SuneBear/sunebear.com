@@ -20,6 +20,8 @@ import TestModule from './modules/test.module'
 
 import assets from './assets'
 
+import { cssVar } from '~/utils/color'
+
 class TheSinkingIsleSketch {
 
   constructor () {
@@ -31,6 +33,7 @@ class TheSinkingIsleSketch {
       height: window.innerHeight,
       pixelRatio: Math.min(Math.max(window.devicePixelRatio, 1), 2),
       worldSize: 100,
+      brandHex: cssVar('--brand'),
       enablePlayground: false
     }
     this.debug = null

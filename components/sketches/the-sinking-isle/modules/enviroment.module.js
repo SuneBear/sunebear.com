@@ -1,7 +1,12 @@
 import * as THREE from 'three'
 import Module from '../engine/module'
 
+import { generateLakeGeo } from './enviroment/generate-env-lake-geo'
+import { generateEnvDataTextureMap } from './enviroment/generate-env-data-textures'
+import { EnvTerrainPlaneObject } from '../objects/env-terrain-plane.object'
 import { EnvWaterPlaneObject } from '../objects/env-water-plane.object'
+
+import { RENDER_LAYERS } from '../utils/constants'
 
 import vertexShader from '../shaders/base.vert'
 import fragmentShader from '../shaders/post-under-water-distort.frag'
@@ -12,7 +17,8 @@ export default class Enviroment extends Module {
     super(sketch)
 
     this.setupScene()
-    this.setupWater()
+    this.setupLake()
+    this.setupTerrain()
     this.setupOctopus()
     this.setupPostUnderWaterDistort()
   }
@@ -21,20 +27,84 @@ export default class Enviroment extends Module {
     this.scene.background = new THREE.Color(0xffffff)
   }
 
-  setupWater() {
-    this.water = new EnvWaterPlaneObject({
+  setupLake() {
+    const { worldSize } = this.config
+    const width = worldSize
+    const height = worldSize
+
+    const geoConfig = {
+      width,
+      height,
+      bounds: [
+        [-width / 2, -height / 2],
+        [width / 2, height / 2]
+      ],
+      seed: [23019, 20871, 29486, 37533]
+    }
+
+    this.lakeGroup = new THREE.Group()
+    this.lakeGeo = generateLakeGeo(geoConfig)
+    this.envDataTextureMap = generateEnvDataTextureMap({
+      ...geoConfig,
+      random: this.random,
+      geo: this.lakeGeo,
+      renderer: this.renderer,
+      waterColors: [{ name: 'lake', color: this.config.brandHex }],
+      groundColors: [
+        { name: 'grasslands-items-field', color: '#556325' },
+        { name: 'grasslands-items-yellow', color: '#8D7721' },
+        { name: 'grasslands-items-field', color: '#486b25' },
+        { name: 'grasslands-items-wet', color: '#605e41' }
+      ]
+    })
+
+    this.lakeGeo.lakeInfos.map(lakeInfo => {
+      const mesh = new EnvWaterPlaneObject({
+        lakeInfo,
+        planeSize: this.config.worldSize,
+        uniforms: {
+          waterColor: {
+            value: new THREE.Color(this.config.brandHex)
+          },
+          causticsMap: {
+            value: this.asset.items.waterNoiseTexture
+          },
+          distortMap: {
+            value: this.asset.items.waterDistortTexture
+          },
+          ...this.getEnvDataTextureUniforms(),
+          ...this.enviromentTrace.getTraceUniforms()
+        }
+      })
+      mesh.layers.enable(RENDER_LAYERS.WATER)
+      this.lakeGroup.add(mesh)
+    })
+    // this.lakeGroup.children.map(mesh => (mesh.rotation.x = -Math.PI / 2))
+    this.scene.add(this.lakeGroup)
+  }
+
+  setupTerrain() {
+    const terrainModel = this.asset.items.envTerrainModel.scene
+
+    this.terrain = new EnvTerrainPlaneObject({
+      terrainGeo: terrainModel.children[0].geometry,
       planeSize: this.config.worldSize * 2,
+      heightMapTexture: this.asset.items.terrainHightmapTexture,
       uniforms: {
-        causticsMap: {
-          value: this.asset.items.waterNoiseTexture
+        floorMap: {
+          value: this.asset.items.floorTexture
         },
-        distortMap: {
-          value: this.asset.items.waterDistortTexture
+        floorPathMap: {
+          value: this.asset.items.floorPathTexture
         },
+        floorOverlayMap: {
+          value: this.asset.items.floorOverlayTexture
+        },
+        ...this.getEnvDataTextureUniforms(),
         ...this.enviromentTrace.getTraceUniforms()
       }
     })
-    this.scene.add(this.water)
+    // this.scene.add(this.terrain)
   }
 
   setupOctopus() {
@@ -86,8 +156,28 @@ export default class Enviroment extends Module {
     this.postCamera = postCamera
   }
 
+  getEnvDataTextureUniforms() {
+    return {
+      colorDataMap: {
+        value: this.envDataTextureMap.colorDataTexture
+      },
+      biomeDataMap: {
+        value: this.envDataTextureMap.biomeDataTexture
+      },
+      lakeDataMap: {
+        value: this.envDataTextureMap.lakeDataTexture
+      },
+      lakeBlueDataMap: {
+        value: this.envDataTextureMap.lakeBlueDataTexture
+      },
+      lakeHardDataMap: {
+        value: this.envDataTextureMap.lakeHardDataTexture
+      }
+    }
+  }
+
   update(delta, elapsed) {
-    this.water.uniforms.time.value += delta
+    this.lakeGroup.children.map(lake => (lake.uniforms.time.value += delta))
     this.updatePostUnderWaterDistort(delta)
   }
 
@@ -95,12 +185,12 @@ export default class Enviroment extends Module {
     this.postMaterial.uniforms.time.value += delta
 
     // @TODO: Move the post logic to renderer module
-    this.water.material.uniforms.isMask.value = true
+    this.lakeGroup.children.map(lake => (lake.uniforms.isMask.value = true))
     this.renderer.clear()
     this.renderer.setRenderTarget(this.maskTarget)
     this.renderer.render(this.scene, this.camera)
     this.renderer.setRenderTarget(null)
-    this.water.material.uniforms.isMask.value = false
+    this.lakeGroup.children.map(lake => (lake.uniforms.isMask.value = false))
     this.renderer.module.postProcess.composer.render()
     this.renderer.render(this.postScene, this.postCamera)
   }

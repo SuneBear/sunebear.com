@@ -9,7 +9,36 @@ $--color-brand: #48dcce
 $--border-width-base: 3px
 $--border-radius-base: 10px
 
+// Function
+@function str-replace($string, $search, $replace: '')
+  $index: str-index($string, $search)
+  @if $index
+    @return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace)
+  @return $string
+
+@function v-lightness($color, $lightness)
+  $color: str-replace($color, 'var(')
+  $color: str-replace($color, ')')
+  $color-h: var(#{$color+'-h'})
+  $color-s: var(#{$color+'-s'})
+  $color-l: var(#{$color+'-l'})
+  @return hsl($color-h, $color-s, calc(#{$lightness}))
+
+@function v-alpha($color, $opacity)
+  $color: str-replace($color, 'var(')
+  $color: str-replace($color, ')')
+  $color-h: var(#{$color+'-h'})
+  $color-s: var(#{$color+'-s'})
+  $color-l: var(#{$color+'-l'})
+  @return hsla($color-h, $color-s, $color-l, $opacity)
+
 // Mixin
+@mixin defineColorHSL($color, $hue, $saturation, $lightness)
+  #{$color}: unquote("hsl(#{$hue}, #{$saturation}, #{$lightness})")
+  #{$color}-h: #{$hue}
+  #{$color}-s: #{$saturation}
+  #{$color}-l: #{$lightness}
+
 @mixin box-bop-shadow
   &:after,
   &:before
@@ -19,7 +48,7 @@ $--border-radius-base: 10px
     border-radius: 10px
 
   &:after
-    background-color: scale-color($--color-brand, $lightness: 93%)
+    background-color: v-lightness(var(--brand), 96%)
     border: 2px solid var(--primary)
 
   &:before
@@ -29,6 +58,10 @@ $--border-radius-base: 10px
     background-position: 100% 100%
     background-size: 4px 4px
     transform: translate(4px, 4px)
+
+// Define CSS Variables
+:root
+  @include defineColorHSL(--brand, 174, 68%, 57%)
 
 @import '~element-ui/packages/theme-chalk/src/index'
 @import './custom-button'

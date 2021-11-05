@@ -18,7 +18,7 @@ uniform bool isMask;
 
 void main () {
   vec3 wakeData = texture2D(envTraceMap, vTraceUv).rgb;
-  vec3 worldColor = waterColor;
+  vec3 worldColor = mix(waterColor, vec3(1.0), 0.3);
 
   // Distort
   vec2 uvDistort = vec2(0.0);
@@ -37,7 +37,7 @@ void main () {
 
   // Caustics
   vec3 causticsColor = texture2D(causticsMap, vTextureUv * waterScale + uvDistort).rgb;
-  float foam = causticsColor.r;
+  float foam = causticsColor.r * 0.1;
   if (foam >= 0.4) {
     foam *= 0.5;
   }

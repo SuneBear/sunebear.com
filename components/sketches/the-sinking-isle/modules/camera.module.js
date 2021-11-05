@@ -11,6 +11,7 @@ export default class CameraModule extends Module {
 
     // Set up
     this.mode = 'debug' // default | debug
+    this.enableGodView = true
 
     this.setInstance()
     this.setModes()
@@ -48,6 +49,12 @@ export default class CameraModule extends Module {
     this.modes.debug = {}
     this.modes.debug.instance = this.instance.clone()
     this.modes.debug.instance.rotation.reorder('YXZ')
+
+    if (this.enableGodView) {
+      this.modes.debug.instance.position.x = 0.4
+      this.modes.debug.instance.position.z = 250
+      this.modes.debug.instance.position.y = 350
+    }
 
     this.modes.debug.orbitControls = new OrbitControls(
       this.modes.debug.instance,

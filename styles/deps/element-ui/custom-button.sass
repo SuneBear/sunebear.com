@@ -110,13 +110,24 @@ $--color-disabled-color-red: $--color-white
 
 .el-button--default,
 .el-button--secondary
-  +buttonStatusColor($--color-secondary, $--color-secondary, $--color-primary,#bbb,#bbb,#fff)
+  +buttonStatusColor($--color-secondary, $--color-secondary, var(--primary),#bbb,#bbb,#fff)
 
 .el-button--primary
-  +buttonStatusColor($--color-primary, $--color-primary, $--color-secondary,#bbb,#bbb,#fff)
+  +buttonStatusColor($--color-primary, $--color-primary, var(--secondary),#bbb,#bbb,#fff)
 
 .el-button--primary-ghost
-  +buttonStatusColor(transparent, $--color-primary, $--color-primary, transparent,#888,#aaa)
+  +buttonStatusColor(transparent, $--color-primary, var(--primary), transparent,#888,#aaa)
 
 .el-button--brand
-  +buttonStatusColor($--color-brand, $--color-brand, $--color-white, $--color-disabled-bg-red, $--color-disabled-bg-red, $--color-disabled-color-red)
+  +buttonStatusColor($--color-brand, $--color-brand, var(--secondary), $--color-disabled-bg-red, $--color-disabled-bg-red, $--color-disabled-color-red)
+
+  // Overrided with css vars
+  &,
+  &:focus,
+  &:active
+    background-color: var(--brand)
+    border-color: var(--brand)
+
+  &:hover
+    background-color: rgba(var(--brand-rgb), 0.8)
+    border-color: rgba(var(--brand-rgb), 0.8)

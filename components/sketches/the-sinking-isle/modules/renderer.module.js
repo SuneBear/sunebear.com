@@ -20,7 +20,7 @@ export default class Renderer extends Module {
     if (this.debug) {
       this.debug.registerPlugin(EssentialsPlugin)
       this.debugFolder = this.debug.addFolder({
-        title: 'renderer',
+        title: 'Renderer',
         expanded: false
       })
       this.fpsGraph = this.debugFolder.addBlade({

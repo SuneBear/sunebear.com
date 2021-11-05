@@ -42,8 +42,8 @@
     .section-ink-button.mt-8
       .text-h5.mb-4 ink-button
       .row.no-gutters
-        ink-button( size="medium" shadow="black" icon="leaf-fill") Default
-        ink-button( size="big" circle shadow="black" iconShadow="var(--brand)" icon="leaf-fill")
+        ink-button( squiggly size="medium" shadow="black" icon="leaf-fill") Default
+        ink-button( squigglyHover size="big" circle shadow="black" iconShadow="var(--brand)" icon="leaf-fill")
         ink-button( size="big" round shadow="black" iconShadow="var(--mark)" icon="rainy-fill")
         ink-button( round shadow="black" iconShadow="var(--brand)" icon="leaf-fill")
         ink-button( type="primary" size="small") Primary

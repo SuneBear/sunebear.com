@@ -47,7 +47,7 @@ class OrbitControls extends EventDispatcher {
     this.maxDistance = Infinity
 
     // How far you can zoom in and out ( OrthographicCamera only )
-    this.minZoom = 0.1
+    this.minZoom = 0
     this.maxZoom = 7
 
     // How far you can orbit vertically, upper and lower limits.

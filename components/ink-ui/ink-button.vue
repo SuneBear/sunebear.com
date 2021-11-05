@@ -1,6 +1,6 @@
 <template lang="pug">
 .ink-button(
-  :class="{ 'is-disabled': disabled, 'is-block': isBlock, 'has-shadow': shadow }"
+  :class="rootClass"
   :style="rootStyle"
 )
   .el-button-wrapper
@@ -33,6 +33,8 @@ export default {
   props: {
     ...Button.props,
     ...InkMask.props,
+    squiggly: Boolean,
+    squigglyHover: Boolean,
     shadow: {
       type: String
     },
@@ -42,6 +44,12 @@ export default {
   },
 
   computed: {
+    rootClass() {
+      return [
+        { 'is-disabled': this.disabled, 'is-block': this.isBlock, 'has-shadow': this.shadow },
+        { 'squiggly': this.squiggly, 'squiggly-hover': this.squigglyHover }
+      ]
+    },
     rootStyle() {
       return {
         '--shadow': this.shadow
