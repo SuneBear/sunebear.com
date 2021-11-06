@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 
-import vertexShader from '../shaders/env-terrain-plane.vert'
+// import vertexShader from '../shaders/env-terrain-plane.vert'
+import vertexShader from '../shaders/env-plane.vert'
 import fragmentShader from '../shaders/env-terrain-plane.frag'
 
 function getImageData(image) {
@@ -18,17 +19,19 @@ export class EnvTerrainPlaneObject extends THREE.Mesh {
 
     options = Object.assign(
       {
+        hasIce: true,
         planeSize: 1,
+        planeScale: 1,
         heightMapTexture: new THREE.Texture()
       },
       options
     )
 
     const hightMapData = getImageData(options.heightMapTexture.image)
-    const width = options.planeSize
-    const height = options.planeSize
+    const width = options.planeSize * options.planeScale
+    const height = options.planeSize * options.planeScale
     const uvMat = new THREE.Matrix3()
-    const texRepeat = 1024 / 60
+    const texRepeat = 1024 / 120
     const repeatX = 1 * texRepeat
     const repeatY = (1.0 / (width / height)) * texRepeat * -1.0
     uvMat.setUvTransform(0, 0, 1, 1, THREE.MathUtils.degToRad(-45), 0, 0)
@@ -41,10 +44,13 @@ export class EnvTerrainPlaneObject extends THREE.Mesh {
       floorOverlayMap: { value: null },
       originColor: { value: new THREE.Color("#969492") },
       floorColor: { value: new THREE.Color(0x808080) },
-      clearColor: { value: new THREE.Color("#130904") },
+      clearColor: { value: new THREE.Color("#383838") },
       overlayOpacity: { value: 0.3 },
+      planeScale: { value: options.planeScale },
+      hasIce: { value: options.hasIce },
+      isRenderTarget: { value: false },
       uvScale: { value: new THREE.Vector2(repeatX, repeatY) },
-      uvRepeatScale: { value: 2 },
+      uvRepeatScale: { value: 1 },
       uvTransform: {
         value: uvMat
       },
@@ -54,7 +60,8 @@ export class EnvTerrainPlaneObject extends THREE.Mesh {
       ...options.uniforms
     }
 
-    this.geometry = options.terrainGeo
+    // this.geometry = options.terrainGeo
+    this.geometry = new THREE.PlaneGeometry(width, height, width, height)
 
     this.material = new THREE.ShaderMaterial({
       vertexShader,
@@ -68,8 +75,7 @@ export class EnvTerrainPlaneObject extends THREE.Mesh {
       side: THREE.DoubleSide
     })
 
-    this.scale.set(width / 2, 1, height / 2)
-    this.position.y = -0.1
-    // this.rotation.x = -Math.PI / 2
+    this.position.y = -1
+    this.rotation.x = -Math.PI / 2
   }
 }

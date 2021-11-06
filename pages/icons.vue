@@ -74,7 +74,7 @@ export default {
 
   ._icon-card
     padding: 40px 20px 30px !important
-    background: brand(10) !important
+    background: brand(0) !important
     border-radius: 10px / 15px !important
     transition: background 400ms, fill 400ms, box-shadow 400ms
 

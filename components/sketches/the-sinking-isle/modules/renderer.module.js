@@ -3,6 +3,7 @@ import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js'
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
 import { CopyShader } from 'three/examples/jsm/shaders/CopyShader.js'
+import { FXAAShader } from 'three/examples/jsm/shaders/FXAAShader.js'
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js'
 import * as EssentialsPlugin from '@tweakpane/plugin-essentials'
 
@@ -26,11 +27,13 @@ export default class Renderer extends Module {
       this.fpsGraph = this.debugFolder.addBlade({
         view: 'fpsgraph',
         label: 'fpsGraph'
-      });
+      })
     }
 
     this.setInstance()
     this.setPostProcess()
+
+    this.resize()
   }
 
   setInstance() {
@@ -44,17 +47,16 @@ export default class Renderer extends Module {
       //   .on('change', () => {
       //     this.instance.setClearColor(this.clearColor, 1)
       //   })
-      this.debugFolder
-        .addInput(this, 'usePostprocess')
-        .on('change', () => {
-          this.postProcess.bloomComposer.renderTarget2.dispose()
-        })
+      this.debugFolder.addInput(this, 'usePostprocess').on('change', () => {
+        this.postProcess.bloomComposer.renderTarget2.dispose()
+      })
     }
 
     // Renderer
     this.instance = new THREE.WebGLRenderer({
       alpha: false,
-      antialias: true
+      antialias: false,
+      stencil: false
     })
     this.instance.module = this
     this.instance.autoClear = false
@@ -76,8 +78,8 @@ export default class Renderer extends Module {
     this.instance.shadowMap.enabled = true
     this.instance.shadowMap.autoUpdate = false
     this.instance.shadowMap.needsUpdate = this.instance.shadowMap.enabled
-    // this.instance.toneMapping = THREE.ReinhardToneMapping
-    // this.instance.toneMappingExposure = 2.3
+    // this.instance.toneMapping = THREE.LinearToneMapping
+    // this.instance.toneMappingExposure = 2
 
     this.context = this.instance.getContext()
 
@@ -180,6 +182,9 @@ export default class Renderer extends Module {
     this.postProcess.bloomComposer.addPass(this.postProcess.unrealBloomPass)
     this.postProcess.bloomComposer.addPass(effectCopy)
 
+    // Anti-Alias Pass
+    this.postProcess.fxaaPass = new ShaderPass(FXAAShader)
+
     // Final Pass
     this.postProcess.finalPass = new ShaderPass(
       new THREE.ShaderMaterial({
@@ -206,6 +211,7 @@ export default class Renderer extends Module {
 
     this.postProcess.composer.addPass(this.postProcess.renderPass)
     this.postProcess.composer.addPass(this.postProcess.finalPass)
+    this.postProcess.composer.addPass(this.postProcess.fxaaPass)
     this.postProcess.composer.addPass(effectCopy)
 
     if (this.debug) {
@@ -227,8 +233,14 @@ export default class Renderer extends Module {
     this.instance.setPixelRatio(this.config.pixelRatio)
 
     // Post process
-    this.postProcess.composer.setSize(this.config.width, this.config.height)
-    this.postProcess.composer.setPixelRatio(this.config.pixelRatio)
+    const { fxaaPass, composer } = this.postProcess
+    composer.setSize(this.config.width, this.config.height)
+    composer.setPixelRatio(this.config.pixelRatio)
+
+    fxaaPass.material.uniforms['resolution'].value.x =
+      1 / (this.config.width * this.config.pixelRatio)
+    fxaaPass.material.uniforms['resolution'].value.y =
+      1 / (this.config.height * this.config.pixelRatio)
   }
 
   update(delta) {

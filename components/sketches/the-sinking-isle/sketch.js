@@ -14,8 +14,9 @@ import CameraModule from './modules/camera.module'
 import SubmitFrameModule from './modules/submit-frame.module'
 import RendererModule from './modules/renderer.module'
 import PlayerModule from './modules/player.module'
-import EnviromentModule from './modules/enviroment.module'
+import EnviromentGround from './modules/enviroment-ground.module'
 import EnviromentTraceDataTexutreModule from './modules/enviroment-trace.module'
+import EnviromentModule from './modules/enviroment.module'
 import TestModule from './modules/test.module'
 
 import assets from './assets'
@@ -169,6 +170,8 @@ class TheSinkingIsleSketch {
     this.renderer = rendererModule.instance
     this.control = new ControlManager(this.renderer.domElement)
     this.container.appendChild(this.renderer.domElement)
+
+    this.module.set({ control: this.control })
   }
 
   setupPlayer() {
@@ -178,8 +181,10 @@ class TheSinkingIsleSketch {
   }
 
   setupEnviroment() {
+    this.enviromentGround = this.module.add(EnviromentGround)
     this.enviromentTrace = this.module.add(EnviromentTraceDataTexutreModule)
     this.enviroment = this.module.add(EnviromentModule)
+    this.module.set({ enviroment: this.enviroment })
   }
 
   setupOtherModules() {

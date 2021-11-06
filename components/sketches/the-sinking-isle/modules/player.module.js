@@ -10,6 +10,7 @@ export default class Player extends Module {
     super(sketch)
 
     this.setupInstance()
+    this.setupUnderStateSystem()
     this.setupMoveTargetSystem()
     this.setupSpringPlayerMoveSystem()
   }
@@ -26,6 +27,12 @@ export default class Player extends Module {
     this.scene.add(this.instance)
   }
 
+  setupUnderStateSystem() {
+    this.instance.underState = {
+      isInLake: true
+    }
+  }
+
   setupMoveTargetSystem() {
     this.mousePlane = new THREE.Plane(new THREE.Vector3(-0, -1, -0), -0)
     this.mousePlaneTarget = new THREE.Vector3()
@@ -37,8 +44,8 @@ export default class Player extends Module {
     this.speed = 0.0
     this.minSpeed = 0.0
     this.maxSpeed = 3
-    // Final factor for all moveTarget, springPlayerMove
-    this.speedFactor = 0.4
+    // @Config: Final factor for all moveTarget, springPlayerMove
+    this.speedFactor = 1 // 0.4
 
     this.boost = 0
     this.boostFactor = 0
@@ -150,6 +157,7 @@ export default class Player extends Module {
     let directionIncrease =
       delta * totalSpeed * this.speedFactor +
       totalBoost * this.boostFactor * delta
+
     userTargetPos.addScaledVector(this.moveDirection, directionIncrease)
 
     // Drift
@@ -282,18 +290,38 @@ export default class Player extends Module {
       spring.moveToTarget = false
     }
 
-    spring.update(delta)
-
     playerMesh.velocity
       .copy(spring.velocity)
       .multiplyScalar(0.2 / spring.maxVelocity)
 
-    playerMesh.rotation.y = -math.dampAngle(
-      -playerMesh.rotation.y,
-      Math.atan2(this.moveDirection.z, this.moveDirection.x),
-      50,
-      delta
-    )
+    if (this.hasSmoothTarget && spring.velocity.length() > this.speedFactor / 5) {
+      playerMesh.rotation.y = -math.dampAngle(
+        -playerMesh.rotation.y,
+        Math.atan2(this.moveDirection.z, this.moveDirection.x),
+        50,
+        delta
+      )
+    }
+
+    spring.update(delta)
+
+    // @TODO: Optimize lake boundary limit
+    const positionOffset = 2.0
+    const springScale = 1.1
+    if (
+      !this.enviroment.isInsideLake([
+        spring.position.x * springScale + positionOffset, spring.position.z * springScale + positionOffset
+      ])
+    ){
+      smoothTarget.x *= 0.5
+      smoothTarget.z *= 0.5
+      spring.position.copy(playerMesh.position)
+      spring.velocity.set(0, 0, 0)
+      spring.moveToTarget = false
+      spring.update(delta)
+      return
+    }
+
     playerMesh.position.copy(spring.position)
   }
 }

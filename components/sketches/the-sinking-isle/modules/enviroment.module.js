@@ -7,9 +7,11 @@ import { EnvTerrainPlaneObject } from '../objects/env-terrain-plane.object'
 import { EnvWaterPlaneObject } from '../objects/env-water-plane.object'
 
 import { RENDER_LAYERS } from '../utils/constants'
+import { insideWaterPolys } from '../utils/water-util'
 
 import vertexShader from '../shaders/base.vert'
 import fragmentShader from '../shaders/post-under-water-distort.frag'
+import { Random } from '~/utils/random'
 
 // @TODO: Render world boundary
 export default class Enviroment extends Module {
@@ -19,7 +21,7 @@ export default class Enviroment extends Module {
     this.setupScene()
     this.setupLake()
     this.setupTerrain()
-    this.setupOctopus()
+    // this.setupOctopus()
     this.setupPostUnderWaterDistort()
   }
 
@@ -29,18 +31,48 @@ export default class Enviroment extends Module {
 
   setupLake() {
     const { worldSize } = this.config
+
+    const hasIce = false
     const width = worldSize
     const height = worldSize
+    const seed = [51360, 10783, 25248, 59674] // Random.getRandomSeed()
 
     const geoConfig = {
+      hasIce,
       width,
       height,
       bounds: [
         [-width / 2, -height / 2],
         [width / 2, height / 2]
       ],
-      seed: [23019, 20871, 29486, 37533]
+      seed
     }
+
+    const forestColors = [
+      { name: "forest-items-triangle", color: "#9D9166" },
+      { name: "forest-items-dry", color: "#59622a" },
+      { name: "forest-items-autumn", color: "#745C13" },
+      { name: "forest-items-triangle", color: "#766D43" },
+    ]
+
+    const grasslandsColors = [
+      { name: 'grasslands-items-field', color: '#556325' },
+      { name: 'grasslands-items-yellow', color: '#8D7721' },
+      { name: 'grasslands-items-field', color: '#486b25' },
+      { name: 'grasslands-items-wet', color: '#605e41' }
+    ]
+
+    const tundraColors = [
+      {
+        name: "tundra-items-basic",
+        // color: "#797f84",
+        color: "#2a3956",
+      },
+      // { name: "tundra-items-basic", color: "#898e91" },
+      // { name: "tundra-items-snow", color: "#d9d9d9" },
+      // { name: "grasslands-field", color: "#5a823a" },
+      // { name: "grasslands-yellow", color: "#8D7721" },
+    ]
 
     this.lakeGroup = new THREE.Group()
     this.lakeGeo = generateLakeGeo(geoConfig)
@@ -51,28 +83,29 @@ export default class Enviroment extends Module {
       renderer: this.renderer,
       waterColors: [{ name: 'lake', color: this.config.brandHex }],
       groundColors: [
-        { name: 'grasslands-items-field', color: '#556325' },
-        { name: 'grasslands-items-yellow', color: '#8D7721' },
-        { name: 'grasslands-items-field', color: '#486b25' },
-        { name: 'grasslands-items-wet', color: '#605e41' }
+        // ...forestColors,
+        // ...grasslandsColors,
+        ...tundraColors,
       ]
     })
 
     this.lakeGeo.lakeInfos.map(lakeInfo => {
       const mesh = new EnvWaterPlaneObject({
         lakeInfo,
+        hasIce,
         planeSize: this.config.worldSize,
         uniforms: {
           waterColor: {
             value: new THREE.Color(this.config.brandHex)
           },
           causticsMap: {
-            value: this.asset.items.waterNoiseTexture
+            value: this.asset.items[hasIce ? 'iceCausticsTexture' : 'waterCausticsTexture']
           },
           distortMap: {
             value: this.asset.items.waterDistortTexture
           },
           ...this.getEnvDataTextureUniforms(),
+          ...this.enviromentGround.getGroundUniforms(),
           ...this.enviromentTrace.getTraceUniforms()
         }
       })
@@ -88,7 +121,9 @@ export default class Enviroment extends Module {
 
     this.terrain = new EnvTerrainPlaneObject({
       terrainGeo: terrainModel.children[0].geometry,
-      planeSize: this.config.worldSize * 2,
+      hasIce: this.lakeGeo.hasIce,
+      planeScale: 1.5,
+      planeSize: this.config.worldSize,
       heightMapTexture: this.asset.items.terrainHightmapTexture,
       uniforms: {
         floorMap: {
@@ -104,7 +139,8 @@ export default class Enviroment extends Module {
         ...this.enviromentTrace.getTraceUniforms()
       }
     })
-    // this.scene.add(this.terrain)
+    this.terrain.layers.set(RENDER_LAYERS.GROUND)
+    this.scene.add(this.terrain)
   }
 
   setupOctopus() {
@@ -167,13 +203,21 @@ export default class Enviroment extends Module {
       lakeDataMap: {
         value: this.envDataTextureMap.lakeDataTexture
       },
-      lakeBlueDataMap: {
-        value: this.envDataTextureMap.lakeBlueDataTexture
+      lakeBlurDataMap: {
+        value: this.envDataTextureMap.lakeBlurDataTexture
       },
       lakeHardDataMap: {
         value: this.envDataTextureMap.lakeHardDataTexture
       }
     }
+  }
+
+  isInsideLake(point) {
+    if (!this.lakeGeo) {
+      return
+    }
+
+    return insideWaterPolys(this.lakeGeo, point)
   }
 
   update(delta, elapsed) {
@@ -184,6 +228,7 @@ export default class Enviroment extends Module {
   updatePostUnderWaterDistort(delta) {
     this.postMaterial.uniforms.time.value += delta
 
+    // @FIXME: Remove the aliasing effect over water
     // @TODO: Move the post logic to renderer module
     this.lakeGroup.children.map(lake => (lake.uniforms.isMask.value = true))
     this.renderer.clear()

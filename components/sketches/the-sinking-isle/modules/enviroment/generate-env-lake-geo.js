@@ -18,10 +18,11 @@ export const generateLakeGeo = ({
   height,
   bounds,
   seed,
+  hasIce,
   maxTokens = 0,
-  maxLakes = 20
+  maxLakes = 10
 }) => {
-  const state = new Uint16Array(seed) // Random.getRandomState()
+  const state = new Uint16Array(seed) // Random.getRandomSeed()
   const random = Random(state)
   const noise01 = new SimplexNoise(random.value)
   const noise02 = new SimplexNoise(random.value)
@@ -29,7 +30,7 @@ export const generateLakeGeo = ({
 
   const flatBounds = bounds.flat()
   const featureRadius = 4
-  const lakeSpacing = 0
+  const lakeSpacing = 40
   const lakeGap = lakeSpacing
 
   // Step: Tokens & Features, Lakes Position
@@ -52,10 +53,9 @@ export const generateLakeGeo = ({
   lakes = random
     .shuffle(
       lakes.filter(t => {
-        return euclideanDistance(t, [0, 0]) > featureRadius * 4
+        return euclideanDistance(t, [0, 0]) > lakeSpacing
       })
     )
-    .slice(0, maxLakes)
 
   tokens = tokens.filter(t => {
     const d = euclideanDistance(t.position, [0, 0])
@@ -154,9 +154,8 @@ export const generateLakeGeo = ({
     p.lengthFromCenter = length
 
     if (
-      length > 40 &&
-      distance < 0.25 &&
-      ((m > 0.5 && e < 0.5) || lakeDistance > 0.5)
+      (length < width * 0.45) &&
+      ((m > 0.4) || lakeDistance > 0.1)
     ) {
       lakePolys.add(i)
     }
@@ -168,6 +167,7 @@ export const generateLakeGeo = ({
       return set.length > 2
     })
     .map(set => convertSetToHull(polys, set, random))
+    .slice(0, maxLakes)
   const lakeContours = lakeHulls
     .map(hull => {
       const p = simplify(hull, 1)
@@ -193,10 +193,13 @@ export const generateLakeGeo = ({
   })
 
   return {
+    seed,
+    hasIce,
     lakes: lakeContours,
     lakeInfos,
     lakeBounds: lakeInfos.map(info => info.bounds),
     segments,
+    tokens,
     cells: polys
   }
 }

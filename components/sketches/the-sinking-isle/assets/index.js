@@ -73,14 +73,14 @@ export default [
         type: 'texture'
       },
       {
-        name: 'waterNoiseTexture',
-        source: require('./textures/water-noise.png'),
+        name: 'waterCausticsTexture',
+        source: require('./textures/floor-overlay.jpg'),
         type: 'texture',
         options: REPEAT_TEXTURE_OPTIONS
       },
       {
-        name: 'waterDistortTexture',
-        source: require('./textures/water-distort.png'),
+        name: 'iceCausticsTexture',
+        source: require('./textures/ice-caustics.jpg'),
         type: 'texture',
         options: REPEAT_TEXTURE_OPTIONS
       },

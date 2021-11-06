@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import earcut from 'earcut'
 import { math } from '~/utils/math'
 
-import vertexShader from '../shaders/env-water-plane.vert'
+import vertexShader from '../shaders/env-plane.vert'
 import fragmentShader from '../shaders/env-water-plane.frag'
 
 export class EnvWaterPlaneObject extends THREE.Mesh {
@@ -11,6 +11,7 @@ export class EnvWaterPlaneObject extends THREE.Mesh {
 
     options = Object.assign(
       {
+        hasIce: true,
         lakeInfo: null,
         planeSize: 1
       },
@@ -31,9 +32,11 @@ export class EnvWaterPlaneObject extends THREE.Mesh {
       isMask: { value: false },
       causticsMap: { value: null },
       waterColor: { value: null },
-      waterOpacity: { value: 0.5 },
+      waterOpacity: { value: 0.7 },
       centroidPosition: { value: new THREE.Vector3(0, 0, 0) },
       lakeSize: { value: width / 2 },
+      colorA: { value: new THREE.Color(options.hasIce ? "#698193" : "#163d84") },
+      colorB: { value: new THREE.Color(options.hasIce ? "#a8bec4" : "#49c2ff") },
       environmentSize: {
         value: new THREE.Vector2(width, height)
       },
@@ -59,12 +62,14 @@ export class EnvWaterPlaneObject extends THREE.Mesh {
       fragmentShader,
       uniforms: this.uniforms,
       defines: {
+        WATER: !options.hasIce,
+        HAS_GROUND_MAP: true,
         HAS_TRACE_MAP: true,
         HAS_ANGLE: true,
         HAS_SURF_UV: true
       },
       transparent: true,
-      depthWrite: false,
+      depthWrite: true,
       side: THREE.DoubleSide
     })
   }

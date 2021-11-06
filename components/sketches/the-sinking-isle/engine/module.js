@@ -25,8 +25,9 @@ export default class Module {
     this.renderer = sketch.renderer
     this.submitFrame = sketch.submitFrame
     this.player = sketch.player || new THREE.Object3D()
-    this.enviroment = sketch.enviroment
+    this.enviromentGround = sketch.enviromentGround
     this.enviromentTrace = sketch.enviromentTrace
+    this.enviroment = sketch.enviroment
 
     this.container = sketch.container
     this.$vm = sketch.$vm

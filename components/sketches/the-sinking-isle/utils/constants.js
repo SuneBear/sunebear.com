@@ -4,5 +4,8 @@ export const RENDER_LAYERS = {
   // Effects
   BLOOM: 0,
   GRAY: 2,
-  WATER: 3
+  WATER: 3,
+  GROUND: 100,
+  GROUND_ELEMENTS: 101,
+  GROUND_DEPTH: 102
 }

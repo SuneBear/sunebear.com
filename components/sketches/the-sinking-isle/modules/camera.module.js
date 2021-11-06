@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import anime from 'animejs'
 import { __DEBUG__ } from '~/utils/dev'
 
 import { OrbitControls } from '../utils/hack-deps/three/orbit-controls'
@@ -11,11 +12,14 @@ export default class CameraModule extends Module {
 
     // Set up
     this.mode = 'debug' // default | debug
-    this.enableGodView = true
+    this.defaultPresetIndex = 0
 
     this.setInstance()
     this.setModes()
     this.setupPlayerFollowSystem()
+    setTimeout(() => {
+      this.listenModePresetSwitch()
+    })
   }
 
   setInstance() {
@@ -26,11 +30,6 @@ export default class CameraModule extends Module {
       0.1,
       1000
     )
-    this.instance.position.set(
-      -0.4,
-      12.8,
-      17.9
-    )
     this.instance.rotation.reorder('YXZ')
     this.instance.module = this
 
@@ -39,6 +38,12 @@ export default class CameraModule extends Module {
 
   setModes() {
     this.modes = {}
+
+    this.modePresets = [
+      { name: 'normal', fov: 30, zoom: 1.33, position: [ -0.4, 12.8, 17.9 ] },
+      { name: 'god', fov: 30, zoom: 1.33, position: [ 0, 70, 0 ] },
+      { name: 'ortho', fov: 45, zoom: 1, position: [ 0, 450, 0 ] }
+    ]
 
     // Default
     this.modes.default = {}
@@ -49,12 +54,6 @@ export default class CameraModule extends Module {
     this.modes.debug = {}
     this.modes.debug.instance = this.instance.clone()
     this.modes.debug.instance.rotation.reorder('YXZ')
-
-    if (this.enableGodView) {
-      this.modes.debug.instance.position.x = 0.4
-      this.modes.debug.instance.position.z = 250
-      this.modes.debug.instance.position.y = 350
-    }
 
     this.modes.debug.orbitControls = new OrbitControls(
       this.modes.debug.instance,
@@ -69,21 +68,16 @@ export default class CameraModule extends Module {
     this.modes.debug.orbitControls.enableKeys = false
     this.modes.debug.orbitControls.zoomSpeed = 0.25
     this.modes.debug.orbitControls.update()
+
+    this.switchPresetByIndex(this.defaultPresetIndex)
   }
 
   setupPlayerFollowSystem() {
     this.currentTarget = new THREE.Vector3()
     this.currentUIZoom = 0
     this.userZoomDistance = 10
-    this.curPreset = {
-      zoom: 1.33,
-      fov: 30,
-      near: 0.1,
-      far: 1000
-    }
     this.offset = new THREE.Vector3(1, 1, 1)
     this.offset.applyAxisAngle(new THREE.Vector3(0, 1, 0), math.degToRad(45 * -1))
-    this.postOffset = new THREE.Vector3(0, 0, 0)
     this.frustum = new THREE.Frustum()
     this.projScreenMatrix = new THREE.Matrix4()
     this.first = true
@@ -104,6 +98,58 @@ export default class CameraModule extends Module {
     }
 
     // this.modes.debug.orbitControls.target = this.playerFollow.currentTarget
+  }
+
+  listenModePresetSwitch() {
+    this.control.on('keydown.camera', (key) => {
+      if (typeof key !== 'number') {
+        return
+      }
+
+      this.switchPresetByIndex(key - 1)
+    })
+  }
+
+  async switchPresetByIndex(index) {
+    const camera = this.modes.debug.instance
+
+    // Update preset
+    this.curPreset = this.modePresets[math.clamp(index, 0, 2)]
+
+    // Update offset
+    if (this.curPreset.name === 'normal') {
+      this.offset?.set(1, 1, 1)
+      this.offset?.applyAxisAngle(new THREE.Vector3(0, 1, 0), math.degToRad(45 * -1))
+    } else {
+      this.offset?.set(0, 0, 0)
+    }
+
+    this.instance.updateMatrix() // To be used in projection
+    this.instance.updateMatrixWorld() // To be used in projection
+
+    // Anime preset
+    if (this.switchPresetAnimer) {
+      this.switchPresetAnimer.pause()
+    }
+    this.switchPresetAnimer = anime.timeline({
+      duration: 699,
+      easing: 'linear'
+    })
+    const [x,y,z] = this.curPreset.position
+    this.switchPresetAnimer
+      .add({
+        targets: camera.position,
+        x,
+        y,
+        z
+      })
+      .add({
+        targets: camera,
+        zoom: this.curPreset.zoom
+      }, 0)
+    // await this.switchPresetAnimer.finished
+    // camera.position.set(...this.curPreset.position)
+    // camera.zoom = this.curPreset.zoom
   }
 
   resize() {
@@ -200,8 +246,6 @@ export default class CameraModule extends Module {
 
     // Apply preset
     camera.fov = this.curPreset.fov
-    camera.near = this.curPreset.near
-    camera.far = this.curPreset.far
     camera.matrixAutoUpdate = false
 
     // Camera zoom

@@ -123,11 +123,14 @@ $--color-disabled-color-red: $--color-white
 
   // Overrided with css vars
   &,
-  &:focus,
-  &:active
+  &:focus
     background-color: var(--brand)
     border-color: var(--brand)
 
   &:hover
     background-color: rgba(var(--brand-rgb), 0.8)
     border-color: rgba(var(--brand-rgb), 0.8)
+
+  &:active
+    background-color: var(--brand)
+    border-color: var(--brand)

@@ -3,7 +3,7 @@ import pointInPoly from 'point-in-polygon'
 import stackblur from 'stackblur'
 import euclideanDistanceSq from 'euclidean-distance/squared'
 
-import { math } from '../../engine/utils'
+import { math, Random } from '../../engine/utils'
 import { point2DInsideBounds } from '../../utils/geometry'
 
 export const generateEnvDataTextureMap = ({
@@ -17,6 +17,7 @@ export const generateEnvDataTextureMap = ({
   waterColors,
   enableDebug = false
 }) => {
+  random = Random(Random.getRandomSeed())
   convertCellPolysToColorIndex({ g: geo, groundColors, random})
 
   // Define functions
@@ -166,7 +167,7 @@ export const generateEnvDataTextureMap = ({
   }
 }
 
-function convertCellPolysToColorIndex({ g, groundColors, hasLakes = true, random }) {
+function convertCellPolysToColorIndex({ g, groundColors, hasLakes = false, random }) {
   g.cells.forEach(p => {
     const { distance, lakeDistance, moisture, elevation } = p
     const m = moisture

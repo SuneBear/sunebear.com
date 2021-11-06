@@ -4,7 +4,10 @@ varying vec2 vTraceUv;
 varying float vDataScale;
 
 uniform float time;
+uniform bool hasIce;
+uniform bool isRenderTarget;
 uniform float overlayOpacity;
+uniform float planeScale;
 uniform vec3 floorColor;
 uniform vec3 originColor;
 uniform vec3 clearColor;
@@ -12,6 +15,8 @@ uniform vec3 clearColor;
 uniform sampler2D envTraceMap;
 uniform sampler2D colorDataMap;
 uniform sampler2D lakeDataMap;
+uniform sampler2D lakeBlurDataMap;
+uniform sampler2D lakeHardDataMap;
 uniform sampler2D biomeDataMap;
 uniform sampler2D floorMap;
 uniform sampler2D floorPathMap;
@@ -44,10 +49,15 @@ void main () {
   worldColor = mix(worldColor, vec3(originColor), distFromCenter);
 
   float edgeThreshold = 0.5;
-  float edgeGlow = 0.025;
+  float edgeGlow = 0.01;
   float edge0 = smoothstep(edgeThreshold, edgeThreshold-edgeGlow, abs(vUv.x - 0.5));
   float edge1 = smoothstep(edgeThreshold, edgeThreshold-edgeGlow, abs(vUv.y - 0.5));
-  float lake = texture2D(lakeDataMap, vUv).r;
+  vec2 lakeUv = (vUv - 0.5) * (planeScale) + 0.5;
+  // float lake = (hasIce || isRenderTarget) ? 0.0 : texture2D(lakeDataMap, lakeUv).r;
+  float lake = 0.0;
+  if (lake > 0.5) {
+    discard;
+  }
   float pathEdge = smoothstep(0.4, 0.75, biome.b + (biome.r * 2.0 - 1.0) * 0.1);
   pathEdge = clamp(pathEdge, 0.0, 1.0);
   vec3 tex = mix(groundTex, pathTex, pathEdge);
@@ -60,5 +70,5 @@ void main () {
   gl_FragColor = vec4(vec3(col), 1.0);
   gl_FragColor = clamp(gl_FragColor, 0.0, 1.0);
   gl_FragColor.rgb = mix(clearColor, gl_FragColor.rgb, edge0 * edge1);
-  // gl_FragColor.rgb = mix(gl_FragColor.rgb, vec3(1.0), lake);
+  gl_FragColor.rgb = mix(gl_FragColor.rgb, vec3(1.0), lake);
 }

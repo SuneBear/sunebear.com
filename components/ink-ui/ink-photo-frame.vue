@@ -209,7 +209,7 @@ export default {
     position: relative
     width: 100%
     height: 100%
-    background-color: brand(0)
+    background-color: primary(5)
     border: 2px solid $secondary
     border-width: s('min(var(--border-width), 4vw)')
     border-radius: 10px / 15px
