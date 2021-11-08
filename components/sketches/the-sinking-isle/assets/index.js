@@ -10,6 +10,11 @@ const REPEAT_TEXTURE_OPTIONS = {
   wrapT: THREE.RepeatWrapping
 }
 
+const LINEAR_TEXTURE_OPTIONS = {
+  minFilter: THREE.LinearFilter,
+  magFilter: THREE.LinearFilter
+}
+
 export default [
   {
     name: 'preload',
@@ -18,12 +23,27 @@ export default [
       // Models
       {
         name: 'octopusModel',
-        source: require('./objs/octopus.obj').default,
+        source: require('./objs/octopus.obj').default
       },
       { name: 'testModel', source: require('./gltfs/test.glb').default },
-      { name: 'envTerrainModel', source: require('./gltfs/env-terrain.glb').default },
+      {
+        name: 'envTerrainModel',
+        source: require('./gltfs/env-terrain.glb').default
+      },
 
       // Texture
+      {
+        name: 'blueNoiseTexture',
+        source: require('./textures/bluenoise-0.png'),
+        type: 'texture',
+        options: REPEAT_TEXTURE_OPTIONS
+      },
+      {
+        name: 'lutTexture',
+        source: require('./textures/lut-grasslands.png'),
+        type: 'texture',
+        options: LINEAR_TEXTURE_OPTIONS
+      },
       {
         name: 'testTexture',
         source: require('./textures/test.png'),
@@ -92,7 +112,12 @@ export default [
       },
 
       // Audio
-      { name: 'testAudio', source: require('./audios/test.ogg').default },
+      { name: 'testAudio', source: require('./audios/test.mp3').default },
+      {
+        name: 'atmoRain',
+        source: require('./audios/atmo-rain.mp3').default,
+        options: { loop: true, lock: true, volumeDelta: -15, fadeIn: 1, fadeOut: 1 }
+      },
       { name: 'pin', source: require('./audios/pin.mp3').default }
     ]
   },

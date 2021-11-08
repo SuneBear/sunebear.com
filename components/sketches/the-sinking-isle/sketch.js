@@ -13,10 +13,11 @@ import { Random, autobind, math } from './engine/utils'
 import CameraModule from './modules/camera.module'
 import SubmitFrameModule from './modules/submit-frame.module'
 import RendererModule from './modules/renderer.module'
-import PlayerModule from './modules/player.module'
 import EnviromentGround from './modules/enviroment-ground.module'
 import EnviromentTraceDataTexutreModule from './modules/enviroment-trace.module'
 import EnviromentModule from './modules/enviroment.module'
+import PlayerModule from './modules/player.module'
+import AtmosphereRainModule from './modules/atmosphere-rain.module'
 import TestModule from './modules/test.module'
 
 import assets from './assets'
@@ -33,7 +34,7 @@ class TheSinkingIsleSketch {
       width: window.innerWidth,
       height: window.innerHeight,
       pixelRatio: Math.min(Math.max(window.devicePixelRatio, 1), 2),
-      worldSize: 100,
+      worldSize: 256,
       brandHex: cssVar('--brand'),
       enablePlayground: false
     }
@@ -75,8 +76,8 @@ class TheSinkingIsleSketch {
     this.setupDebug()
     this.setupCamera()
     this.setupRenderer()
-    this.setupPlayer()
     this.setupEnviroment()
+    this.setupPlayer()
     this.setupOtherModules()
 
     this.play()
@@ -124,9 +125,11 @@ class TheSinkingIsleSketch {
   setupAudio() {
     this.audio = new AudioManager(this.asset.getAudioItems())
 
-    if (this.$vm.isMuteAudio) [
+    if (this.$vm.isMuteAudio) {
       this.audio.mute()
-    ]
+    }
+
+    this.audio.unmute()
   }
 
   setupDebug() {
@@ -174,12 +177,6 @@ class TheSinkingIsleSketch {
     this.module.set({ control: this.control })
   }
 
-  setupPlayer() {
-    const playerModule = this.module.add(PlayerModule)
-    this.player = playerModule.instance
-    this.module.set({ player: this.player })
-  }
-
   setupEnviroment() {
     this.enviromentGround = this.module.add(EnviromentGround)
     this.enviromentTrace = this.module.add(EnviromentTraceDataTexutreModule)
@@ -187,7 +184,14 @@ class TheSinkingIsleSketch {
     this.module.set({ enviroment: this.enviroment })
   }
 
+  setupPlayer() {
+    const playerModule = this.module.add(PlayerModule)
+    this.player = playerModule.instance
+    this.module.set({ player: this.player })
+  }
+
   setupOtherModules() {
+    this.module.add(AtmosphereRainModule)
     if (this.config.enablePlayground) {
       this.module.add(TestModule)
     }

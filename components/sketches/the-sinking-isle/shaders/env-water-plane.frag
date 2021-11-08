@@ -22,7 +22,8 @@ varying vec2 vTraceUv;
 varying vec2 vGroundUv;
 // Scale for UV
 #define distortionScale 3.0
-#define causticsScale 2.0
+#define centerStaticCausticsStrength 0.04
+#define causticsScale 4.0
 // #define WATER 1
 void main2 () {
     float lake = 1.0-texture2D(lakeDataMap, vUv).r;
@@ -66,7 +67,7 @@ void main () {
   float foam = waterColorMap.r;
   float lakeCentroidDepth = distance(centroidPosition, vWorldPosition)/lakeSize;
   lakeCentroidDepth = smoothstep(0.0, 1.0, lakeCentroidDepth);
-  float lakeBlurDepth = lakeBlur;
+  float lakeBlurDepth = lakeBlur * 2.0;
   // float lakeBlurDepth = smoothstep(0.0, 1.0, lakeBlur);
   float depth = smoothstep(0.0, 0.75, lake);
   vec3 col = mix(colorA, colorB, lakeBlurDepth);
@@ -78,7 +79,7 @@ void main () {
   // float edgeFalloff = 1.0 - smoothstep(0.8, 0.0, lake);
   float edgeFalloff = smoothstep(ft0-ftf, ft0+ftf, lake + edgeOff2D.r * 0.05);
   #ifdef WATER
-  col += foam * 0.1 * lakeBlurDepth + foam * 0.2 * wakeStrength;
+  col += foam * 0.1 * lakeBlurDepth + foam * 0.2 * (wakeStrength + centerStaticCausticsStrength);
   col = mix(col, groundColor, edgeFalloff);
   #else
   col += foam * mix(0.0, 0.1, lakeBlurDepth) + foam * 0.2 * wakeStrength;

@@ -6,6 +6,7 @@ export default class Audio {
     this.players = {}
 
     this.setupPlayers(audioPlayers)
+
     Tone.context.lookAhead = 0
     Tone.Transport.start()
   }
@@ -22,26 +23,38 @@ export default class Audio {
   // - Config audio options in assets map, store default audio options in players
   play(name, options = {}) {
     const player = this.players[name]
-    let start = Tone.Transport.seconds || player.now()
 
     if (!player) {
       console.warn(`Invaid player name: ${name}`)
+      return
     }
+
+    let start = Tone.Transport.seconds || player.now()
 
     options = {
       ...player.defaultOptions,
       ...options
     }
-    const { delay, fadeInDuration, lock, loop } = options
+    const { delay, fadeIn, lock, loop } = options
 
-    player.loop = loop
+    if (typeof loop !== 'undefined') {
+      player.loop = loop
+    }
 
-    if (fadeInDuration) {
-      player.fadeIn = fadeInDuration
+    if (typeof fadeIn !== 'undefined') {
+      player.fadeIn = fadeIn
+    }
+
+    if (typeof lock !== 'undefined') {
+      player.lock = lock
     }
 
     if (player.state !== 'stopped') {
       start += 0.001
+    }
+
+    if (player.lock && player.state !== 'stopped') {
+      return
     }
 
     player.start(start, delay)

@@ -48,8 +48,15 @@ export default class Loader extends EventEmitter {
       extensions: ['ogg', 'mp3', 'wav'],
       action: async _resource => {
         const player = new Tone.Player
-        const buff = await player.load(_resource.source)
-        buff.toDestination().sync()
+        let buff = await player.load(_resource.source)
+        // buff.toDestination().sync()
+        buff.toDestination()
+        if (_resource.options) {
+          Object.assign(buff, _resource.options)
+          if (_resource.options.volumeDelta) {
+            buff.volume.value = _resource.options.volumeDelta
+          }
+        }
         this.fileLoadEnd(_resource, buff)
       }
     })
@@ -187,6 +194,7 @@ export default class Loader extends EventEmitter {
           try {
             loader.action(_resource)
           } catch (error) {
+            console.log('Asset load error', error)
             this.trigger('error', [ error ])
           }
         } else {

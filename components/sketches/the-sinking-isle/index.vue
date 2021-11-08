@@ -15,13 +15,13 @@ import { loadingSketch } from './loading-2d-sketch'
 export default {
   data(){
     return {
-      isNeedLoading: false,
+      isNeedLoading: !__DEBUG__,
       isLoading: true,
       loadProgress: 0,
       isInited: false,
       isError: false,
       isPlaying: true,
-      isMuteAudio: true,
+      isMuteAudio: false,
       enableUserInput: true,
       enablePlayerDrift: false,
       cameraTarget: 'player'

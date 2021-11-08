@@ -62,6 +62,7 @@ export default class EnviromentGround extends Module {
       return
     }
 
+    // @TODO: Support postComposer renderTarget
     this.projectionMatrix.copy(mainCamera.projectionMatrix)
     terrain.uniforms.isRenderTarget.value = true
     mainCamera.layers.disableAll()

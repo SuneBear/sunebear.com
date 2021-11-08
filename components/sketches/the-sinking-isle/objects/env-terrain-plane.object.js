@@ -36,6 +36,7 @@ export class EnvTerrainPlaneObject extends THREE.Mesh {
     const repeatY = (1.0 / (width / height)) * texRepeat * -1.0
     uvMat.setUvTransform(0, 0, 1, 1, THREE.MathUtils.degToRad(-45), 0, 0)
 
+    this.name = 'ground'
     this.uniforms = {
       time: { value: 0 },
       heightMap: { value: options.heightMapTexture },

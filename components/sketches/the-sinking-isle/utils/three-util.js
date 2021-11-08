@@ -3,6 +3,7 @@ import { spliceOne } from './array'
 
 const _addedEvent = { type: 'added' }
 const _removedEvent = { type: 'removed' }
+const axis = new THREE.Vector3()
 
 export function detachObject(object) {
   if (object.parent) {
@@ -52,6 +53,22 @@ export function pruneUserData(obj) {
       delete userData[k]
     }
   })
+}
+
+// @Source: https://github.com/mattdesl/three-quaternion-from-normal
+export function quaternionFromNormal(normal, quaternion) {
+  quaternion = quaternion || new THREE.Quaternion()
+  // vector is assumed to be normalized
+  if (normal.y > 0.99999) {
+    quaternion.set(0, 0, 0, 1)
+  } else if (normal.y < -0.99999) {
+    quaternion.set(1, 0, 0, 0)
+  } else {
+    axis.set(normal.z, 0, -normal.x).normalize()
+    const radians = Math.acos(normal.y)
+    quaternion.setFromAxisAngle(axis, radians)
+  }
+  return quaternion
 }
 
 export function setPointsToBufferPosition(geometry, points) {

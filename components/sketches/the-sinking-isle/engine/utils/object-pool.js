@@ -54,6 +54,9 @@ export class ObjectPool {
   }
 
   release(item) {
+    if (!item) {
+      item = this._create()
+    }
     this._release(item)
     this.pool.push(item)
   }

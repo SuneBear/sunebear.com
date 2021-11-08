@@ -11,12 +11,13 @@ import Module from '../engine/module'
 import vertexShader from '../shaders/base.vert'
 import fragmentShader from '../shaders/post-processing.frag'
 import { RENDER_LAYERS } from '../utils/constants'
+import { Vector2 } from 'three'
 
 export default class Renderer extends Module {
   constructor(sketch) {
     super(sketch)
 
-    this.usePostprocess = false
+    this.usePostprocess = true
 
     if (this.debug) {
       this.debug.registerPlugin(EssentialsPlugin)
@@ -48,7 +49,9 @@ export default class Renderer extends Module {
       //     this.instance.setClearColor(this.clearColor, 1)
       //   })
       this.debugFolder.addInput(this, 'usePostprocess').on('change', () => {
-        this.postProcess.bloomComposer.renderTarget2.dispose()
+        if (!this.usePostprocess) {
+          this.postProcess.bloomComposer.renderTarget2.dispose()
+        }
       })
     }
 
@@ -66,7 +69,6 @@ export default class Renderer extends Module {
     this.instance.domElement.style.width = '100%'
     this.instance.domElement.style.height = '100%'
 
-    // this.instance.setClearColor(0x414141, 1)
     this.instance.setClearColor(this.clearColor, 1)
     this.instance.setSize(this.config.width, this.config.height)
     this.instance.setPixelRatio(this.config.pixelRatio)
@@ -78,8 +80,7 @@ export default class Renderer extends Module {
     this.instance.shadowMap.enabled = true
     this.instance.shadowMap.autoUpdate = false
     this.instance.shadowMap.needsUpdate = this.instance.shadowMap.enabled
-    // this.instance.toneMapping = THREE.LinearToneMapping
-    // this.instance.toneMappingExposure = 2
+    // this.instance.toneMapping = THREE.ReinhardToneMapping // THREE.LinearToneMapping
 
     this.context = this.instance.getContext()
 
@@ -130,10 +131,11 @@ export default class Renderer extends Module {
 
     if (this.debug) {
       const debugFolder = this.debugFolder.addFolder({
-        title: 'UnrealBloomPass'
+        title: 'UnrealBloomPass',
+        expanded: false
       })
 
-      debugFolder.addInput(this.postProcess.unrealBloomPass, 'enabled', {})
+      // debugFolder.addInput(this.postProcess.unrealBloomPass, 'enabled', {})
 
       debugFolder.addInput(this.postProcess.unrealBloomPass, 'strength', {
         min: 0,
@@ -186,17 +188,39 @@ export default class Renderer extends Module {
     this.postProcess.fxaaPass = new ShaderPass(FXAAShader)
 
     // Final Pass
+    this.postProcess.finalUniforms = {
+      baseTexture: { value: null },
+      bloomTexture: {
+        value: this.postProcess.bloomComposer.renderTarget2.texture
+      },
+      blueNoiseMap: {
+        value: this.asset.items.blueNoiseTexture
+      },
+      lutMap: {
+        value: this.asset.items.lutTexture
+      },
+      exposure: {
+        value: this.instance.toneMappingExposure
+      },
+      resolution: {
+        value: new Vector2(0, 0)
+      },
+      enableBloom: {
+        value: true
+      },
+      enableVignette: {
+        value: true
+      },
+      enableLut: {
+        value: false
+      },
+      enableMono: {
+        value: false
+      }
+    }
     this.postProcess.finalPass = new ShaderPass(
       new THREE.ShaderMaterial({
-        uniforms: {
-          baseTexture: { value: null },
-          bloomTexture: {
-            value: this.postProcess.bloomComposer.renderTarget2.texture
-          },
-          enableGrayMode: {
-            value: false
-          }
-        },
+        uniforms: this.postProcess.finalUniforms,
         vertexShader,
         fragmentShader
       }),
@@ -219,28 +243,67 @@ export default class Renderer extends Module {
         title: 'FinalPostProcessing'
       })
 
+      // debugFolder
+      //   .addInput(
+      //     this.postProcess.finalPass.uniforms.exposure,
+      //     'value',
+      //     {
+      //       label: 'exposure',
+      //       min: 0,
+      //       max: 2
+      //     }
+      //   )
+      //   .on('change', ({ value }) => {
+      //     this.postProcess.finalPass.uniforms.exposure.value = Math.pow(value, 4.0)
+      //   })
+
       debugFolder.addInput(
-        this.postProcess.finalPass.uniforms.enableGrayMode,
+        this.postProcess.finalPass.uniforms.enableBloom,
         'value',
-        { label: 'enableGrayMode' }
+        { label: 'enableBloom' }
+      )
+      debugFolder.addInput(
+        this.postProcess.finalPass.uniforms.enableVignette,
+        'value',
+        { label: 'enableVignette' }
+      )
+      debugFolder.addInput(
+        this.postProcess.finalPass.uniforms.enableLut,
+        'value',
+        { label: 'enableLut' }
+      )
+      debugFolder.addInput(
+        this.postProcess.finalPass.uniforms.enableMono,
+        'value',
+        { label: 'enableMono' }
       )
     }
   }
 
   resize() {
+    const { width, height, pixelRatio } = this.config
+
     // Instance
-    this.instance.setSize(this.config.width, this.config.height)
-    this.instance.setPixelRatio(this.config.pixelRatio)
+    this.instance.setSize(width, height)
+    this.instance.setPixelRatio(pixelRatio)
 
     // Post process
-    const { fxaaPass, composer } = this.postProcess
-    composer.setSize(this.config.width, this.config.height)
-    composer.setPixelRatio(this.config.pixelRatio)
+    const { fxaaPass, finalUniforms, composer } = this.postProcess
+    composer.setSize(width, height)
+    composer.setPixelRatio(pixelRatio)
 
-    fxaaPass.material.uniforms['resolution'].value.x =
-      1 / (this.config.width * this.config.pixelRatio)
-    fxaaPass.material.uniforms['resolution'].value.y =
-      1 / (this.config.height * this.config.pixelRatio)
+    fxaaPass.material.uniforms['resolution'].value.x = 1 / (width * pixelRatio)
+    fxaaPass.material.uniforms['resolution'].value.y = 1 / (height * pixelRatio)
+
+    finalUniforms.resolution.value.set(width, height)
+  }
+
+  render() {
+    if (this.usePostprocess) {
+      this.postProcess.composer.render()
+    } else {
+      this.instance.render(this.scene, this.camera)
+    }
   }
 
   update(delta) {
@@ -258,14 +321,13 @@ export default class Renderer extends Module {
     if (this.usePostprocess) {
       // Render single layer
       this.camera.layers.set(RENDER_LAYERS.BLOOM)
+      this.instance.clear()
       this.postProcess.bloomComposer.render()
       this.instance.clearDepth()
       // Render all layers
       this.camera.layers.enableAll()
-      this.postProcess.composer.render()
-    } else {
-      this.instance.render(this.scene, this.camera)
     }
+    this.render()
 
     // Let's assume frame tasks should always happen
     const task = this.submitFrame.nextFrameTask()

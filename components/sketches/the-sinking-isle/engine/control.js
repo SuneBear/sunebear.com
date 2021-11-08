@@ -1,6 +1,9 @@
 import * as THREE from 'three'
 import EventEmitter from './utils/event-emitter'
 import { autobind } from './utils/decorators'
+import * as Tone from 'tone'
+
+let isInitedAudioContext = false
 
 // Currently support keyboard, mouse, touch inputs
 export default class Control extends EventEmitter {
@@ -186,6 +189,11 @@ export default class Control extends EventEmitter {
 
   @autobind
   handleMousedown(e) {
+    // @Hack: Fix safari audio issue
+    if (!isInitedAudioContext) {
+      Tone.start()
+      isInitedAudioContext = true
+    }
     if (this.shouldIgnoreTap(e)) {
       return
     }

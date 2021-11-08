@@ -49,10 +49,10 @@ export default class Enviroment extends Module {
     }
 
     const forestColors = [
-      { name: "forest-items-triangle", color: "#9D9166" },
-      { name: "forest-items-dry", color: "#59622a" },
-      { name: "forest-items-autumn", color: "#745C13" },
-      { name: "forest-items-triangle", color: "#766D43" },
+      { name: 'forest-items-triangle', color: '#9D9166' },
+      { name: 'forest-items-dry', color: '#59622a' },
+      { name: 'forest-items-autumn', color: '#745C13' },
+      { name: 'forest-items-triangle', color: '#766D43' }
     ]
 
     const grasslandsColors = [
@@ -64,10 +64,10 @@ export default class Enviroment extends Module {
 
     const tundraColors = [
       {
-        name: "tundra-items-basic",
+        name: 'tundra-items-basic',
         // color: "#797f84",
-        color: "#2a3956",
-      },
+        color: '#2a3956'
+      }
       // { name: "tundra-items-basic", color: "#898e91" },
       // { name: "tundra-items-snow", color: "#d9d9d9" },
       // { name: "grasslands-field", color: "#5a823a" },
@@ -75,6 +75,7 @@ export default class Enviroment extends Module {
     ]
 
     this.lakeGroup = new THREE.Group()
+    this.lakeGroup.name = 'lakeGroup'
     this.lakeGeo = generateLakeGeo(geoConfig)
     this.envDataTextureMap = generateEnvDataTextureMap({
       ...geoConfig,
@@ -85,7 +86,7 @@ export default class Enviroment extends Module {
       groundColors: [
         // ...forestColors,
         // ...grasslandsColors,
-        ...tundraColors,
+        ...tundraColors
       ]
     })
 
@@ -99,7 +100,9 @@ export default class Enviroment extends Module {
             value: new THREE.Color(this.config.brandHex)
           },
           causticsMap: {
-            value: this.asset.items[hasIce ? 'iceCausticsTexture' : 'waterCausticsTexture']
+            value: this.asset.items[
+              hasIce ? 'iceCausticsTexture' : 'waterCausticsTexture'
+            ]
           },
           distortMap: {
             value: this.asset.items.waterDistortTexture
@@ -122,7 +125,7 @@ export default class Enviroment extends Module {
     this.terrain = new EnvTerrainPlaneObject({
       terrainGeo: terrainModel.children[0].geometry,
       hasIce: this.lakeGeo.hasIce,
-      planeScale: 1.5,
+      planeScale: 1.2,
       planeSize: this.config.worldSize,
       heightMapTexture: this.asset.items.terrainHightmapTexture,
       uniforms: {
@@ -141,6 +144,20 @@ export default class Enviroment extends Module {
     })
     this.terrain.layers.set(RENDER_LAYERS.GROUND)
     this.scene.add(this.terrain)
+
+    const quadGeo = new THREE.PlaneBufferGeometry(1, 1, 1, 1)
+    quadGeo.rotateX(-Math.PI / 2)
+    this.terrainDepth = new THREE.Mesh(
+      quadGeo,
+      new THREE.MeshBasicMaterial({
+        color: new THREE.Color(0x163d84)
+      })
+    )
+    this.terrainDepth.layers.set(RENDER_LAYERS.GROUND_DEPTH)
+    this.terrainDepth.scale.set(this.config.worldSize, 1, this.config.worldSize)
+    this.terrainDepth.position.y = -10
+    this.terrainDepth.name = 'ground-depth'
+    this.scene.add(this.terrainDepth)
   }
 
   setupOctopus() {
@@ -222,7 +239,7 @@ export default class Enviroment extends Module {
 
   update(delta, elapsed) {
     this.lakeGroup.children.map(lake => (lake.uniforms.time.value += delta))
-    this.updatePostUnderWaterDistort(delta)
+    // this.updatePostUnderWaterDistort(delta)
   }
 
   updatePostUnderWaterDistort(delta) {
@@ -236,7 +253,9 @@ export default class Enviroment extends Module {
     this.renderer.render(this.scene, this.camera)
     this.renderer.setRenderTarget(null)
     this.lakeGroup.children.map(lake => (lake.uniforms.isMask.value = false))
-    this.renderer.module.postProcess.composer.render()
-    this.renderer.render(this.postScene, this.postCamera)
+    this.renderer.module.render()
+    if (this.renderer.module.usePostprocess) {
+      this.renderer.render(this.postScene, this.postCamera)
+    }
   }
 }

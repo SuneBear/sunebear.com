@@ -52,7 +52,7 @@ void main () {
     vTraceUv = vDataScreen.xy * 0.5 + 0.5;
     #endif
     vUv = uv;
-    vTextureUv = uv * uvScale * uvRepeatScale;
+    vTextureUv = uv * uvScale * uvRepeatScale * 0.5;
     vTextureUv = (uvTransform * vec3(vTextureUv, 1.0)).xy;
     vWorldPosition = worldPos.xyz;
     gl_Position = projectionMatrix * viewMatrix * worldPos;

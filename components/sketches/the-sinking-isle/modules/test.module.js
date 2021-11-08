@@ -17,6 +17,8 @@ export default class Test extends Module {
 
     this.setupTextures()
     this.setupInstance()
+    // Need move this hook to ModuleManager? or need a param isAutoPlay
+    this.play()
   }
 
   setupEvents() {

@@ -4,6 +4,7 @@ import { math } from '../engine/utils'
 
 import { PlayerObject } from '../objects/player.object'
 import { PlayerPhysicsSpring } from '../utils/player-physics-spring'
+import { RENDER_LAYERS } from '../utils/constants'
 
 export default class Player extends Module {
   constructor(sketch) {
@@ -16,12 +17,12 @@ export default class Player extends Module {
   }
 
   setupInstance() {
-    this.instance = new THREE.Group({
-      name: 'player'
-    })
+    this.instance = new THREE.Group()
+    this.instance.name = 'player'
     this.instance.module = this
 
     this.playerObject = new PlayerObject()
+    this.playerObject.layers.enable(RENDER_LAYERS.BLOOM)
 
     this.instance.add(this.playerObject)
     this.scene.add(this.instance)
@@ -29,7 +30,8 @@ export default class Player extends Module {
 
   setupUnderStateSystem() {
     this.instance.underState = {
-      isInLake: true
+      isInLake: true,
+      lake: this.enviroment.lakeGeo.lakeInfos[0]
     }
   }
 

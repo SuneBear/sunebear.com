@@ -22,8 +22,9 @@ export default class Stats {
 
   deactivate() {
     this.active = false
-
-    document.body.removeChild(this.instance.dom)
+    try {
+      document.body.removeChild(this.instance.dom)
+    } catch(error) {}
   }
 
   setRenderPanel(_context) {

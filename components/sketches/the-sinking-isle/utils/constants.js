@@ -2,10 +2,10 @@ export const RENDER_LAYERS = {
   ENTIRE: 0,
   DEFAULT: 0,
   // Effects
-  BLOOM: 0,
   GRAY: 2,
   WATER: 3,
   GROUND: 100,
   GROUND_ELEMENTS: 101,
-  GROUND_DEPTH: 102
+  GROUND_DEPTH: 102,
+  BLOOM: 10000
 }
