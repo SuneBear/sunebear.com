@@ -108,6 +108,7 @@ export default {
   height: 100%
   left: 0
   top: 0
+  user-select none
 
   > *,
   .canvas-wrapper canvas
@@ -117,8 +118,8 @@ export default {
     left: 0
     top: 0
     transition: opacity 1000ms, transform 1000ms
-
     &.fade-out
+      will-change: transform, opacity
       opacity: 0
       transform: scale(1.5)
 

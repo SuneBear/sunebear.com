@@ -20,7 +20,8 @@ export default class Audio {
 
   // @TODO:
   // - Support lock option, ignore duplicate play
-  // - Config audio options in assets map, store default audio options in players
+  // - Support play post-loaded audio resource
+  // - Support deck play an audio series?
   play(name, options = {}) {
     const player = this.players[name]
 
@@ -58,6 +59,8 @@ export default class Audio {
     }
 
     player.start(start, delay)
+
+    return player
   }
 
   pause() {

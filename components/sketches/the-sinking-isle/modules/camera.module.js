@@ -41,7 +41,7 @@ export default class CameraModule extends Module {
 
     const normalPosY = this.config.worldSize / 6
     this.modePresets = [
-      { name: 'normal', fov: 15, zoom: 1, position: [ -2, normalPosY, normalPosY * 1.5 ] },
+      { name: 'normal', fov: 15, zoom: 1, position: [ -2, normalPosY, normalPosY * 1.4 ] },
       { name: 'god', fov: 30, zoom: 1, position: [ 0, 80, 0 ] },
       { name: 'ortho', fov: 45, zoom: 1, position: [ 0, this.config.worldSize * 3.8, 0 ] }
     ]

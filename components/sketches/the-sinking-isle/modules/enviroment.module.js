@@ -26,7 +26,10 @@ export default class Enviroment extends Module {
   }
 
   setupScene() {
-    this.scene.background = new THREE.Color(0xffffff)
+    // @TODO: Support multiple scenes
+    // @values: lake | forest | tundra
+    this.name = 'lake'
+    this.scene.background = new THREE.Color(0x000000)
   }
 
   setupLake() {

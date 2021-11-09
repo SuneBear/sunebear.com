@@ -25,7 +25,7 @@ export default class AtmosphereWind extends Module {
 
     const pathLines = pathDatas.map(data => {
       const mesh = new Line3D({
-        thickness: 0.2,
+        thickness: 0.1,
         bloom: 0,
         dotted: false,
         taper: false
@@ -103,10 +103,10 @@ export default class AtmosphereWind extends Module {
       const x = target.x + tmp2DArr[0]
       const z = target.z + tmp2DArr[1]
       mesh.position.set(x, random.range(2, 4), z)
-      mesh.scale.setScalar(random.range(1, 6))
+      mesh.scale.setScalar(random.range(1, 4))
       mesh.rotation.y = THREE.MathUtils.degToRad(45)
       mesh.material.uniforms.drawing.value = true
-      mesh.material.uniforms.opacity.value = 0.4
+      mesh.material.uniforms.opacity.value = 0.3
       mesh.userData._lineThickness = random.range(0.3, 0.3)
 
       const wind = mesh.userData

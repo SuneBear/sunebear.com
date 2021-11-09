@@ -23,6 +23,7 @@ export default class Module {
     this.scene = sketch.scene
     this.camera = sketch.camera
     this.renderer = sketch.renderer
+    this.tween = sketch.tween
     this.submitFrame = sketch.submitFrame
     this.player = sketch.player || new THREE.Object3D()
     this.enviromentGround = sketch.enviromentGround

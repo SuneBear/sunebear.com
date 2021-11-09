@@ -231,6 +231,10 @@ export default class Control extends EventEmitter {
 
   @autobind
   handleTouchstart(e) {
+    if (!isInitedAudioContext) {
+      Tone.start()
+      isInitedAudioContext = true
+    }
     this.tapState.hasTouchEvents = true
 
     if (this.shouldIgnoreTap(e)) {

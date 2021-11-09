@@ -15,6 +15,19 @@ const LINEAR_TEXTURE_OPTIONS = {
   magFilter: THREE.LinearFilter
 }
 
+const TRACE_AUDIO_OPTIONS = {
+  lock: true,
+  fadeIn: 1,
+  fadeOut: 1,
+  volumeDelta: -5,
+  envelope: {
+    attack: 0.2,
+    sustain: 1,
+    release: 0.5,
+    decay: 0
+  }
+}
+
 export default [
   {
     name: 'preload',
@@ -118,6 +131,11 @@ export default [
         source: require('./audios/atmo-rain.mp3').default,
         options: { loop: true, lock: true, volumeDelta: -15, fadeIn: 1, fadeOut: 1 }
       },
+      { name: 'waterTrace1', source: require('./audios/water-01.mp3').default, options: TRACE_AUDIO_OPTIONS },
+      { name: 'waterTrace2', source: require('./audios/water-02.mp3').default, options: TRACE_AUDIO_OPTIONS },
+      { name: 'iceTrace1', source: require('./audios/ice-01.mp3').default, options: TRACE_AUDIO_OPTIONS },
+      { name: 'iceTrace2', source: require('./audios/ice-02.mp3').default, options: TRACE_AUDIO_OPTIONS },
+      { name: 'iceTrace3', source: require('./audios/ice-03.mp3').default, options: TRACE_AUDIO_OPTIONS },
       { name: 'pin', source: require('./audios/pin.mp3').default }
     ]
   },

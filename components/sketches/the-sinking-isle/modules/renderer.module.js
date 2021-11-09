@@ -11,7 +11,6 @@ import Module from '../engine/module'
 import vertexShader from '../shaders/base.vert'
 import fragmentShader from '../shaders/post-processing.frag'
 import { RENDER_LAYERS } from '../utils/constants'
-import { Vector2 } from 'three'
 
 export default class Renderer extends Module {
   constructor(sketch) {
@@ -35,6 +34,10 @@ export default class Renderer extends Module {
     this.setPostProcess()
 
     this.resize()
+    if (!this.debug) {
+      // @TODO: Optimize loading->scene transition
+      this.setFadeInTransition({ delay: 0.1 })
+    }
   }
 
   setInstance() {
@@ -80,7 +83,7 @@ export default class Renderer extends Module {
     this.instance.shadowMap.enabled = true
     this.instance.shadowMap.autoUpdate = false
     this.instance.shadowMap.needsUpdate = this.instance.shadowMap.enabled
-    // this.instance.toneMapping = THREE.ReinhardToneMapping // THREE.LinearToneMapping
+    this.instance.toneMapping = THREE.ReinhardToneMapping // THREE.LinearToneMapping
 
     this.context = this.instance.getContext()
 
@@ -115,6 +118,7 @@ export default class Renderer extends Module {
      */
     // Render pass
     this.postProcess.renderPass = new RenderPass(this.scene, this.camera)
+    this.postProcess.renderPass.clearColor = this.clearColor
 
     const effectCopy = new ShaderPass(CopyShader)
     effectCopy.renderToScreen = false
@@ -122,8 +126,8 @@ export default class Renderer extends Module {
     // Bloom pass
     this.postProcess.unrealBloomPass = new UnrealBloomPass(
       new THREE.Vector2(this.sizes.width, this.sizes.height),
-      0.12,
-      0.22,
+      0.98,
+      0.34,
       0.2
     )
 
@@ -159,11 +163,9 @@ export default class Renderer extends Module {
     /**
      * Effect composer
      */
-    const RenderTargetClass =
-      this.config.pixelRatio >= 2
+    const RenderTargetClass = THREE.WebGLMultisampleRenderTarget
         ? THREE.WebGLRenderTarget
         : THREE.WebGLMultisampleRenderTarget
-    // const RenderTargetClass = THREE.WebGLRenderTarget
     this.renderTarget = new RenderTargetClass(
       this.config.width,
       this.config.height,
@@ -175,14 +177,10 @@ export default class Renderer extends Module {
         encoding: THREE.sRGBEncoding
       }
     )
-    this.postProcess.bloomComposer = new EffectComposer(
-      this.instance,
-      this.renderTarget
-    )
+    this.postProcess.bloomComposer = new EffectComposer(this.instance)
     this.postProcess.bloomComposer.renderToScreen = false
     this.postProcess.bloomComposer.addPass(this.postProcess.renderPass)
     this.postProcess.bloomComposer.addPass(this.postProcess.unrealBloomPass)
-    this.postProcess.bloomComposer.addPass(effectCopy)
 
     // Anti-Alias Pass
     this.postProcess.fxaaPass = new ShaderPass(FXAAShader)
@@ -202,8 +200,10 @@ export default class Renderer extends Module {
       exposure: {
         value: this.instance.toneMappingExposure
       },
+      fadeToClearColor: { value: new THREE.Color('#ffffff') },
+      fadeToClearProgress: { value: this.debug ? 0 : 1 },
       resolution: {
-        value: new Vector2(0, 0)
+        value: new THREE.Vector2(0, 0)
       },
       enableBloom: {
         value: true
@@ -243,19 +243,20 @@ export default class Renderer extends Module {
         title: 'FinalPostProcessing'
       })
 
-      // debugFolder
-      //   .addInput(
-      //     this.postProcess.finalPass.uniforms.exposure,
-      //     'value',
-      //     {
-      //       label: 'exposure',
-      //       min: 0,
-      //       max: 2
-      //     }
-      //   )
-      //   .on('change', ({ value }) => {
-      //     this.postProcess.finalPass.uniforms.exposure.value = Math.pow(value, 4.0)
-      //   })
+      debugFolder
+        .addInput(
+          this.postProcess.finalPass.uniforms.exposure,
+          'value',
+          {
+            label: 'exposure',
+            min: 0,
+            max: 2
+          }
+        )
+        .on('change', ({ value }) => {
+          this.instance.toneMappingExposure = Math.pow(value, 4.0)
+          this.postProcess.finalPass.uniforms.exposure.value = Math.pow(value, 4.0)
+        })
 
       debugFolder.addInput(
         this.postProcess.finalPass.uniforms.enableBloom,
@@ -321,7 +322,6 @@ export default class Renderer extends Module {
     if (this.usePostprocess) {
       // Render single layer
       this.camera.layers.set(RENDER_LAYERS.BLOOM)
-      this.instance.clear()
       this.postProcess.bloomComposer.render()
       this.instance.clearDepth()
       // Render all layers
@@ -342,6 +342,16 @@ export default class Renderer extends Module {
     if (this.fpsGraph) {
       this.fpsGraph.end()
     }
+  }
+
+  setFadeInTransition(options) {
+    this.tween.add({
+      target: this.postProcess.finalUniforms.fadeToClearProgress,
+      value: [ 1, 0 ],
+      duration: 1,
+      easing: 'easeInOutSine',
+      ...options
+    })
   }
 
   destroy() {

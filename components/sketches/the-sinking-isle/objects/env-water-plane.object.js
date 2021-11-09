@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import earcut from 'earcut'
 import { math } from '~/utils/math'
+import { isMobile, isSafari } from '~/utils/env'
 
 import vertexShader from '../shaders/env-plane.vert'
 import fragmentShader from '../shaders/env-water-plane.frag'
@@ -51,12 +52,13 @@ export class EnvWaterPlaneObject extends THREE.Mesh {
     if (lakeInfo) {
       this.generateGeoByLakeInfo(lakeInfo, width, height)
       this.renderOrder = -1
-      this.position.y = 0.05
+      this.position.y = isMobile() && isSafari() ? 0.1 : 0.05
     } else {
       this.geometry = new THREE.PlaneGeometry(width, height, width, height)
       this.rotation.x = -Math.PI / 2
     }
 
+    // @FIXME: Wierd plane stripe in iOS Safari
     this.material = new THREE.ShaderMaterial({
       vertexShader,
       fragmentShader,

@@ -129,7 +129,7 @@ export default class AtmosphereRain extends Module {
     const newSpawnDelay = () => random.range(0.075, 0.2)
     let spawnTimer = 0
     let spawnDelay = newSpawnDelay()
-    const target = this.player
+    const player = this.player
     const underPlayer = this.player.underState
     let isRaining = false
     let lastLake = null
@@ -187,7 +187,7 @@ export default class AtmosphereRain extends Module {
           spawnDelay = newSpawnDelay()
           const count = random.rangeFloor(1, 6)
           for (let i = 0; i < count; i++) {
-            if (!spawn(target.position)) break
+            if (!spawn(player.targetPos)) break
           }
         }
       }

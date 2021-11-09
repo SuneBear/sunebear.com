@@ -8,6 +8,8 @@ uniform bool enableBloom;
 uniform bool enableVignette;
 uniform bool enableLut;
 uniform bool enableMono;
+uniform float fadeToClearProgress;
+uniform vec3 fadeToClearColor;
 varying vec2 vUv;
 
 // Blend Functions
@@ -88,10 +90,9 @@ void main() {
   // Effect: Bloom
   // @FIXME: Switch a better way to blend bloom, and mix with ToneMapping
   vec4 bloomColor = vec4(1.0) * texture2D(bloomTexture, vUv);
-  if (baseColor.a > 0.5) {
-    bloomColor = 0.2 * bloomColor;
-  }
-  vec4 blendColor = enableBloom ? baseColor + bloomColor : baseColor;
+  vec4 mixedBloomColor = (1.0 - ((1.0 - baseColor) * (1.0 - bloomColor)));
+  float bloomAmount = 0.8;
+  vec4 blendColor = enableBloom ? mixedBloomColor * bloomAmount + baseColor * (1. - bloomAmount) : baseColor;
 
   // Color: ToneMapping
   // blendColor.rgb = linearToneMapping(blendColor.rgb, exposure);
@@ -120,4 +121,9 @@ void main() {
   }
 
   gl_FragColor = blendColor;
+
+  // Transition: FadeToClear
+  // @TODO: Support ink mask transition
+  gl_FragColor.rgb = mix(gl_FragColor.rgb, vec3(fadeToClearColor), fadeToClearProgress);
+  gl_FragColor.rgb = clamp(gl_FragColor.rgb, 0.0, 1.0);
 }

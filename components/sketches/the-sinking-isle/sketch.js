@@ -11,12 +11,15 @@ import StatsManager from './engine/stats'
 import { Random, autobind, math } from './engine/utils'
 
 import CameraModule from './modules/camera.module'
+import TweenModule from './modules/tween.module'
 import SubmitFrameModule from './modules/submit-frame.module'
 import RendererModule from './modules/renderer.module'
 import EnviromentGround from './modules/enviroment-ground.module'
 import EnviromentTraceDataTexutreModule from './modules/enviroment-trace.module'
+import EnviromentTraceBubblesModule from './modules/enviroment-trace-bubbles.module'
 import EnviromentModule from './modules/enviroment.module'
 import PlayerModule from './modules/player.module'
+import AtmosphereGlowDotsModule from './modules/atmosphere-glow-dots.module'
 import AtmosphereRainModule from './modules/atmosphere-rain.module'
 import AtmosphereWindModule from './modules/atmosphere-wind.module'
 import TestModule from './modules/test.module'
@@ -75,6 +78,7 @@ class TheSinkingIsleSketch {
     this.setupEvents()
     this.setupAudio()
     this.setupDebug()
+    this.setupTween()
     this.setupCamera()
     this.setupRenderer()
     this.setupEnviroment()
@@ -134,6 +138,10 @@ class TheSinkingIsleSketch {
     this.audio.unmute()
   }
 
+  setupTween() {
+    this.tween = this.module.add(TweenModule)
+  }
+
   setupDebug() {
     this.config.debug = this.$vm.enableDebug
 
@@ -183,6 +191,8 @@ class TheSinkingIsleSketch {
     this.enviromentGround = this.module.add(EnviromentGround)
     this.enviromentTrace = this.module.add(EnviromentTraceDataTexutreModule)
     this.enviroment = this.module.add(EnviromentModule)
+    this.module.add(EnviromentTraceBubblesModule)
+
     this.module.set({ enviroment: this.enviroment })
   }
 
@@ -193,6 +203,7 @@ class TheSinkingIsleSketch {
   }
 
   setupOtherModules() {
+    this.module.add(AtmosphereGlowDotsModule)
     this.module.add(AtmosphereRainModule)
     this.module.add(AtmosphereWindModule)
     if (this.config.enablePlayground) {

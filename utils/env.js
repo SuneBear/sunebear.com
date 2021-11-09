@@ -3,3 +3,7 @@ export const isMobile = (ua = navigator.userAgent) => {
     ua
   )
 }
+
+export const isSafari = (ua = navigator.userAgent) => {
+  return /^((?!chrome|android).)*safari/i.test(ua)
+}

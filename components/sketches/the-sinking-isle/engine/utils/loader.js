@@ -56,6 +56,9 @@ export default class Loader extends EventEmitter {
           if (_resource.options.volumeDelta) {
             buff.volume.value = _resource.options.volumeDelta
           }
+          if (_resource.options.envelope) {
+            buff.connect(new Tone.AmplitudeEnvelope(_resource.options.envelope))
+          }
         }
         this.fileLoadEnd(_resource, buff)
       }

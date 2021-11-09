@@ -1,7 +1,14 @@
-import * as eases from "eases"
+import * as eases from 'eases'
 
 // Get playhead in 0..1 range via elapsed and duration in seconds
-export function getEasePlayhead(params = {}, animateDuration, duration, delay, endTime, ease) {
+export function getEasePlayhead(
+  params = {},
+  animateDuration,
+  duration,
+  delay,
+  endTime,
+  ease
+) {
   if (typeof params === 'number') {
     params = {
       // elapsed === time
@@ -40,7 +47,7 @@ export function getEasePlayhead(params = {}, animateDuration, duration, delay, e
     playhead = 1
   }
 
-  playhead = typeof ease === 'string' ? eases[ease](t) : ease(playhead)
+  playhead = typeof ease === 'string' ? eases[ease](playhead) : ease(playhead)
 
   return playhead
 }
