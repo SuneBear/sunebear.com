@@ -1,5 +1,7 @@
-import { random } from './engine/utils/random'
+import { Random } from './engine/utils/random'
 import { sleep } from './engine/utils/async'
+
+const random = Random(true, 'Loading')
 
 // @TODO: Adjust sketch transition before destory
 // @TODO: Add title of main sketch

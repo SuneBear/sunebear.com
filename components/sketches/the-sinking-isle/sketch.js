@@ -18,6 +18,7 @@ import EnviromentTraceDataTexutreModule from './modules/enviroment-trace.module'
 import EnviromentModule from './modules/enviroment.module'
 import PlayerModule from './modules/player.module'
 import AtmosphereRainModule from './modules/atmosphere-rain.module'
+import AtmosphereWindModule from './modules/atmosphere-wind.module'
 import TestModule from './modules/test.module'
 
 import assets from './assets'
@@ -60,7 +61,7 @@ class TheSinkingIsleSketch {
     this.$vm = null
 
     // Utils
-    this.random = Random(this.config.seed)
+    this.random = Random(this.config.seed, 'Sketch')
   }
 
   async init({
@@ -80,6 +81,7 @@ class TheSinkingIsleSketch {
     this.setupPlayer()
     this.setupOtherModules()
 
+    this.resize()
     this.play()
   }
 
@@ -192,6 +194,7 @@ class TheSinkingIsleSketch {
 
   setupOtherModules() {
     this.module.add(AtmosphereRainModule)
+    this.module.add(AtmosphereWindModule)
     if (this.config.enablePlayground) {
       this.module.add(TestModule)
     }

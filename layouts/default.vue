@@ -38,6 +38,7 @@ export default {
 
 .page
   padding: 30px 10px
+  min-height: 100%
 
   \.global-frame.is-show-static-frame &
     padding: 60px 20px 100px

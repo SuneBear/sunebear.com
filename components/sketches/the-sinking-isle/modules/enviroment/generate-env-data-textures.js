@@ -17,7 +17,7 @@ export const generateEnvDataTextureMap = ({
   waterColors,
   enableDebug = false
 }) => {
-  random = Random(Random.getRandomSeed())
+  random = Random(null, 'EnvData')
   convertCellPolysToColorIndex({ g: geo, groundColors, random})
 
   // Define functions

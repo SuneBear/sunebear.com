@@ -18,5 +18,5 @@ export default {
 
 <style lang="stylus">
 .page-index
-  null
+  background: $secondary
 </style>

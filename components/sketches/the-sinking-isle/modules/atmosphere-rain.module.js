@@ -3,14 +3,14 @@ import * as eases from 'eases'
 
 import Module from '../engine/module'
 import { Random, math, ObjectPool } from '../engine/utils'
-import CapsuleBufferGeometry from '../utils//hack-deps/three/capsule-geometry'
+import CapsuleBufferGeometry from '../utils/hack-deps/three/capsule-geometry'
 import { detachObject, quaternionFromNormal } from '../utils/three-util'
 
 export default class AtmosphereRain extends Module {
   constructor(sketch) {
     super(sketch)
 
-    const random = Random()
+    const random = Random(true, 'Rain')
 
     const group = new THREE.Group()
     group.name = 'atmosphereRain'
@@ -20,8 +20,8 @@ export default class AtmosphereRain extends Module {
     group.add(splatterGroup)
     this.scene.add(group)
 
-    const radius = 0.012
-    const baseLength = 0.18
+    const radius = 0.01
+    const baseLength = 0.12
     const dummyGeometry = new THREE.BufferGeometry()
     const geometries = [baseLength, baseLength * 2].map(length => {
       const geometry = new CapsuleBufferGeometry(
@@ -143,9 +143,9 @@ export default class AtmosphereRain extends Module {
 
     this.processRain = (dt) => {
       const env = this.enviroment.lakeGeo
-      rainCooldown -= dt
-
       let canSpawn = env && env.lakes.length
+
+      rainCooldown -= dt
 
       if (canSpawn && underPlayer.isInLake) {
         if (!isRaining) {

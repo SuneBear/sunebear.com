@@ -189,11 +189,6 @@ export default class Control extends EventEmitter {
 
   @autobind
   handleMousedown(e) {
-    // @Hack: Fix safari audio issue
-    if (!isInitedAudioContext) {
-      Tone.start()
-      isInitedAudioContext = true
-    }
     if (this.shouldIgnoreTap(e)) {
       return
     }
@@ -332,6 +327,11 @@ export default class Control extends EventEmitter {
   // Using tap to combine mouse and touch
   @autobind
   handleTap(e) {
+    // @Hack: Fix safari audio issue
+    if (!isInitedAudioContext) {
+      Tone.start()
+      isInitedAudioContext = true
+    }
     this.trigger('tap', [e])
   }
 

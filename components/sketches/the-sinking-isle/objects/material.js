@@ -6,7 +6,11 @@ export const commonShaderUniforms = {
     value: 0
   },
 
-  walkDataMap: {
+  resolution: {
+    value: new THREE.Vector2(0, 0)
+  },
+
+  envTraceMap: {
     value: new THREE.Texture()
   }
 
