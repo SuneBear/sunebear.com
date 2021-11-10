@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 
-export class PlayerObject extends THREE.Mesh {
+export class CharacterObject extends THREE.Mesh {
 
   constructor(options) {
     super()

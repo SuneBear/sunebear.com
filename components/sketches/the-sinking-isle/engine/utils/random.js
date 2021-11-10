@@ -33,7 +33,9 @@ export const Random = (seedOrTrueRandom, name = 'Unnamed') => {
     seed = Random.nextSeed()
   }
 
-  devLog(`${name} ${type} Random Seed:`, [...seed])
+  if (name) {
+    devLog(`${name} ${type} Random Seed:`, [...seed])
+  }
 
   const prng = PCG(seed)
   let noiseGenerator = new SimplexNoise(seed)

@@ -5,11 +5,12 @@ import { theSinkingIsleSketch } from '../sketch'
 
 // @TODO:
 // - Do more in lifecycles, like register/remove data, events, animations
+// - Freeze common managers, can use Object.defineProperty
 export default class Module {
 
   constructor(sketch = theSinkingIsleSketch, attributes) {
+    // Common managers or modules
     this.sketch = sketch
-
     this.debug = sketch.debug
     this.stats = sketch.stats
     this.config = sketch.config
@@ -35,6 +36,7 @@ export default class Module {
 
     this.random = sketch.random
 
+    // States
     this.enabled = true
     this.priority = 0
 

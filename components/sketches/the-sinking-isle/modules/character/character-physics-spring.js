@@ -1,8 +1,7 @@
 import * as THREE from 'three'
-import { Vector3 } from 'three'
-import { math } from '../engine/utils'
+import { math } from '../../engine/utils'
 
-export function PlayerPhysicsSpring() {
+export function CharacterPhysicsSpring() {
   var Cd = 0.47 // Dimensionless
   var rho = 1.22 // kg / m^3
   var radius = 20

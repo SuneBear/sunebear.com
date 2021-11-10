@@ -31,7 +31,7 @@ export default class Tween extends Module {
       duration: 0.25,
       delay: 0,
       lock: true,
-      // @REF: https://animejs.com/documentation/#linearEasing
+      // @REF: https://animejs.com/documentation/#pennerFunctions
       easing: 'linear',
       autoPlay: false,
       killWhenFinished: true

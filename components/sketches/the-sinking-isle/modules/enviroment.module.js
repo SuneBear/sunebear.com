@@ -1,6 +1,8 @@
 import * as THREE from 'three'
 import Module from '../engine/module'
 
+import { EnvironmentGrid } from './enviroment/env-grid'
+import { generateEnvSamples } from './enviroment/generate-env-samples'
 import { generateLakeGeo } from './enviroment/generate-env-lake-geo'
 import { generateEnvDataTextureMap } from './enviroment/generate-env-data-textures'
 import { EnvTerrainPlaneObject } from '../objects/env-terrain-plane.object'
@@ -19,36 +21,42 @@ export default class Enviroment extends Module {
     super(sketch)
 
     this.setupScene()
+    this.setupInfo()
+    this.setupGrid()
     this.setupLake()
+    this.setupSamples()
     this.setupTerrain()
     // this.setupOctopus()
     this.setupPostUnderWaterDistort()
   }
 
   setupScene() {
-    // @TODO: Support multiple scenes
+    // @TODO: Support multiple scenes, and smooth switch
     // @values: lake | forest | tundra
     this.name = 'lake'
-    this.scene.background = new THREE.Color(0x000000)
+
+    // @TODO: Only show black scene when reneder bloom effect
+    this.scene.background = new THREE.Color(0x000000) // new THREE.Color(0xffffff)
   }
 
-  setupLake() {
+  setupInfo() {
     const { worldSize } = this.config
-
-    const hasIce = false
     const width = worldSize
     const height = worldSize
     const seed = [51360, 10783, 25248, 59674] // Random.getRandomSeed()
 
-    const geoConfig = {
-      hasIce,
+    this.envState = {
+      name: 'the-sinking-isle',
+      hasLakes: true,
+      hasIce: false,
       width,
       height,
       bounds: [
         [-width / 2, -height / 2],
         [width / 2, height / 2]
       ],
-      seed
+      seed,
+      module: this
     }
 
     const forestColors = [
@@ -77,26 +85,46 @@ export default class Enviroment extends Module {
       // { name: "grasslands-yellow", color: "#8D7721" },
     ]
 
+    this.groundColors = [
+      // ...forestColors,
+      // ...grasslandsColors,
+      ...tundraColors
+    ]
+  }
+
+  setupGrid() {
+    const cellTileSize = 30
+    const colorTileSize = 10
+
+    this.grid = new EnvironmentGrid(
+      this.random,
+      this.groundColors,
+      this.config.worldSize,
+      cellTileSize,
+      colorTileSize
+    )
+    // Will in env-grid module
+    this.cellActiveDataList = []
+  }
+
+  setupLake() {
     this.lakeGroup = new THREE.Group()
     this.lakeGroup.name = 'lakeGroup'
-    this.lakeGeo = generateLakeGeo(geoConfig)
+    this.lakeGeo = generateLakeGeo(this.envState)
+
     this.envDataTextureMap = generateEnvDataTextureMap({
-      ...geoConfig,
+      ...this.envState,
       random: this.random,
       geo: this.lakeGeo,
       renderer: this.renderer,
       waterColors: [{ name: 'lake', color: this.config.brandHex }],
-      groundColors: [
-        // ...forestColors,
-        // ...grasslandsColors,
-        ...tundraColors
-      ]
+      groundColors: this.groundColors
     })
 
     this.lakeGeo.lakeInfos.map(lakeInfo => {
       const mesh = new EnvWaterPlaneObject({
         lakeInfo,
-        hasIce,
+        hasIce: this.envState.hasIce,
         planeSize: this.config.worldSize,
         uniforms: {
           waterColor: {
@@ -104,7 +132,7 @@ export default class Enviroment extends Module {
           },
           causticsMap: {
             value: this.asset.items[
-              hasIce ? 'iceCausticsTexture' : 'waterCausticsTexture'
+              this.envState.hasIce ? 'iceCausticsTexture' : 'waterCausticsTexture'
             ]
           },
           distortMap: {
@@ -120,6 +148,13 @@ export default class Enviroment extends Module {
     })
     // this.lakeGroup.children.map(mesh => (mesh.rotation.x = -Math.PI / 2))
     this.scene.add(this.lakeGroup)
+  }
+
+  setupSamples() {
+    const { envState, lakeGeo, grid } = this
+    this.samplesData = generateEnvSamples({
+      envState, geo: lakeGeo, grid
+    })
   }
 
   setupTerrain() {

@@ -2,10 +2,14 @@ import * as THREE from 'three'
 import Module from '../engine/module'
 import { math } from '../engine/utils'
 
-import { PlayerObject } from '../objects/player.object'
-import { PlayerPhysicsSpring } from '../utils/player-physics-spring'
+import { CharacterPhysicsSpring } from './character/character-physics-spring'
+import { CharacterObject } from '../objects/character.object'
 import { RENDER_LAYERS } from '../utils/constants'
 
+// @TODO: Refactor playerMove, springEngine, moveTarget
+// - Support smooth set player position
+// - Support switch target
+// - Distinguish player (user) and character
 export default class Player extends Module {
   constructor(sketch) {
     super(sketch)
@@ -13,7 +17,7 @@ export default class Player extends Module {
     this.setupInstance()
     this.setupUnderStateSystem()
     this.setupMoveTargetSystem()
-    this.setupSpringPlayerMoveSystem()
+    this.setupSpringCharacterMoveSystem()
   }
 
   setupInstance() {
@@ -21,10 +25,11 @@ export default class Player extends Module {
     this.instance.name = 'player'
     this.instance.module = this
 
-    this.playerObject = new PlayerObject()
-    this.playerObject.layers.enable(RENDER_LAYERS.BLOOM)
+    this.characterObject = new CharacterObject()
+    this.characterObject.layers.enable(RENDER_LAYERS.BLOOM)
+    this.instance.position.set(0, 0, 0)
 
-    this.instance.add(this.playerObject)
+    this.instance.add(this.characterObject)
     this.scene.add(this.instance)
   }
 
@@ -41,7 +46,8 @@ export default class Player extends Module {
     this.raycaster = new THREE.Raycaster()
     this.tmpPos3D = new THREE.Vector3()
     this.maxWorldSize = this.config.worldSize * 0.98
-    this.targetPos = new THREE.Vector3()
+    // This pos is camrea focus on
+    this.targetPos = new THREE.Vector3(0, 0, 0)
 
     this.speed = 0.0
     this.minSpeed = 0.0
@@ -68,13 +74,13 @@ export default class Player extends Module {
     this.instance.targetPos = this.targetPos
   }
 
-  setupSpringPlayerMoveSystem() {
-    const maxRadialDist = 1000
+  setupSpringCharacterMoveSystem() {
+    const maxRadialDist = 12
     const snapThreshold = maxRadialDist * 2
     this.maxRadialDistSq = maxRadialDist * maxRadialDist
     this.snapThresholdSq = snapThreshold * snapThreshold
     this.smoothTarget = new THREE.Vector3()
-    this.spring = PlayerPhysicsSpring()
+    this.spring = CharacterPhysicsSpring()
     this.spring.speedFactor = this.speedFactor
     this.hasSmoothTarget = false
     this.distFromSmoothThresholdSq = 25 * 25
@@ -83,11 +89,14 @@ export default class Player extends Module {
 
     this.instance.velocity = this.velocity
     this.instance.direction = this.spring.direction
+    // Notice: Proxy player position to spring position
+    // @TODO: Support set player position in update cycle
+    this.spring.position.copy(this.instance.position)
   }
 
   update(delta, elapsed) {
     this.updateMoveTargetSystem(delta)
-    this.playerObject.update(delta, elapsed)
+    this.characterObject.update(delta, elapsed)
   }
 
   updateMoveTargetSystem(delta) {
@@ -224,10 +233,13 @@ export default class Player extends Module {
       this.instance.position
     )
 
-    if (distFromTargetSq >= this.snapThresholdSq) {
-      playerMesh.position.copy(this.targetPos)
-      spring.target.copy(this.targetPos)
-      spring.position.copy(this.targetPos)
+    // Auto reset target position to player
+    if (false && distFromTargetSq >= this.snapThresholdSq) {
+      this.targetPos.copy(playerMesh.position)
+      // Reset player to target
+      // playerMesh.position.copy(this.targetPos)
+      // spring.target.copy(this.targetPos)
+      // spring.position.copy(this.targetPos)
       isClearVelocity = true
     }
 

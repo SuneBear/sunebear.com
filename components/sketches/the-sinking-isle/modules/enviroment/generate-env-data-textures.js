@@ -1,10 +1,8 @@
 import * as THREE from 'three'
-import pointInPoly from 'point-in-polygon'
 import stackblur from 'stackblur'
-import euclideanDistanceSq from 'euclidean-distance/squared'
 
+import { intersectsAnyLake } from './shared'
 import { math, Random } from '../../engine/utils'
-import { point2DInsideBounds } from '../../utils/geometry'
 
 export const generateEnvDataTextureMap = ({
   renderer,
@@ -229,25 +227,3 @@ function convertCellPolysToColorIndex({ g, groundColors, hasLakes = false, rando
   })
 }
 
-function intersectsAnyLake(geo, p, radius = 2) {
-  for (let i = 0; i < geo.lakeBounds.length; i++) {
-    if (intersectsLakeIndex(geo, p, i, radius)) {
-      return true
-    }
-  }
-  return false
-}
-
-function intersectsLakeIndex(geo, p, i, radius = 2) {
-  const ptSq = radius * radius
-  const b = geo.lakeBounds[i]
-  if (point2DInsideBounds(p, b)) {
-    if (pointInPoly(p, geo.lakes[i])) {
-      return true
-    }
-  }
-  if (geo.lakes[i].some(o => euclideanDistanceSq(o, p) < ptSq)) {
-    return true
-  }
-  return false
-}

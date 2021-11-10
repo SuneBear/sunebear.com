@@ -18,6 +18,8 @@ import EnviromentGround from './modules/enviroment-ground.module'
 import EnviromentTraceDataTexutreModule from './modules/enviroment-trace.module'
 import EnviromentTraceBubblesModule from './modules/enviroment-trace-bubbles.module'
 import EnviromentModule from './modules/enviroment.module'
+import EnviromentGridModule from './modules/enviroment-grid.module'
+import EnviromentStillLifes from './modules/enviroment-still-lifes.module'
 import PlayerModule from './modules/player.module'
 import AtmosphereGlowDotsModule from './modules/atmosphere-glow-dots.module'
 import AtmosphereRainModule from './modules/atmosphere-rain.module'
@@ -74,6 +76,8 @@ class TheSinkingIsleSketch {
     this.$vm = $vm
     this.config = { ...this.config, ...config }
 
+    // @FIXME: Current modules register order is strict
+    // try to use DI to eliminate circular deps
     await this.loadAssets()
     this.setupEvents()
     this.setupAudio()
@@ -191,7 +195,10 @@ class TheSinkingIsleSketch {
     this.enviromentGround = this.module.add(EnviromentGround)
     this.enviromentTrace = this.module.add(EnviromentTraceDataTexutreModule)
     this.enviroment = this.module.add(EnviromentModule)
+
     this.module.add(EnviromentTraceBubblesModule)
+    this.module.add(EnviromentGridModule)
+    this.module.add(EnviromentStillLifes)
 
     this.module.set({ enviroment: this.enviroment })
   }

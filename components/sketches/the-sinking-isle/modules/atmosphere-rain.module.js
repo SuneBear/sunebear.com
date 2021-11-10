@@ -289,7 +289,7 @@ export default class AtmosphereRain extends Module {
       mesh.visible = false
       quaternionFromNormal(velocity, mesh.quaternion)
       const rain = mesh.userData
-      rain.speed = random.range(10, 10)
+      rain.speed = random.range(6, 8)
 
       mesh.updateMatrix()
       mesh.updateMatrixWorld()

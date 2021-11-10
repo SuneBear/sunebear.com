@@ -102,6 +102,7 @@ export default class CameraModule extends Module {
   }
 
   listenModePresetSwitch() {
+    // @FIXME: Invalid in prod
     this.control.on('keydown.camera', (key) => {
       if (typeof key !== 'number') {
         return
