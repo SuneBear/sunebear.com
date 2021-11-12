@@ -34,10 +34,10 @@ export default class EnviromentGrid extends Module {
 
     // Assign from env
     const cellActiveDataList = this.enviroment.cellActiveDataList
+    const grid = this.enviroment.grid
     const gridBounds = new GridBounds()
 
     this.processEnvGrid = (dt) => {
-      const grid = this.enviroment.grid
       const underPlayer = this.player.underState
       const envState = this.enviroment.envState
       const target = this.player.targetPos
@@ -111,6 +111,7 @@ export default class EnviromentGrid extends Module {
           !grid.isCellInBounds(activeData.cell, gridBounds)
         ) {
           // console.log("kill cell");
+          this.$vm.$emit('cellActiveDataList:remove', { activeData })
           randomPool.release(activeData.random) // release random func
           activeData.cell.activeData = null // release
           activeData.environmentState = null
@@ -131,6 +132,7 @@ export default class EnviromentGrid extends Module {
           activeData.random = randomPool.next()
           activeData.random.seed(cell.seed)
           cellActiveDataList.push(activeData)
+          this.$vm.$emit('cellActiveDataList:add', { activeData })
         }
       })
 
@@ -159,6 +161,7 @@ function initActiveData() {
     environmentState: null,
     cell: null,
     random: null,
+    // StillLifeData
     children: []
   }
 }

@@ -17,6 +17,7 @@ uniform float waterOpacity;
 uniform float lakeSize;
 uniform float time;
 uniform bool isMask;
+uniform bool silhouette;
 varying float vAngle;
 varying vec2 vTraceUv;
 varying vec2 vGroundUv;
@@ -160,4 +161,5 @@ void main () {
   if (isMask) {
     gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
   }
+
 }

@@ -31,6 +31,7 @@ export class EnvWaterPlaneObject extends THREE.Mesh {
     this.uniforms = {
       time: { value: 0 },
       isMask: { value: false },
+      silhouette: { value: false },
       causticsMap: { value: null },
       waterColor: { value: null },
       waterOpacity: { value: 0.7 },
@@ -58,6 +59,9 @@ export class EnvWaterPlaneObject extends THREE.Mesh {
       this.rotation.x = -Math.PI / 2
     }
 
+    // this.userData.shadowCaster = true
+    // this.userData.isWater = true
+
     // @FIXME: Wierd plane stripe in iOS Safari
     this.material = new THREE.ShaderMaterial({
       vertexShader,
@@ -72,6 +76,7 @@ export class EnvWaterPlaneObject extends THREE.Mesh {
       },
       transparent: true,
       depthWrite: true,
+      depthTest: true,
       side: THREE.DoubleSide
     })
   }

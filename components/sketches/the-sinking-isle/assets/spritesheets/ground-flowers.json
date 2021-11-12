@@ -1,0 +1,108 @@
+{"frames": [
+
+{
+	"filename": "flower-01.png",
+	"frame": {"x":1,"y":339,"w":61,"h":102},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":61,"h":102},
+	"sourceSize": {"w":61,"h":102}
+},
+{
+	"filename": "flower-04.png",
+	"frame": {"x":64,"y":339,"w":61,"h":102},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":61,"h":102},
+	"sourceSize": {"w":61,"h":102}
+},
+{
+	"filename": "flower-05.png",
+	"frame": {"x":1,"y":443,"w":61,"h":102},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":61,"h":102},
+	"sourceSize": {"w":61,"h":102}
+},
+{
+	"filename": "grasslands1.png",
+	"frame": {"x":64,"y":443,"w":54,"h":131},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":54,"h":131},
+	"sourceSize": {"w":54,"h":131}
+},
+{
+	"filename": "grasslands2.png",
+	"frame": {"x":1,"y":547,"w":54,"h":131},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":54,"h":131},
+	"sourceSize": {"w":54,"h":131}
+},
+{
+	"filename": "grasslands3.png",
+	"frame": {"x":57,"y":576,"w":54,"h":131},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":54,"h":131},
+	"sourceSize": {"w":54,"h":131}
+},
+{
+	"filename": "lily1.png",
+	"frame": {"x":1,"y":297,"w":85,"h":40},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":85,"h":40},
+	"sourceSize": {"w":85,"h":40}
+},
+{
+	"filename": "lily2.png",
+	"frame": {"x":88,"y":297,"w":31,"h":13},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":31,"h":13},
+	"sourceSize": {"w":31,"h":13}
+},
+{
+	"filename": "lily3.png",
+	"frame": {"x":1,"y":680,"w":44,"h":24},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":44,"h":24},
+	"sourceSize": {"w":44,"h":24}
+},
+{
+	"filename": "tundra1.png",
+	"frame": {"x":1,"y":1,"w":109,"h":98},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":109,"h":98},
+	"sourceSize": {"w":109,"h":98}
+},
+{
+	"filename": "tundra2.png",
+	"frame": {"x":1,"y":101,"w":108,"h":96},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":96},
+	"sourceSize": {"w":108,"h":96}
+},
+{
+	"filename": "tundra3.png",
+	"frame": {"x":1,"y":199,"w":108,"h":96},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":108,"h":96},
+	"sourceSize": {"w":108,"h":96}
+}],
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "ground-flowers.png",
+	"format": "RGBA8888",
+	"size": {"w":126,"h":708},
+	"scale": "0.25",
+	"smartupdate": "$TexturePacker:SmartUpdate:b8f9f91b3e14a46838892b49d4daae70:f3716abac7b85ce6953912646e9dec36:41fb24dbcf4bc1f05e1126f984ada295$"
+}
+}

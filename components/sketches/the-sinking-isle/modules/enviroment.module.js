@@ -31,10 +31,6 @@ export default class Enviroment extends Module {
   }
 
   setupScene() {
-    // @TODO: Support multiple scenes, and smooth switch
-    // @values: lake | forest | tundra
-    this.name = 'lake'
-
     // @TODO: Only show black scene when reneder bloom effect
     this.scene.background = new THREE.Color(0x000000) // new THREE.Color(0xffffff)
   }
@@ -45,8 +41,13 @@ export default class Enviroment extends Module {
     const height = worldSize
     const seed = [51360, 10783, 25248, 59674] // Random.getRandomSeed()
 
+    // @TODO: Move this to $vm
     this.envState = {
-      name: 'the-sinking-isle',
+      // @TODO: Support multiple scenes, and smooth switch
+      // @values: isle | forest | tundra
+      name: 'isle',
+      waterCollectionName: "still-water-items",
+      isBarrenGround: true,
       hasLakes: true,
       hasIce: false,
       width,
@@ -60,32 +61,29 @@ export default class Enviroment extends Module {
     }
 
     const forestColors = [
-      { name: 'forest-items-triangle', color: '#9D9166' },
-      { name: 'forest-items-dry', color: '#59622a' },
-      { name: 'forest-items-autumn', color: '#745C13' },
-      { name: 'forest-items-triangle', color: '#766D43' }
+      // Collection name
+      { name: 'still-triangle-items', color: '#9D9166' },
+      { name: 'still-dry-items', color: '#59622a' },
+      { name: 'still-autumn-items', color: '#745C13' },
+      { name: 'still-triangle-items', color: '#766D43' }
     ]
 
     const grasslandsColors = [
-      { name: 'grasslands-items-field', color: '#556325' },
-      { name: 'grasslands-items-yellow', color: '#8D7721' },
-      { name: 'grasslands-items-field', color: '#486b25' },
-      { name: 'grasslands-items-wet', color: '#605e41' }
+      { name: 'still-field-items', color: '#556325' },
+      { name: 'still-yellow-items', color: '#8D7721' },
+      { name: 'still-field-items', color: '#486b25' },
+      { name: 'still-wet-items', color: '#605e41' }
     ]
 
     const tundraColors = [
       {
-        name: 'tundra-items-basic',
+        name: 'still-ground-items',
         // color: "#797f84",
         color: '#2a3956'
       }
-      // { name: "tundra-items-basic", color: "#898e91" },
-      // { name: "tundra-items-snow", color: "#d9d9d9" },
-      // { name: "grasslands-field", color: "#5a823a" },
-      // { name: "grasslands-yellow", color: "#8D7721" },
     ]
 
-    this.groundColors = [
+    this.envState.colors = this.groundColors = [
       // ...forestColors,
       // ...grasslandsColors,
       ...tundraColors
@@ -143,8 +141,10 @@ export default class Enviroment extends Module {
           ...this.enviromentTrace.getTraceUniforms()
         }
       })
-      mesh.layers.enable(RENDER_LAYERS.WATER)
+      mesh.layers.set(RENDER_LAYERS.WATER)
       this.lakeGroup.add(mesh)
+
+      this.envState.tokens = this.lakeGeo.tokens
     })
     // this.lakeGroup.children.map(mesh => (mesh.rotation.x = -Math.PI / 2))
     this.scene.add(this.lakeGroup)
@@ -155,6 +155,8 @@ export default class Enviroment extends Module {
     this.samplesData = generateEnvSamples({
       envState, geo: lakeGeo, grid
     })
+
+    Object.assign(this.envState, this.samplesData)
   }
 
   setupTerrain() {

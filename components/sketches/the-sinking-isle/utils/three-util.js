@@ -55,6 +55,18 @@ export function pruneUserData(obj) {
   })
 }
 
+export function shareAtlasTexture(renderer, atlasTexture, spriteTexture) {
+  if (atlasTexture.image && spriteTexture.__hasFixedTexture !== atlasTexture) {
+    spriteTexture.__hasFixedTexture = atlasTexture
+    const atlas = renderer.properties.get(atlasTexture)
+    if (!atlas.__webglTexture) {
+      renderer.initTexture(atlasTexture)
+    }
+    const data = renderer.properties.get(spriteTexture)
+    Object.assign(data, atlas)
+  }
+}
+
 // @Source: https://github.com/mattdesl/three-quaternion-from-normal
 export function quaternionFromNormal(normal, quaternion) {
   quaternion = quaternion || new THREE.Quaternion()

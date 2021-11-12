@@ -1,0 +1,306 @@
+{
+  "meta": {
+    "version": "0.6.7"
+  },
+  "savePath": "",
+  "images": [
+    {
+      "name": "sprite1.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite1.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite10.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite10.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite100.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite100.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite102.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite102.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite126.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite126.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite127.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite127.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite128.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite128.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite133.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite133.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite142.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite142.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite143.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite143.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite144.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite144.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite145.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite145.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite15.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite15.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite158.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite158.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite159.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite159.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite160.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite160.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite161.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite161.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite162.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite162.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite163.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite163.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite173.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite173.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite20.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite20.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite24.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite24.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite3.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite3.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite31.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite31.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite32.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite32.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite35.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite35.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite40.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite40.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite42.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite42.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite48.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite48.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite5.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite5.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite52.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite52.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite55.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite55.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite57.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite57.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite59.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite59.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite6.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite6.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite64.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite64.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite71.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite71.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite72.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite72.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite74.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite74.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite75.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite75.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite76.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite76.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite77.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite77.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite79.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite79.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite8.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite8.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite81.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite81.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite84.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite84.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite85.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite85.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite86.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite86.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite87.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite87.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite89.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite89.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite91.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite91.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite93.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite93.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite96.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite96.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite98.png",
+      "path": "/Users/sunexiong/Code/Zworks/Wsune/Websites/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-ground-items/sprite98.png",
+      "folder": ""
+    }
+  ],
+  "folders": [],
+  "packOptions": {
+    "textureName": "still-ground-items",
+    "textureFormat": "png",
+    "removeFileExtension": false,
+    "prependFolderName": true,
+    "base64Export": false,
+    "tinify": false,
+    "tinifyKey": "",
+    "scale": 1,
+    "filter": "none",
+    "exporter": "JSON (array)",
+    "fileName": "pack-result",
+    "savePath": "",
+    "width": 2048,
+    "height": 2048,
+    "fixedSize": false,
+    "powerOfTwo": false,
+    "padding": 2,
+    "extrude": 0,
+    "allowRotation": false,
+    "allowTrim": true,
+    "trimMode": "trim",
+    "alphaThreshold": "0",
+    "detectIdentical": true,
+    "packer": "MaxRectsBin",
+    "packerMethod": "BestShortSideFit"
+  }
+}

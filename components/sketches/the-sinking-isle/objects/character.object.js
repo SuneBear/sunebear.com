@@ -18,6 +18,8 @@ export class CharacterObject extends THREE.Mesh {
     }
     this.geometry.setAttribute( 'color', new THREE.Float32BufferAttribute( colors, 3 ))
     this.material = new THREE.MeshBasicMaterial({ vertexColors: true })
+    this.material.depthTest = true
+    this.renderOrder = 10
     this.position.y = 0.1
   }
 

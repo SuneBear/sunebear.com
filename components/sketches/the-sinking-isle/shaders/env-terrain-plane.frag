@@ -53,8 +53,9 @@ void main () {
   float edge0 = smoothstep(edgeThreshold, edgeThreshold-edgeGlow, abs(vUv.x - 0.5));
   float edge1 = smoothstep(edgeThreshold, edgeThreshold-edgeGlow, abs(vUv.y - 0.5));
   vec2 lakeUv = (vUv - 0.5) * (planeScale) + 0.5;
-  // float lake = (hasIce || isRenderTarget) ? 0.0 : texture2D(lakeDataMap, lakeUv).r;
-  float lake = 0.0;
+  // @FIXME: Fix the border gradient
+  float lake = (hasIce || isRenderTarget) ? 0.0 : texture2D(lakeDataMap, lakeUv).r;
+  // float lake = 0.0;
   if (lake > 0.5) {
     discard;
   }

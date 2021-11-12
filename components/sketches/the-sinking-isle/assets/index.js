@@ -4,6 +4,7 @@ import * as THREE from 'three'
 // - Unique name is required
 // - add ".default" when require gltf and glb files
 // @TODO: auto require files, catetory by load stages: preload, postload
+// for improving loading speed, some resource need to be load in spec modules
 
 const REPEAT_TEXTURE_OPTIONS = {
   wrapS: THREE.RepeatWrapping,
@@ -44,7 +45,21 @@ export default [
         source: require('./gltfs/env-terrain.glb').default
       },
 
-      // Texture
+      // Spritesheets
+      {
+        name: 'stillGroundItemsSpriteSheet',
+        source: require('./spritesheets/still-ground-items.png'),
+        type: 'spritesheet',
+        options: require('./spritesheets/still-ground-items.json')
+      },
+      {
+        name: 'stillWaterItemsSpriteSheet',
+        source: require('./spritesheets/still-water-items.png'),
+        type: 'spritesheet',
+        options: require('./spritesheets/still-water-items.json')
+      },
+
+      // Textures
       {
         name: 'blueNoiseTexture',
         source: require('./textures/bluenoise-0.png'),
@@ -124,7 +139,7 @@ export default [
         options: REPEAT_TEXTURE_OPTIONS
       },
 
-      // Audio
+      // Audios
       { name: 'testAudio', source: require('./audios/test.mp3').default },
       {
         name: 'atmoRain',

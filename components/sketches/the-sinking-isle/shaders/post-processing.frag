@@ -1,9 +1,11 @@
 uniform sampler2D baseTexture;
 uniform sampler2D bloomTexture;
 uniform sampler2D blueNoiseMap;
+uniform sampler2D shadowMap;
 uniform sampler2D lutMap;
 uniform float exposure;
 uniform vec2 resolution;
+uniform bool enableShadow;
 uniform bool enableBloom;
 uniform bool enableVignette;
 uniform bool enableLut;
@@ -86,6 +88,10 @@ highp vec3 colorLUT(in highp vec3 textureColor, in highp sampler2D lookupTable) 
 
 void main() {
   vec4 baseColor = texture2D(baseTexture, vUv);
+  if (enableShadow) {
+    baseColor -= texture2D(shadowMap, vUv) * 0.2;
+    // baseColor.rgb = blendSoftLight(baseColor.rgb, texture2D(shadowMap, vUv).rgb);
+  }
 
   // Effect: Bloom
   // @FIXME: Switch a better way to blend bloom, and mix with ToneMapping

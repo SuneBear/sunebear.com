@@ -98,7 +98,8 @@ export default class Renderer extends Module {
         .addInput(this.instance.shadowMap, 'enabled', {
           label: 'shadowMapEnabled'
         })
-        .on('change', () => {
+        .on('change', ({ value }) => {
+          this.postProcess.finalUniforms.enableShadow.value = value
           this.scene.traverse(_child => {
             if (_child instanceof THREE.Mesh) {
               _child.material.needsUpdate = true
@@ -164,8 +165,8 @@ export default class Renderer extends Module {
      * Effect composer
      */
     const RenderTargetClass = THREE.WebGLMultisampleRenderTarget
-        ? THREE.WebGLRenderTarget
-        : THREE.WebGLMultisampleRenderTarget
+      ? THREE.WebGLRenderTarget
+      : THREE.WebGLMultisampleRenderTarget
     this.renderTarget = new RenderTargetClass(
       this.config.width,
       this.config.height,
@@ -194,6 +195,9 @@ export default class Renderer extends Module {
       blueNoiseMap: {
         value: this.asset.items.blueNoiseTexture
       },
+      shadowMap: {
+        value: this.renderTarget.texture
+      },
       lutMap: {
         value: this.asset.items.lutTexture
       },
@@ -204,6 +208,9 @@ export default class Renderer extends Module {
       fadeToClearProgress: { value: this.debug ? 0 : 1 },
       resolution: {
         value: new THREE.Vector2(0, 0)
+      },
+      enableShadow: {
+        value: this.instance.shadowMap.enabled
       },
       enableBloom: {
         value: true
@@ -227,8 +234,7 @@ export default class Renderer extends Module {
       'baseTexture'
     )
     this.postProcess.composer = new EffectComposer(
-      this.instance,
-      this.renderTarget
+      this.instance
     )
     this.postProcess.composer.setSize(this.config.width, this.config.height)
     this.postProcess.composer.setPixelRatio(this.config.pixelRatio)
@@ -244,18 +250,17 @@ export default class Renderer extends Module {
       })
 
       debugFolder
-        .addInput(
-          this.postProcess.finalPass.uniforms.exposure,
-          'value',
-          {
-            label: 'exposure',
-            min: 0,
-            max: 2
-          }
-        )
+        .addInput(this.postProcess.finalPass.uniforms.exposure, 'value', {
+          label: 'exposure',
+          min: 0,
+          max: 2
+        })
         .on('change', ({ value }) => {
           this.instance.toneMappingExposure = Math.pow(value, 4.0)
-          this.postProcess.finalPass.uniforms.exposure.value = Math.pow(value, 4.0)
+          this.postProcess.finalPass.uniforms.exposure.value = Math.pow(
+            value,
+            4.0
+          )
         })
 
       debugFolder.addInput(
@@ -299,7 +304,66 @@ export default class Renderer extends Module {
     finalUniforms.resolution.value.set(width, height)
   }
 
+  // @TODO: Use a better way to draw shadows
+  renderShadows() {
+    if (!this.instance.shadowMap.enabled) {
+      return
+    }
+
+    // this.camera.layers.disable(RENDER_LAYERS.GROUND)
+    // this.camera.layers.disable(RENDER_LAYERS.GROUND_DEPTH)
+    // this.camera.layers.disable(RENDER_LAYERS.WATER)
+    this.camera.layers.set(RENDER_LAYERS.SHADOW)
+
+    // Draw shadows
+    this.scene.traverseVisible(child => {
+      const { userData } = child
+      if (userData.shadowCaster) {
+        child.layers.enable(RENDER_LAYERS.SHADOW)
+        userData.__material = child.material
+        userData.__materialDepthTest = child.material.depthTest
+        userData.__materialDepthWrite = child.material.depthWrite
+        userData.__materialBlending = child.material.blending
+        userData.__materialTransparent = child.material.transparent
+        if (userData.__shadowMaterial) {
+          child.material = userData.__shadowMaterial
+        }
+        child.material.depthTest = true
+        child.material.depthWrite = false
+        child.material.transparent = true
+        // child.material.blending = THREE.AdditiveBlending
+        if (child.material.uniforms && child.material.uniforms.silhouette) {
+          child.material.uniforms.silhouette.value = true
+        }
+      }
+    })
+
+    this.instance.setRenderTarget(this.renderTarget)
+    this.instance.render(this.scene, this.camera)
+    this.instance.setRenderTarget(null)
+
+    // Recover normal
+    this.scene.traverseVisible(child => {
+      const { userData } = child
+      if (userData.shadowCaster) {
+        child.material = child.userData.__material
+        child.material.depthWrite = child.userData.__materialDepthTest
+        child.material.depthTest = child.userData.__materialDepthWrite
+        child.material.transparent = child.userData.__materialTransparent
+        child.material.blending = child.userData.__materialBlending
+
+        if (child.material.uniforms && child.material.uniforms.silhouette) {
+          child.material.uniforms.silhouette.value = false
+        }
+      }
+    })
+
+    this.camera.layers.enableAll()
+  }
+
   render() {
+    this.renderShadows()
+
     if (this.usePostprocess) {
       this.postProcess.composer.render()
     } else {
@@ -347,7 +411,7 @@ export default class Renderer extends Module {
   setFadeInTransition(options) {
     this.tween.add({
       target: this.postProcess.finalUniforms.fadeToClearProgress,
-      value: [ 1, 0 ],
+      value: [1, 0],
       duration: 1,
       easing: 'easeInOutSine',
       ...options

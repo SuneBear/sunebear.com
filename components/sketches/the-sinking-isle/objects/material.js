@@ -8,10 +8,6 @@ export const commonShaderUniforms = {
 
   resolution: {
     value: new THREE.Vector2(0, 0)
-  },
-
-  envTraceMap: {
-    value: new THREE.Texture()
   }
 
 }

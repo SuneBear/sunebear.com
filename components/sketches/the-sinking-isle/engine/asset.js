@@ -29,6 +29,14 @@ export default class Assets extends EventEmitter {
         data.needsUpdate = true
       }
 
+      // Convert to spritesheet
+      if (_resource.type === 'spritesheet') {
+        data = {
+          ..._resource.options,
+          image: data
+        }
+      }
+
       if (_resource.name) {
         this.items[_resource.name] = data
       }
