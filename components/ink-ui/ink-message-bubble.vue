@@ -22,7 +22,7 @@
         .typing-dot
       transition( name="el-fade-in" )
         readable-render(
-          v-show="status !== 'typing'"
+          v-if="status !== 'typing'"
           :content="message"
           :contentData="{ needAnimate }"
         )
@@ -67,7 +67,7 @@ export default {
 
     status: {
       type: String,
-      // @values: typing | sent | recall | played
+      // @values: typing | sent | recall
       default: 'sent'
     },
 
@@ -124,11 +124,12 @@ export default {
     margin-right: 0px
 
     .avatar
-      width: 50px
-      height: 50px
+      width: 48px
+      height: 48px
       border-radius: 50%
       border: 2px solid $secondary
-      transform: scale(0.7)
+      // transform: scale(0.8)
+      margin-right: 20px
       transform-origin: left top
 
   .bubble-body

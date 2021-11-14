@@ -56,16 +56,18 @@
         readable-render( :content="testMarkdownTemplate" :contentData="testMarkdownTemplateData" )
         ink-story.mt-8(
           ref="story"
-          :needAnimate="false"
+          enableActionBar
+          :needAnimate="enableStoryAnimte"
           :roles="storyRoles"
           :initialMessages="storyMessages"
-          @onMessageSent="({ messages }) => storyMessages = messages"
-          scrollHeight="240px"
+          @messageSent="({ messages }) => storyMessages = messages"
+          @messageClearAll="() => storyMessages = []"
+          scrollHeight="50vh"
         )
-        .create-message.mt-8
+        .create-message.d-flex.mt-8
           ink-mask( isBlock baseFrequency="0.0002" :enableSpot="false" )
             el-input( v-model="storyInputMessage" @keyup.enter.native="handleCreateMessage" placeholder="Chat with Bear" )
-              el-button( slot="append" type="primary" @click="handleCreateMessage" :disabled="!storyInputMessage" ) Enter
+              el-button.send-button( slot="append" type="primary" @click="handleCreateMessage" :disabled="!storyInputMessage" ) Enter
 </template>
 
 <script>
@@ -79,7 +81,8 @@ let storyMessages = [
 ]
 
 if (process.client && localStorage.getItem('playgroundStoryMessages')) {
-  storyMessages = JSON.parse(localStorage.getItem('playgroundStoryMessages'))
+  const localMessages = JSON.parse(localStorage.getItem('playgroundStoryMessages'))
+  if (localMessages.length) storyMessages = localMessages
 }
 
 export default {
@@ -94,6 +97,7 @@ export default {
     return {
       brandColor: null,
       enableIconMask: true,
+      enableStoryAnimte: false,
       isShowNotationGroup: true,
       storyInputMessage: null,
       testMarkdownTemplate: "#### readable-render \n Support markdown syntax and <ink-notation isShow>Vue Component such as `ink-notation`, support variable: this is `{{ testVar }}`</ink-notation>",
@@ -102,7 +106,7 @@ export default {
       },
       mockLongRectImage: require('@/assets/mock/unsplace-sea-rect.jpg'),
       storyRoles: [
-        { name: 'bear', avatar: require('@/assets/mock/bear-avatar.png'), isDefault: true },
+        { name: 'bear', avatar: require('@/assets/mock/bear9.png'), isDefault: true },
         { name: 'user', isMe: true }
       ],
       storyMessages
@@ -148,14 +152,16 @@ export default {
         return
       }
 
-      this.$refs.story.addMessage({
-        user: 'user',
-        message: this.storyInputMessage
-      })
-      this.$refs.story.addMessage({
-        user: 'bear',
-        message: this.storyInputMessage.split("").reverse().join("")
-      })
+      this.$refs.story.add([
+        {
+          user: 'user',
+          message: this.storyInputMessage
+        },
+        {
+          user: 'bear',
+          message: this.storyInputMessage.split("").reverse().join("")
+        }
+      ])
       this.storyInputMessage = null
     }
   }
@@ -186,7 +192,7 @@ export default {
   .create-message
     margin: 0 auto
 
-    .el-button
+    .send-button
       border-top-left-radius: 0
       border-bottom-left-radius: 0
 </style>

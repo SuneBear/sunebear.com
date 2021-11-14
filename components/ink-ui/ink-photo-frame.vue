@@ -2,39 +2,40 @@
 .ink-photo-frame(
   :class="rootClass"
 )
-  svg.svg-defs-wrapper
-    deps
-      filter(
-        :id="filterId"
-        width="100"
-        height="100"
-      )
-        feTurbulence(
-          ref="feTurbulence"
-          :seed="randomSeed"
-          numOctaves="10"
-          :baseFrequency="distortedBaseFrequency"
-          type="turbulence"
+  client-only
+    svg.svg-defs-wrapper
+      deps
+        filter(
+          :id="filterId"
+          width="100"
+          height="100"
         )
-        feColorMatrix(
-          ref="hueRotate"
-          type="hueRotate"
-          values="0"
-        )
-        feColorMatrix(
-          type="matrix"
-          values=`1 0 0 0 0
-                  0 1 0 0 0
-                  0 0 1 0 0
-                  0 0 0 20 0`
-        )
-        feDisplacementMap(
-          in="SourceGraphic"
-          xChannelSelector="R"
-          yChannelSelector="R"
-          scale="8"
-          result="displacementResult"
-        )
+          feTurbulence(
+            ref="feTurbulence"
+            :seed="randomSeed"
+            numOctaves="10"
+            :baseFrequency="distortedBaseFrequency"
+            type="turbulence"
+          )
+          feColorMatrix(
+            ref="hueRotate"
+            type="hueRotate"
+            values="0"
+          )
+          feColorMatrix(
+            type="matrix"
+            values=`1 0 0 0 0
+                    0 1 0 0 0
+                    0 0 1 0 0
+                    0 0 0 20 0`
+          )
+          feDisplacementMap(
+            in="SourceGraphic"
+            xChannelSelector="R"
+            yChannelSelector="R"
+            scale="8"
+            result="displacementResult"
+          )
 
   .mask-wrapper(
     :class="transitionClass"
@@ -133,8 +134,8 @@ export default {
     }
   },
 
-  careated() {
-    this.cachedUid = this._uid
+  created() {
+      this.cachedUid = this._uid
   },
 
   mounted() {
@@ -251,8 +252,8 @@ export default {
     border: var(--distort-border-width) solid $secondary
 
   .distort-inner-border
-    width: s('calc(1.8 * var(--distort-border-width) + 100%)')
-    height: s('calc(1.8 * var(--distort-border-width) + 100%)')
+    width: s('calc(1.7 * var(--distort-border-width) + 100%)')
+    height: s('calc(1.7 * var(--distort-border-width) + 100%)')
     margin: s('calc(-1 * var(--distort-border-width))') !important
 
   .inner-content

@@ -9,6 +9,7 @@
     )
       el-button.back-layer(
         v-bind="$props"
+        @click="handleButtonClick"
       )
         .d-flex.align-center
           .ink-icon(
@@ -54,6 +55,12 @@ export default {
       return {
         '--shadow': this.shadow
       }
+    }
+  },
+
+  methods: {
+    handleButtonClick(e) {
+      this.$emit('click', e)
     }
   }
 

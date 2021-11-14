@@ -3,26 +3,27 @@
   :style="applyNoiseStyle"
   :class="{ 'enable-grain': enableGrain }"
 )
-  svg.svg-defs-wrapper.noise-background(
-    v-if="isNeedGrainNoiseSvg"
-    id="grainBackground"
-  )
-    deps
-      filter( id="grain" )
-        feTurbulence(
-          in="neutral-gray"
-          numOctaves="100"
-          baseFrequency="5"
-          type="fractalNoise"
-          stitchTiles='stitch'
-          result="NOISE"
-        )
-        rect(
-          width="100px"
-          height="100px"
-          fill="black"
-          filter="url(#grain)"
-        )
+  client-only
+    svg.svg-defs-wrapper.noise-background(
+      v-if="isNeedGrainNoiseSvg"
+      id="grainBackground"
+    )
+      deps
+        filter( id="grain" )
+          feTurbulence(
+            in="neutral-gray"
+            numOctaves="100"
+            baseFrequency="5"
+            type="fractalNoise"
+            stitchTiles='stitch'
+            result="NOISE"
+          )
+          rect(
+            width="100px"
+            height="100px"
+            fill="black"
+            filter="url(#grain)"
+          )
 
   client-only
     svg.svg-defs-wrapper.distort-filter
