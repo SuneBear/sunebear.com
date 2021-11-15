@@ -24,7 +24,7 @@ const options = {
   // Padding between the element and roughly where the annotation is drawn.
   // If you wish to specify different top, left, right, bottom paddings,
   // you can set the value to an array akin to CSS style padding [top, right, bottom, left] or just [top & bottom, left & right].
-  padding: 5,
+  padding: [2, 5],
   // This property only applies to inline text.
   // To annotate multiline text (each line separately), set this property to true.
   multiline: true,
@@ -220,4 +220,7 @@ export default {
     .horz-padding-wrapper
       padding: 0 0.2em
       box-decoration-break: clone
+
+.rough-annotation
+  // filter: s('url(#filter-distort-0)')
 </style>

@@ -17,9 +17,6 @@ export default {
     htmlAttrs: {
       lang: 'zh-Hans'
     },
-    bodyAttrs: {
-      class: 'v-application'
-    },
     meta: [
       { charset: 'utf-8' },
       {
@@ -41,7 +38,8 @@ export default {
       src: '~/plugins/element-ui.js',
       ssr: true
     },
-    '~/plugins/plugin.client.js'
+    '~/plugins/plugin.client.js',
+    '~/plugins/universal.mixin.js'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

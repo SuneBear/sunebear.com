@@ -3,7 +3,7 @@ $primary-rgb = 0, 0, 0
 $primary = rgb($primary-rgb)
 $secondary-rgb = 255, 255, 255
 $secondary = rgb($secondary-rgb)
-$brand-rgb = 72, 220, 206
+$brand-rgb = 89, 185, 217
 $brand = rgb($brand-rgb)
 
 // Other colorfuls
@@ -55,6 +55,9 @@ $secondary = secondary(100)
 brand(alphaPercent = 100)
   alpha = alphaPercent / 100
   return s('rgba(var(--brand-rgb), %s)', alpha)
+
+brandLightness(light = 100)
+  return s('hsl(var(--brand-h), var(--brand-s), %s%)', light)
 
 $brand95 = s('rgba(var(--brand-rgb), 0.95)')
 $brand87 = s('rgba(var(--brand-rgb), 0.87)')

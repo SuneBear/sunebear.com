@@ -1,11 +1,18 @@
 <template lang="pug">
-.page.page-index(
+page-wrapper(
+  name="index"
 )
   the-sinking-isle
 </template>
 
 <script>
 export default {
+
+  data() {
+    return {
+      paperName: 'secondary'
+    }
+  },
 
   head() {
     return {
@@ -18,5 +25,5 @@ export default {
 
 <style lang="stylus">
 .page-index
-  background: $secondary
+  null
 </style>

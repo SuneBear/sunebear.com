@@ -1,5 +1,6 @@
 <template lang="pug">
-.page.page-blog-article(
+page-wrapper(
+  name="blog-article"
 )
 </template>
 

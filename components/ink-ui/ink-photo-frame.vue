@@ -2,40 +2,40 @@
 .ink-photo-frame(
   :class="rootClass"
 )
-  client-only
-    svg.svg-defs-wrapper
-      deps
-        filter(
-          :id="filterId"
-          width="100"
-          height="100"
+  // @FIXME: Improve Safari perf
+  svg.svg-defs-wrapper
+    deps
+      filter(
+        :id="filterId"
+        width="100"
+        height="100"
+      )
+        feTurbulence(
+          ref="feTurbulence"
+          :seed="randomSeed"
+          numOctaves="10"
+          :baseFrequency="distortedBaseFrequency"
+          type="turbulence"
         )
-          feTurbulence(
-            ref="feTurbulence"
-            :seed="randomSeed"
-            numOctaves="10"
-            :baseFrequency="distortedBaseFrequency"
-            type="turbulence"
-          )
-          feColorMatrix(
-            ref="hueRotate"
-            type="hueRotate"
-            values="0"
-          )
-          feColorMatrix(
-            type="matrix"
-            values=`1 0 0 0 0
-                    0 1 0 0 0
-                    0 0 1 0 0
-                    0 0 0 20 0`
-          )
-          feDisplacementMap(
-            in="SourceGraphic"
-            xChannelSelector="R"
-            yChannelSelector="R"
-            scale="8"
-            result="displacementResult"
-          )
+        feColorMatrix(
+          ref="hueRotate"
+          type="hueRotate"
+          values="0"
+        )
+        feColorMatrix(
+          type="matrix"
+          values=`1 0 0 0 0
+                  0 1 0 0 0
+                  0 0 1 0 0
+                  0 0 0 20 0`
+        )
+        feDisplacementMap(
+          in="SourceGraphic"
+          xChannelSelector="R"
+          yChannelSelector="R"
+          scale="8"
+          result="displacementResult"
+        )
 
   .mask-wrapper(
     :class="transitionClass"
@@ -56,6 +56,7 @@
 import { random } from '~/utils/random'
 import anime from 'animejs'
 
+// @TODO: Add some frame styles
 export default {
 
   props: {
@@ -134,8 +135,8 @@ export default {
     }
   },
 
-  created() {
-      this.cachedUid = this._uid
+  beforeCreate() {
+    this.cachedUid = this._uid
   },
 
   mounted() {
@@ -210,13 +211,9 @@ export default {
     position: relative
     width: 100%
     height: 100%
-    background-color: primary(5)
     border: 2px solid $secondary
     border-width: s('min(var(--border-width), 4vw)')
     border-radius: 10px / 15px
-    background-image:  radial-gradient(brand(40) 1.3px, transparent 1.3px), radial-gradient(brand(40) 1.3px, brand(30) 1.3px);
-    background-size: 52px 52px;
-    background-position: 0 0, 26px 26px;
 
   .mask-wrapper
     &.enter-transition
@@ -260,5 +257,6 @@ export default {
     position: relative
 
     > *
+      max-width: 100%
       vertical-align: middle
 </style>

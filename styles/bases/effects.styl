@@ -1,22 +1,42 @@
 // Keyframes
-@keyframes squiggly-anim
-
+@keyframes anim-vert-shake
   0%
     -webkit-transform: none
     transform: none
-
   100%
     transform: skew(1.5deg,.2deg) translate(0,-1.5px)
 
+@keyframes anim-squiggly
+  0%
+    filter s('url(#filter-squiggly-0)')
+  25%
+    filter s('url(#filter-squiggly-1)')
+  50%
+    filter s('url(#filter-squiggly-2)')
+  75%
+    filter s('url(#filter-squiggly-3)')
+  100%
+    filter s('url(#filter-squiggly-4)')
+
 // Atomic
+.trans,
 .transition
   transition: 300ms
 
+.anim,
 .animation
   webkit-animation-fill-mode: both
   animation-duration: var(--duration, 300ms)
   animation-delay: var(--delay, 0ms)
 
-.squiggly
-.squiggly-hover:hover
-  animation: squiggly-anim .25s steps(2) infinite
+.anim-vert-shake,
+.anim-vert-shake-hover:hover
+  animation: anim-vert-shake .25s steps(2) infinite
+
+.anim-squiggly,
+.anim-squiggly-hover:hover
+  animation: anim-squiggly .5s linear infinite
+
+  &.anim-vert-shake,
+  &.anim-squiggly-hover
+    animation: anim-squiggly .5s linear infinite, anim-vert-shake .25s steps(2) infinite

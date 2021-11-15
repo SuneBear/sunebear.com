@@ -33,6 +33,7 @@ export default class Assets extends EventEmitter {
       if (_resource.type === 'spritesheet') {
         data = {
           ..._resource.options,
+          src: _resource.source,
           image: data
         }
       }

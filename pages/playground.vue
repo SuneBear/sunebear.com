@@ -1,8 +1,9 @@
 <template lang="pug">
-.page.page-playground(
+page-wrapper(
+  name="playground"
 )
   .container.pt-8
-    .text-h4.pb-2
+    .text-h4.pb-2.anim-squiggly
       ink-notation( isShow :color="brandColor" ) UI Playground
 
     .section-ink-photo-frame.mt-8
@@ -37,18 +38,25 @@
         ink-icon( :enableMask="enableIconMask" name="rainy-fill" )
         ink-icon( :enableMask="enableIconMask" name="train-fill" )
         ink-icon( :enableMask="enableIconMask" name="close-circle-fill" fill="red")
-      el-link( href="/icons" ref="viewAllLink") View full icons
+
+      .d-flex
+        ink-notation( isShow type="underline" :iterations="1" color="var(--brand)" )
+          el-link( :underline="false" href="/icons" ref="viewAllLink")
+            | View full icons
 
     .section-ink-button.mt-8
       .text-h5.mb-4 ink-button
       .row.no-gutters
-        ink-button( squiggly size="medium" shadow="black" icon="leaf-fill") Default
-        ink-button( squigglyHover size="big" circle shadow="black" iconShadow="var(--brand)" icon="leaf-fill")
-        ink-button( size="big" round shadow="black" iconShadow="var(--mark)" icon="rainy-fill")
-        ink-button( round shadow="black" iconShadow="var(--brand)" icon="leaf-fill")
-        ink-button( type="primary" size="small") Primary
-        ink-button( type="primary-ghost" size="big") Primary Ghost
-        ink-button( isBlock type="brand" size="big" icon="leaf-fill") Brand Block
+        ink-button( icon="leaf-fill") Default
+        ink-button( vertShakeHover squigglyHover size="medium" circle icon="leaf-fill")
+        ink-button( squiggly vertShake size="big" round iconShadow="var(--mark)" icon="rainy-fill")
+        ink-button( round shadow="var(--brand)" icon="apps-fill")
+        ink-button( type="primary" size="small") Primary small
+        ink-button( type="primary-ghost") Primary Ghost
+        ink-button( type="brand-light" size="big" icon="bear-smile-fill") Brand Light
+        ink-button( type="brand-light" round iconShadow="var(--mark)" icon="footprint-line")
+        //- ink-button( type="gray" size="big" icon="leaf-fill") Gray
+        ink-button( isBlock type="brand" size="big" icon="moon-fill") Brand isBlock
 
     .section-ink-story.mt-8
       .text-h5.mb-4 ink-story
@@ -95,6 +103,7 @@ export default {
 
   data() {
     return {
+      paperName: 'dotted',
       brandColor: null,
       enableIconMask: true,
       enableStoryAnimte: false,
@@ -114,17 +123,8 @@ export default {
   },
 
   mounted() {
-    this.debug = new Pane()
     this.brandColor = cssVar('brand')
-
-    this.debug.addInput(this, 'brandColor', {
-      view: 'color',
-    })
-      .on('change', (ev) => {
-        cssVar('brand', this.brandColor)
-      })
-    this.debug.addInput(this, 'enableIconMask')
-
+    this.setupDebug()
     this.initTestNotify()
   },
 
@@ -135,6 +135,27 @@ export default {
   },
 
   methods: {
+    setupDebug() {
+      this.debug = new Pane()
+
+      this.debug.addInput(this, 'brandColor', {
+        view: 'color',
+      })
+        .on('change', (ev) => {
+          cssVar('brand', this.brandColor)
+        })
+
+      this.debug.addInput(this, 'paperName', {
+        options: {
+          dotted: 'dotted',
+          gray: 'gray',
+          line: 'line'
+        }
+      })
+
+      this.debug.addInput(this, 'enableIconMask')
+    },
+
     initTestNotify() {
       this.$notify({
         title: 'Bonjo',
@@ -172,11 +193,13 @@ export default {
 <style lang="stylus">
 .page-playground
   line-height: 1.8
+  // background: brandLightness(90)
 
   &,
   .text-h4,
   .text-h5
-    font-family: monospace, serif !important
+    /[lang="en-US"] &
+      font-family: monospace, serif !important
 
   .ink-icon
     font-size: 36px
@@ -192,7 +215,12 @@ export default {
   .create-message
     margin: 0 auto
 
+    .el-input__inner
+      &:focus
+        border-color: primary(60)
+
     .send-button
+      border-radius: 10px
       border-top-left-radius: 0
       border-bottom-left-radius: 0
 </style>

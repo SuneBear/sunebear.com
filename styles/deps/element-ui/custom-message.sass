@@ -9,9 +9,33 @@
 
   @include box-bop-shadow
 
-  // @TODO: Add message icon
   &__icon
-    display: none
+    position: relative
+    z-index: 2
+    background-size: cover
+    width: 18px
+    height: 18px
+
+    &:before
+      display: none
+
+    &.el-icon-info
+      background-image: url(@/assets/sprite/svg/bubble-chart-fill.svg)
+      // CSS filter generator to convert from black to target hex color
+      // @REF: https://codepen.io/sosuke/pen/Pjoqqp
+      filter: invert(87%) sepia(14%) saturate(6482%) hue-rotate(165deg) brightness(88%) contrast(92%)
+
+    &.el-icon-success
+      background-image: url(@/assets/sprite/svg/bear-smile-fill.svg)
+      filter: invert(56%) sepia(92%) saturate(3001%) hue-rotate(124deg) brightness(96%) contrast(101%)
+
+    &.el-icon-error
+      background-image: url(@/assets/sprite/svg/ghost-fill.svg)
+      filter: invert(52%) sepia(42%) saturate(7265%) hue-rotate(334deg) brightness(99%) contrast(101%)
+
+    &.el-icon-warning
+      background-image: url(@/assets/sprite/svg/ghost-fill.svg)
+      filter: invert(77%) sepia(36%) saturate(7025%) hue-rotate(345deg) brightness(100%) contrast(102%)
 
   &__content
     position: relative
@@ -20,14 +44,19 @@
     line-height: 1.5 !important
 
   &--info
-    box-shadow: inset 0px -6px 0px #dfe4ef
-
-  &--error
-    &:after
-      background-color: #f3cdc6
-    box-shadow: inset 0px -6px 0px #f7d8d8
+    box-shadow: inset 0px -6px 0px #e9eef9
 
   &--success
     &:after
-      background-color: #d4f3c6
-    box-shadow: inset 0px -6px 0px #c2e1b2
+      background-color: #e3f2db
+    box-shadow: inset 0px -6px 0px #cbe2bf
+
+  &--warning
+    &:after
+      background-color: #f2e8df
+    box-shadow: inset 0px -6px 0px #e9dbcf
+
+  &--error
+    &:after
+      background-color: #f2e3e0
+    box-shadow: inset 0px -6px 0px #f7d8d8

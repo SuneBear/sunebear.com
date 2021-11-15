@@ -30,9 +30,9 @@
       v-if="needAnimate"
     )
       transition( name="el-fade-in" :duration="1000")
-        ink-button.mr-4( v-if="currentMessageRaw && !currentMessageRaw.autoSwitch" size="small" @click="switchNext(true)") Next
-        ink-button.mr-4( v-else-if="!hasFinished" size="small" @click="clearPlayQueue") Skip
-    ink-button.ml-4( v-else="needAnimate" size="small" @click="clearAll" ) Clear
+        ink-button.mr-4( v-if="currentMessageRaw && !currentMessageRaw.autoSwitch" size="small" @click="switchNext(true)") {{ $t('action.continue') }}
+        ink-button.mr-4( v-else-if="!hasFinished" size="small" @click="clearPlayQueue") {{ $t('action.skip') }}
+    ink-button.ml-4( v-else="needAnimate" size="small" @click="clearAll" ) {{ $t('story.clear') }}
 </template>
 
 <script>
@@ -174,7 +174,7 @@ export default {
       this.scrollAnimer = anime({
         targets: $target,
         scrollTop: `+=${scrollTop}`,
-        duration: this.needAnimate ? math.clamp(scrollTop * 4, 2000, 4000) : 200,
+        duration: this.needAnimate ? math.clamp(scrollTop * 4, 2000, 4000) : 500,
         easing: 'linear',
         complete: () => {
           this.scrollAnimer = null

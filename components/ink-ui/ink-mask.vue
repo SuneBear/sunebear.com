@@ -1,7 +1,7 @@
 <template lang="pug">
 .ink-mask(
-  :style="applyNoiseStyle"
-  :class="{ 'enable-grain': enableGrain }"
+  :style="applyDistortStyle"
+  :class="{ 'enable-grain': enableGrain, 'enable-mask': finalEnableMask }"
 )
   client-only
     svg.svg-defs-wrapper.noise-background(
@@ -26,7 +26,9 @@
           )
 
   client-only
-    svg.svg-defs-wrapper.distort-filter
+    svg.svg-defs-wrapper.distort-filter(
+      v-if="finalEnableMask"
+    )
       deps
         filter(
           :id="filterId"
@@ -55,12 +57,12 @@
             in2="turbulenceResult"
             xChannelSelector="R"
             yChannelSelector="G"
-            scale="5"
+            :scale="displacementScale"
             result="displacementResult"
           )
 
   .spot-layer(
-    v-if="enableMask && enableSpot"
+    v-if="finalEnableMask && enableSpot"
     :style="applySpotStyle"
   )
     slot
@@ -69,11 +71,19 @@
 
 <script>
 import { random } from '~/utils/random'
+import { isSafari } from '~/utils/env'
 
 export default {
-
   props: {
+    id: {
+      type: [Number, String]
+    },
+
     enableMask: {
+      type: Boolean,
+      default: true
+    },
+    enableDistort: {
       type: Boolean,
       default: true
     },
@@ -89,9 +99,30 @@ export default {
     isBlock: {
       type: Boolean
     },
+
+    // Distort Params
     baseFrequency: {
-      type: [ Number, String ],
+      type: [Number, String],
       default: 0.07
+    },
+    displacementScale: {
+      type: Number,
+      // @HACK: more scale in Safari to achieve
+      default: isSafari() ? 10 : 4
+    },
+
+    // Animations
+    squiggly: {
+      type: Boolean
+    },
+    squigglyHover: {
+      type: Boolean
+    },
+    vertShake: {
+      type: Boolean
+    },
+    vertShakeHover: {
+      type: Boolean
     }
   },
 
@@ -104,24 +135,33 @@ export default {
 
   created() {
     this.cachedUid = this._uid
+
+    if (typeof this.id !== 'undefined') {
+      this.cachedUid = this.id
+    }
   },
 
   computed: {
     filterId() {
-      return `filter${this.cachedUid}`
+      return `filter-distort-${this.cachedUid}`
     },
-    applyNoiseStyle() {
-      if (!this.enableMask) {
+    finalEnableMask() {
+      return !this.isSafari && this.enableMask
+    },
+    applyDistortStyle() {
+      if (!this.finalEnableMask || !this.enableDistort) {
         return null
       }
 
       return {
         filter: `url(#${this.filterId})`,
-        transform: `rotateX(${this.rotateDeg}deg) rotateY(${this.rotateDeg}deg) skewX(${random.sign() * this.skewDeg}deg) translateZ(-1px)`
+        transform: `rotateX(${this.rotateDeg}deg) rotateY(${
+          this.rotateDeg
+        }deg) skewX(${random.sign() * this.skewDeg}deg) translate3d(0,0,0)`
       }
     },
     applySpotStyle() {
-      if (!this.enableMask || !this.enableSpot) {
+      if (!this.finalEnableMask || !this.enableSpot) {
         return null
       }
 
@@ -145,7 +185,6 @@ export default {
       return random.rangeFloor(0, 100)
     }
   }
-
 }
 </script>
 
@@ -171,5 +210,4 @@ export default {
     mask-size: 1000px
     mask-repeat: repeat
     mask-image: url(@/assets/ink-ui/ink-spot-mask.png)
-
 </style>

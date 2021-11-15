@@ -2,8 +2,27 @@ $--color-disabled-bg-red: #cfbebe
 $--color-disabled-shadow-red: #947d7d
 $--color-disabled-color-red: $--color-white
 
+=buttonOutline($cssVar)
+  color: $cssVar
+  // border: 2px solid $cssVar
+
+  &,
+  &:focus
+    background: v-lightness($cssVar, 97%)
+
+  &:hover,
+  &:focus,
+  &:active
+    border-color: $cssVar
+
+  &:hover
+    background: v-lightness($cssVar, 92%)
+
+  &:active
+    background: v-lightness($cssVar, 89%)
+
 =buttonStatusColor($bg-color, $border-color, $font-color, $disabled-bg-color, $disabled-border-color, $disabled-font-color)
-  border: 1px solid $border-color
+  border: 2px solid $border-color
 
   &.is-disabled
     &,
@@ -30,12 +49,12 @@ $--color-disabled-color-red: $--color-white
 
     // Spec handle for white color
     @if lightness($bg-color) > 99%
-      $next-bg-color: scale-color($bg-color, $lightness: -10%)
+      $next-bg-color: scale-color($bg-color, $lightness: -5%)
     @else
       $next-bg-color: scale-color($bg-color, $lightness: +20%)
     $next-border-color: $border-color
     @if lightness($border-color) > 99%
-      $next-border-color: scale-color($border-color, $lightness: -10%)
+      $next-border-color: scale-color($border-color, $lightness: -5%)
     @else
       $next-border-color: scale-color($border-color, $lightness: +20%)
 
@@ -59,8 +78,10 @@ $--color-disabled-color-red: $--color-white
   padding: 0 16px 0 16px
   height: 38px
   border: 0 none
-  font-size: 14px
+  font-size: 16px
   font-family: inherit
+  transition: 160ms
+  border-radius: 14px / 20px
 
   .el-loading-mask
     border-radius: 11px
@@ -74,7 +95,7 @@ $--color-disabled-color-red: $--color-white
     height: 54px
     font-size: 18px
     border-width: 3px !important
-    border-radius: 15px / 20px
+    border-radius: 30px / 40px
 
     &,
     [class^='el-icon-']
@@ -84,18 +105,23 @@ $--color-disabled-color-red: $--color-white
     font-size: 16px
     font-weight: 400
     border-width: 2px !important
-    border-radius: 7px / 10px
+    border-radius: 14px / 20px
 
-    &,
-    [class^='el-icon-']
-      font-weight: 400
+    &.is-round,
+    &.is-circle
+      min-height: 46px
 
   &--small,
   &--mini
     padding: 1px 12px 1px
     font-size: 14px
     height: 28px
-    border-radius: 7px / 10px
+    border-radius: 14px / 20px
+    font-weight: 400
+
+    &.is-round,
+    &.is-circle
+      min-height: 42px
 
     > span
       position: relative
@@ -103,10 +129,6 @@ $--color-disabled-color-red: $--color-white
 
   &--mini
     font-size: 12px
-
-    &,
-    [class^='el-icon-']
-      font-weight: 400
 
 .el-button--default,
 .el-button--secondary
@@ -134,3 +156,22 @@ $--color-disabled-color-red: $--color-white
   &:active
     background-color: var(--brand)
     border-color: var(--brand)
+
+.el-button--brand-light
+  border-width: 0 !important
+  color: v-lightness(var(--brand), 40%)
+
+  &,
+  &:focus
+    background: v-lightness(var(--brand), 100%)
+
+  &:hover
+    background: v-lightness(var(--brand), 98%)
+
+  &:active
+    background: v-lightness(var(--brand), 96%)
+
+.el-button--gray,
+.el-button--secondary-outline
+  +buttonOutline(var(--secondary))
+  color: rgba(var(--primary-rgb), 0.8)

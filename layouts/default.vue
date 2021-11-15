@@ -6,16 +6,29 @@
     :isShowStaticFrame="isShowStaticFrame"
   )
     transition( :duration="pageTransitionDuration" )
-      nuxt( ref="$page" keep-alive )
+      nuxt(
+        ref="pageWrapper"
+        keep-alive
+      )
+  ink-svg-filters
+  ink-mask.distort-filter-def( :id="0" :enableDistort="false" :enableSpot="false" :enableGrain="false" )
 </template>
 
 <script>
-export default {
+import { debugCreator } from '@/utils/dev'
+const layoutDebug = debugCreator('Layout')
 
+export default {
   data() {
     return {
       pageTransitionDuration: 1000,
       isShowStaticFrame: false
+    }
+  },
+
+  computed: {
+    pageName() {
+      return this.$route.name
     }
   }
 
@@ -28,13 +41,17 @@ export default {
   height: 100vh
 
   .global-frame
+    .mask-wrapper
+      background-color: primary(5)
+
     &,
-    .inner-content
+    .inner-content,
+    .page-wrapper
       width: 100%
       height: 100%
 
-    .inner-content
-      overflow-y: auto
+  .distort-filter-def
+    height: 0
 
 .page
   padding: 30px 10px

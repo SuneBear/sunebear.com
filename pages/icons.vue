@@ -1,5 +1,6 @@
 <template lang="pug">
-.page.page-icons(
+page-wrapper(
+  name="icons"
 )
   icons-list(
     v-if="!isLoading"

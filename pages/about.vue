@@ -1,5 +1,6 @@
 <template lang="pug">
-.page.page-about(
+page-wrapper(
+  name="about"
 )
   | About
 </template>
