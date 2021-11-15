@@ -2,7 +2,7 @@
 .page.page-playground(
 )
   .container.pt-8
-    .text-h4.pb-2
+    .text-h4.pb-2.anim-squiggly
       ink-notation( isShow :color="brandColor" ) UI Playground
 
     .section-ink-photo-frame.mt-8
@@ -37,17 +37,22 @@
         ink-icon( :enableMask="enableIconMask" name="rainy-fill" )
         ink-icon( :enableMask="enableIconMask" name="train-fill" )
         ink-icon( :enableMask="enableIconMask" name="close-circle-fill" fill="red")
-      el-link( href="/icons" ref="viewAllLink") View full icons
+
+      .d-flex
+        ink-notation( isShow type="underline" :iterations="1" color="var(--brand)" )
+          el-link( :underline="false" href="/icons" ref="viewAllLink")
+            | View full icons
 
     .section-ink-button.mt-8
       .text-h5.mb-4 ink-button
       .row.no-gutters
-        ink-button( squiggly size="medium" shadow="black" icon="leaf-fill") Default
-        ink-button( squigglyHover size="big" circle shadow="black" iconShadow="var(--brand)" icon="leaf-fill")
-        ink-button( size="big" round shadow="black" iconShadow="var(--mark)" icon="rainy-fill")
+        ink-button( size="medium" shadow="black" icon="leaf-fill") Default
+        ink-button( vertShakeHover squigglyHover size="big" circle shadow="black" iconShadow="var(--brand)" icon="leaf-fill")
+        ink-button( squiggly vertShake size="big" round shadow="black" iconShadow="var(--mark)" icon="rainy-fill")
         ink-button( round shadow="black" iconShadow="var(--brand)" icon="leaf-fill")
         ink-button( type="primary" size="small") Primary
-        ink-button( type="primary-ghost" size="big") Primary Ghost
+        ink-button( type="primary-ghost" shadow="white" size="big") Primary Ghost
+        ink-button( type="brand-outline" size="big" icon="leaf-fill") Brand Outline
         ink-button( isBlock type="brand" size="big" icon="leaf-fill") Brand Block
 
     .section-ink-story.mt-8
@@ -95,6 +100,7 @@ export default {
 
   data() {
     return {
+      paperName: 'dotted',
       brandColor: null,
       enableIconMask: true,
       enableStoryAnimte: false,
@@ -191,6 +197,10 @@ export default {
 
   .create-message
     margin: 0 auto
+
+    .el-input__inner
+      &:focus
+        border-color: primary(60)
 
     .send-button
       border-top-left-radius: 0

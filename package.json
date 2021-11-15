@@ -7,6 +7,7 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
+    "@chenfengyuan/vue-countdown": "^1.1.5",
     "@nuxt/content": "1.14.0",
     "@nuxtjs/i18n": "^7.0.3",
     "@nuxtjs/svg-sprite": "^0.5.2",
@@ -36,6 +37,7 @@
     "point-in-polygon": "^1.1.0",
     "simplex-noise": "^3.0.0",
     "simplify-path": "^1.1.0",
+    "spacetime": "^6.16.3",
     "stackblur": "^1.0.0",
     "stats.js": "^0.17.0",
     "svg-path-contours": "^2.0.0",

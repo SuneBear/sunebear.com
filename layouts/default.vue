@@ -1,24 +1,56 @@
 <template lang="pug">
-.limit-layout.default-layout
-  ink-photo-frame.global-frame(
-    :distortedBorderSpeed="3"
-    :distortedFrequencyAmount="0.6"
-    :isShowStaticFrame="isShowStaticFrame"
-  )
-    transition( :duration="pageTransitionDuration" )
-      nuxt( ref="$page" keep-alive )
+.limit-layout.default-layout(
+  :class="[ `ref-page-${pageName}` ]"
+)
+  transition( :duration="pageTransitionDuration" )
+    nuxt(
+      ref="pageWrapper"
+      keep-alive
+    )
+  ink-svg-filters
 </template>
 
 <script>
-export default {
+import { debugCreator } from '@/utils/dev'
 
+const layoutDebug = debugCreator('Layout')
+
+export default {
   data() {
     return {
+      page: {},
       pageTransitionDuration: 1000,
       isShowStaticFrame: false
     }
-  }
+  },
 
+  computed: {
+    pageName() {
+      return this.$route.name
+    },
+    paperName() {
+      return (this.pageName && this.page?.paperName) || 'dotted'
+    }
+  },
+
+  watch: {
+    $route() {
+      this.setCurrentPage()
+    }
+  },
+
+  mounted() {
+    this.setCurrentPage()
+  },
+
+  methods: {
+    setCurrentPage() {
+      setTimeout(() => {
+        this.page = this.$refs.pageWrapper.$children[0]
+        layoutDebug('Current page', this.page)
+      })
+    }
+  }
 }
 </script>
 
@@ -28,6 +60,9 @@ export default {
   height: 100vh
 
   .global-frame
+    .mask-wrapper
+      background-color: primary(5)
+
     &,
     .inner-content
       width: 100%

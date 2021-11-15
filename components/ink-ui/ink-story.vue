@@ -174,7 +174,7 @@ export default {
       this.scrollAnimer = anime({
         targets: $target,
         scrollTop: `+=${scrollTop}`,
-        duration: this.needAnimate ? math.clamp(scrollTop * 4, 2000, 4000) : 200,
+        duration: this.needAnimate ? math.clamp(scrollTop * 4, 2000, 4000) : 500,
         easing: 'linear',
         complete: () => {
           this.scrollAnimer = null

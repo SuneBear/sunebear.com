@@ -34,8 +34,6 @@ export default {
   props: {
     ...Button.props,
     ...InkMask.props,
-    squiggly: Boolean,
-    squigglyHover: Boolean,
     shadow: {
       type: String
     },
@@ -48,7 +46,8 @@ export default {
     rootClass() {
       return [
         { 'is-disabled': this.disabled, 'is-block': this.isBlock, 'has-shadow': this.shadow },
-        { 'squiggly': this.squiggly, 'squiggly-hover': this.squigglyHover }
+        { 'anim-vert-shake': this.vertShake, 'anim-vert-shake-hover': this.vertShakeHover },
+        { 'anim-squiggly': this.squiggly, 'anim-squiggly-hover': this.squigglyHover },
       ]
     },
     rootStyle() {
@@ -135,6 +134,8 @@ export default {
       pointer-events: none
       transform: translate3d(-50%, -50%, 0)
 
+      &:before,
+      &:after,
       > i
         display: none
 

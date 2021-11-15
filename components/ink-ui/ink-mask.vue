@@ -92,6 +92,20 @@ export default {
     baseFrequency: {
       type: [ Number, String ],
       default: 0.07
+    },
+
+    // Animations
+    squiggly: {
+      type: Boolean
+    },
+    squigglyHover: {
+      type: Boolean
+    },
+    vertShake: {
+      type: Boolean
+    },
+    vertShakeHover: {
+      type: Boolean
     }
   },
 

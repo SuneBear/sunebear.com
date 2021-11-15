@@ -13,7 +13,7 @@ export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'Loading',
-    titleTemplate: '%s - SuneBear',
+    titleTemplate: '%s - Countdown',
     htmlAttrs: {
       lang: 'zh-Hans'
     },
