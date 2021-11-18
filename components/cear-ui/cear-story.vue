@@ -1,5 +1,5 @@
 <template lang="pug">
-.ink-story(
+.cear-story(
   :class="{ 'need-animate': this.needAnimate }"
 )
   .story-viewport(
@@ -20,7 +20,7 @@
         :key="message.id"
         :id="`message${message.id}`"
       )
-        ink-message-bubble(
+        cear-message-bubble(
           v-bind="message"
         )
   .story-action-bar.d-flex.justify-center(
@@ -30,9 +30,9 @@
       v-if="needAnimate"
     )
       transition( name="el-fade-in" :duration="1000")
-        ink-button.mr-4( v-if="currentMessageRaw && !currentMessageRaw.autoSwitch" size="small" @click="switchNext(true)") {{ $t('action.continue') }}
-        ink-button.mr-4( v-else-if="!hasFinished" size="small" @click="clearPlayQueue") {{ $t('action.skip') }}
-    ink-button.ml-4( v-else="needAnimate" size="small" @click="clearAll" ) {{ $t('story.clear') }}
+        cear-button.mr-4( v-if="currentMessageRaw && !currentMessageRaw.autoSwitch" size="small" @click="switchNext(true)") {{ $t('action.continue') }}
+        cear-button.mr-4( v-else-if="!hasFinished" size="small" @click="clearPlayQueue") {{ $t('action.skip') }}
+    cear-button.ml-4( v-else="needAnimate" size="small" @click="clearAll" ) {{ $t('story.clear') }}
 </template>
 
 <script>
@@ -366,7 +366,7 @@ export default {
 </script>
 
 <style lang="stylus">
-.ink-story
+.cear-story
   $scrollMaskSize = 10%
   width: 100%
   padding: 8px 0
@@ -402,7 +402,7 @@ export default {
       margin-top: 20px
 
     &.status-played
-    .ink-message-bubble.status-played
+    .cear-message-bubble.status-played
       transition: 500ms
       transform: translateY(-50%)
       animation: fadeOut 500ms forwards

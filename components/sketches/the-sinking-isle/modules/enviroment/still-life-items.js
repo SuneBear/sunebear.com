@@ -39,8 +39,8 @@ export const generateStillLifeItemsMap = module => {
   function initAsssetMaps() {
     const threeSpritesheets = parseSpritesheets({
       sheets: [
-        assetItems.stillWaterItemsSpriteSheet,
-        assetItems.stillGroundItemsSpriteSheet
+        assetItems.stillWaterItemsSpritesheet,
+        assetItems.stillGroundItemsSpritesheet
       ],
       renderer
     })
@@ -191,7 +191,7 @@ export const generateStillLifeItemsMap = module => {
         const map = getTextureByName(child.userData.textureName$)
         if (child.material.uniforms) child.material.uniforms.map.value = map
         else child.material.map = map
-        if (!isSprite && map) map.flipY = false
+        if (!isSprite && map) map.flipX = false
         delete child.userData.textureName$
       }
 

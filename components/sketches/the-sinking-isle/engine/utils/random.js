@@ -390,6 +390,6 @@ Random.nextSeed = function nextSeed(isTrueRandom) {
   return out
 }
 
-Random.getRandomSeed = getRandomState
+Random.getRandomSeed = () => [...getRandomState()]
 
 export const random = Random(INIT_SEED)

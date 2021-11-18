@@ -1,5 +1,5 @@
 <template lang="pug">
-.ink-button(
+.cear-button(
   :class="rootClass"
   :style="rootStyle"
 )
@@ -10,7 +10,7 @@
   .el-button-wrapper(
     v-else
   )
-    ink-mask(
+    cear-mask(
       v-bind="$props"
       :baseFrequency="finalBaseFrequency"
     )
@@ -19,7 +19,7 @@
         @click="handleButtonClick"
       )
         .d-flex.align-center
-          .ink-icon(
+          .cear-icon(
             v-if="icon"
           )
             .svg-symbol
@@ -28,25 +28,31 @@
       v-bind="$props"
     )
       .d-flex.align-center.justify-center
-        ink-icon( v-if="icon" :shadow="iconShadow" :name="icon" )
+        cear-icon( v-if="icon" :shadow="iconShadow" :name="icon" )
         slot
 </template>
 
 <script>
 import { Button } from 'element-ui'
-import InkMask from './ink-mask'
+import InkMask from './cear-mask'
 
 export default {
 
   props: {
     ...Button.props,
     ...InkMask.props,
+    isSquare: {
+      type: Boolean
+    },
     baseFrequency: {
       type: [ Number, String ],
     },
     size: {
       type: String,
       default: 'medium'
+    },
+    border: {
+      type: String
     },
     shadow: {
       type: String
@@ -59,15 +65,19 @@ export default {
   computed: {
     rootClass() {
       return [
-        { 'is-disabled': this.disabled, 'is-block': this.isBlock, 'has-shadow': this.finalShadow },
+        { 'is-disabled': this.disabled, 'is-square': this.isSquare, 'is-block': this.isBlock, 'has-shadow': this.finalShadow },
         { 'anim-vert-shake': this.vertShake, 'anim-vert-shake-hover': this.vertShakeHover },
         { 'anim-squiggly': this.squiggly, 'anim-squiggly-hover': this.squigglyHover },
       ]
     },
     rootStyle() {
-      return {
-        '--shadow': this.finalShadow
+      const style = {
+        '--shadow': this.finalShadow,
       }
+      if (this.border) {
+        style['--border-color'] = this.border
+      }
+      return style
     },
     finalShadow() {
       if (typeof this.shadow === 'undefined') {
@@ -121,7 +131,7 @@ export default {
 </script>
 
 <style lang="stylus">
-.ink-button
+.cear-button
   padding-right: 6px
   padding-bottom: 6px
 
@@ -140,7 +150,10 @@ export default {
     .back-layer
       filter: drop-shadow(1px 4px 0 var(--shadow))
       margin-right: 4px
-      margin-bottom: 4px
+      margin-bottom: 6px
+
+      &[class*="-ghost"]
+        margin-bottom: 4px
 
     &:not(.is-disabled):active
       .el-button-wrapper
@@ -158,12 +171,17 @@ export default {
       display: flex
       width: 100%
 
+  // Case: Square
+  &.is-square
+    .el-button
+      border-radius: 0 !important
+
    // Case: Round & Circle
   .el-button
     &.is-circle,
     &.is-round
 
-      .ink-icon
+      .cear-icon
         font-size: 1.5em
         margin: 0
 
@@ -178,13 +196,13 @@ export default {
       &[class*="-light"]
         padding: 0.05em 0.7em
 
-      .ink-icon
+      .cear-icon
         font-size: 1.6em
 
   .el-button-wrapper
     position: relative
 
-    .ink-icon
+    .cear-icon
       font-size: 1.2em
       margin-bottom: 0
       margin-right: 10px

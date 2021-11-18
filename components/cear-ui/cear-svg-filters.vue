@@ -1,5 +1,5 @@
 <template lang="pug">
-svg.svg-defs-wrapper.ink-svg-filters
+svg.svg-defs-wrapper.cear-svg-filters
   defs
     //- squiggly
     filter( id="filter-squiggly-0" )
@@ -67,6 +67,7 @@ svg.svg-defs-wrapper.ink-svg-filters
 <script>
 import { isSafari } from '~/utils/env'
 
+// @TODO: Add gooey effect
 export default {
 
   props: {
@@ -91,6 +92,12 @@ export default {
 </script>
 
 <style lang="stylus">
-.ink-svg-filters
+.svg-defs-wrapper
+  width: 0
+  height: 0
+  position absolute
+  visibility: hidden
+
+.cear-svg-filters
   null
 </style>

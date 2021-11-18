@@ -107,7 +107,7 @@ export default {
 
     if (this.tag) {
       return h(this.tag, {
-        class: [ 'ink-notation-group', { 'need-spacing': this.needSpacing } ]
+        class: [ 'cear-notation-group', { 'need-spacing': this.needSpacing } ]
       }, slot)
     }
 

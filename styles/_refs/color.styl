@@ -1,10 +1,19 @@
 // Core three colors
-$primary-rgb = 0, 0, 0
-$primary = rgb($primary-rgb)
-$secondary-rgb = 255, 255, 255
-$secondary = rgb($secondary-rgb)
-$brand-rgb = 89, 185, 217
-$brand = rgb($brand-rgb)
+$primaryHex = #000000
+$secondaryHex = #ffffff
+$brandHex = #59b9d9
+
+defineColorVar($colorName, $color)
+  $hue = hue($color)
+  $saturation = saturation($color)
+  $lightness = lightness($color)
+
+  {$colorName}: $color
+  {$colorName}-rgb: s('%s, %s, %s', red($color), green($color), blue($color))
+  {$colorName}-hs: s('%s, %s', $hue, $saturation)
+  {$colorName}-h: $hue
+  {$colorName}-s: $saturation
+  {$colorName}-l: $lightness
 
 // Other colorfuls
 $mark = #fdf090
@@ -57,7 +66,7 @@ brand(alphaPercent = 100)
   return s('rgba(var(--brand-rgb), %s)', alpha)
 
 brandLightness(light = 100)
-  return s('hsl(var(--brand-h), var(--brand-s), %s%)', light)
+  return s('hsl(var(--brand-hs), %s%)', light)
 
 $brand95 = s('rgba(var(--brand-rgb), 0.95)')
 $brand87 = s('rgba(var(--brand-rgb), 0.87)')

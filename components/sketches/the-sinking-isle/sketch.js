@@ -19,7 +19,8 @@ import EnviromentTraceDataTexutreModule from './modules/enviroment-trace.module'
 import EnviromentTraceBubblesModule from './modules/enviroment-trace-bubbles.module'
 import EnviromentModule from './modules/enviroment.module'
 import EnviromentGridModule from './modules/enviroment-grid.module'
-import EnviromentStillLifes from './modules/enviroment-still-lifes.module'
+import EnviromentStillLifesModule from './modules/enviroment-still-lifes.module'
+import AnimalSpawnModule from './modules/animal-spawn.module'
 import PlayerModule from './modules/player.module'
 import AtmosphereGlowDotsModule from './modules/atmosphere-glow-dots.module'
 import AtmosphereRainModule from './modules/atmosphere-rain.module'
@@ -86,6 +87,7 @@ class TheSinkingIsleSketch {
     this.setupCamera()
     this.setupRenderer()
     this.setupEnviroment()
+    this.setupAnimal()
     this.setupPlayer()
     this.setupOtherModules()
 
@@ -198,9 +200,13 @@ class TheSinkingIsleSketch {
 
     this.module.add(EnviromentTraceBubblesModule)
     this.module.add(EnviromentGridModule)
-    this.module.add(EnviromentStillLifes)
+    this.module.add(EnviromentStillLifesModule)
 
     this.module.set({ enviroment: this.enviroment })
+  }
+
+  setupAnimal() {
+    this.module.add(AnimalSpawnModule)
   }
 
   setupPlayer() {

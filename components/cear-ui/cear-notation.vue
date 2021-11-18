@@ -1,6 +1,6 @@
 <script>
 import { annotate } from 'rough-notation'
-import { getInkNoiseColor, getInkNoiseNumber, getInkNoiseRangeFloor } from './utils'
+import { getInkNoiseColor, getInkNoiseNumber, getInkNoiseRangeFloor } from './utils/noise'
 
 const AVAILABLE_TYPES = [
   'underline',
@@ -189,7 +189,7 @@ export default {
       return h(
         this.tag,
         {
-          class: ['ink-notation', `type-${this.type}`, { 'single-iteration': this.iterations === 1, 'need-spacing': this.needSpacing }]
+          class: ['cear-notation', `type-${this.type}`, { 'single-iteration': this.iterations === 1, 'need-spacing': this.needSpacing }]
         },
         [ h('span', { class: 'horz-padding-wrapper' }, slot) ]
       )
@@ -201,12 +201,12 @@ export default {
 </script>
 
 <style lang="stylus">
-.ink-notation-group
+.cear-notation-group
   &.need-spacing
-    .ink-notation
+    .cear-notation
       margin: 0 0.5em
 
-.ink-notation
+.cear-notation
   &.need-spacing
     margin: 0 0.5em
 

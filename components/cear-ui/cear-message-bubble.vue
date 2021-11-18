@@ -1,5 +1,5 @@
 <template lang="pug">
-.d-flex.ink-message-bubble(
+.d-flex.cear-message-bubble(
   :class="rootClass"
 )
   .bubble-user(
@@ -10,7 +10,7 @@
     )
   .bubble-body
     .bubble-bg-wrapper
-      ink-mask(
+      cear-mask(
       )
         .bubble-bg
     .bubble-content
@@ -32,30 +32,6 @@
 export default {
 
   props: {
-    // Play contorl
-    needAnimate: {
-      type: Boolean
-    },
-
-    duration: {
-      type: Number,
-      default: -1
-    },
-
-    switchDelay: {
-      type: Number,
-      default: 3000
-    },
-
-    autoSwitch: {
-      type: Boolean,
-      default: true
-    },
-
-    id: {
-      type: String
-    },
-
     // Display info
     message: {
       type: String
@@ -85,6 +61,30 @@ export default {
         name: null,
         avatar: null
       })
+    },
+
+    // Play contorl
+    needAnimate: {
+      type: Boolean
+    },
+
+    duration: {
+      type: Number,
+      default: -1
+    },
+
+    switchDelay: {
+      type: Number,
+      default: 3000
+    },
+
+    autoSwitch: {
+      type: Boolean,
+      default: true
+    },
+
+    id: {
+      type: String
     }
   },
 
@@ -106,7 +106,7 @@ export default {
 </script>
 
 <style lang="stylus">
-.ink-message-bubble
+.cear-message-bubble
   width: 100%
 
   & + &
@@ -117,7 +117,7 @@ export default {
     align-self flex-end
 
     .bubble-bg
-      background-color: brand(90)
+      background-color: brand(75)
 
   .bubble-user
     flex-shrink: 0
@@ -140,6 +140,9 @@ export default {
   .bubble-bg-wrapper
     position absolute
     inset: 0
+
+    .cear-mask
+      height: 100%
 
   .bubble-bg
     width: 100%

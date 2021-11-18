@@ -9,6 +9,7 @@ export function cssVar(name, value) {
     const colorHSL = Color(value).hsl().object()
     document.documentElement.style.setProperty(name, value)
     document.documentElement.style.setProperty(`${name}-rgb`, `${color.r}, ${color.g}, ${color.b}`)
+    document.documentElement.style.setProperty(`${name}-hs`, `${colorHSL.h}, ${colorHSL.s}%`)
     document.documentElement.style.setProperty(`${name}-h`, `${colorHSL.h}`)
     document.documentElement.style.setProperty(`${name}-s`, `${colorHSL.s}%`)
     document.documentElement.style.setProperty(`${name}-l`, `${colorHSL.l}%`)

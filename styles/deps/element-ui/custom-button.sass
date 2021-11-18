@@ -22,7 +22,7 @@ $--color-disabled-color-red: $--color-white
     background: v-lightness($cssVar, 89%)
 
 =buttonStatusColor($bg-color, $border-color, $font-color, $disabled-bg-color, $disabled-border-color, $disabled-font-color)
-  border: 2px solid $border-color
+  border: 2px solid
 
   &.is-disabled
     &,
@@ -41,7 +41,7 @@ $--color-disabled-color-red: $--color-white
   &:focus
     background-color: $bg-color
     color: $font-color
-    border-color: $border-color
+    border-color: unquote("var(--border-color, #{$border-color})")
 
   &:hover,
   &:active
@@ -64,20 +64,20 @@ $--color-disabled-color-red: $--color-white
     @else
       background-color: $next-bg-color
     color: $font-color
-    border-color: $next-border-color
+    border-color: unquote("var(--border-color, #{$next-border-color})")
 
   &:active
     color: $font-color
     @if $bg-color == transparent
-      background-color: rgba($border-color, 20%)
+      background-color: unquote("var(--border-color, #{rgba($border-color, 20%)})")
     @else
-      background-color: $bg-color
-    border-color: $border-color
+      background-color: scale-color($bg-color, $lightness: -10%)
+    border-color: unquote("var(--border-color, #{$border-color})")
 
 .el-button
   padding: 0 16px 0 16px
   height: 38px
-  border: 0 none
+  border: solid
   font-size: 16px
   font-family: inherit
   transition: 160ms
@@ -150,26 +150,28 @@ $--color-disabled-color-red: $--color-white
     border-color: var(--brand)
 
   &:hover
-    background-color: rgba(var(--brand-rgb), 0.8)
-    border-color: rgba(var(--brand-rgb), 0.8)
+    background-color: v-lightness(var(--brand), 55%)
+    border-color: v-lightness(var(--brand), 55%)
 
   &:active
-    background-color: var(--brand)
-    border-color: var(--brand)
+    background-color: v-lightness(var(--brand), 50%)
+    border-color: v-lightness(var(--brand), 50%)
 
 .el-button--brand-light
-  border-width: 0 !important
   color: v-lightness(var(--brand), 40%)
 
   &,
   &:focus
     background: v-lightness(var(--brand), 100%)
+    border-color: v-lightness(var(--brand), 100%)
 
   &:hover
     background: v-lightness(var(--brand), 98%)
+    border-color: v-lightness(var(--brand), 98%)
 
   &:active
-    background: v-lightness(var(--brand), 96%)
+    background: v-lightness(var(--brand), 94%)
+    border-color: v-lightness(var(--brand), 100%)
 
 .el-button--gray,
 .el-button--secondary-outline

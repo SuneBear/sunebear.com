@@ -1,5 +1,5 @@
 <template lang="pug">
-ink-mask.ink-icon(
+cear-mask.cear-icon(
   v-bind="$props"
   :class="{ 'has-shadow': shadow }"
 )
@@ -12,7 +12,7 @@ ink-mask.ink-icon(
 </template>
 
 <script>
-import InkMask from './ink-mask'
+import InkMask from './cear-mask'
 
 export default {
   props: {
@@ -56,7 +56,7 @@ export default {
 </script>
 
 <style lang="stylus">
-.ink-icon
+.cear-icon
   display: inline-flex
   fill: currentColor
 

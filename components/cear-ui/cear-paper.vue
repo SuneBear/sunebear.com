@@ -1,5 +1,5 @@
 <template lang="pug">
-.ink-paper(
+.cear-paper(
   :class="rootClass"
 )
   slot
@@ -25,23 +25,29 @@ export default {
 </script>
 
 <style lang="stylus">
-.ink-paper
+.cear-paper
   width: 100%
   min-height: 100%
 
   &.background-secondary
     background-color $secondary
 
-  &.background-dotted
+  &.background-brand-dotted,
+  &.background-solar-dotted
+    --backgroud: hsl(56deg 60% 96%)
+
     background-image:
+      url(@/assets/cear-ui/patterns/noise.png),
       radial-gradient(brand(30) 1.3px, transparent 1.3px),
-      radial-gradient(brand(30) 1.3px, hsl(56deg 60% 96%) 1.3px),
-      url(@/assets/ink-ui/patterns/noisy-texture-100x100-o18-d100-c-c4ece8-t1.png)
-    background-size: 52px 52px, 52px 52px, auto
+      radial-gradient(brand(30) 1.3px, var(--backgroud) 1.3px)
+    background-size: auto, 52px 52px, 52px 52px
     background-position: 0 0, 26px 26px
-    background-blend-mode: normal, softer-light
+    background-blend-mode: normal, normal // difference
+
+  &.background-brand-dotted
+    --backgroud: brandLightness(96)
 
   &.background-line
-    background-image: url(@/assets/ink-ui/patterns/lined-paper-2.png)
+    background-image: url(@/assets/cear-ui/patterns/lined-paper-2.png)
 
 </style>

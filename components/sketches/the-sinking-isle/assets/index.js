@@ -47,13 +47,19 @@ export default [
 
       // Spritesheets
       {
-        name: 'stillGroundItemsSpriteSheet',
+        name: 'butterflyFlySpritesheet',
+        source: require('./spritesheets/butterfly.png'),
+        type: 'spritesheet',
+        options: require('./spritesheets/butterfly.json')
+      },
+      {
+        name: 'stillGroundItemsSpritesheet',
         source: require('./spritesheets/still-ground-items.png'),
         type: 'spritesheet',
         options: require('./spritesheets/still-ground-items.json')
       },
       {
-        name: 'stillWaterItemsSpriteSheet',
+        name: 'stillWaterItemsSpritesheet',
         source: require('./spritesheets/still-water-items.png'),
         type: 'spritesheet',
         options: require('./spritesheets/still-water-items.json')

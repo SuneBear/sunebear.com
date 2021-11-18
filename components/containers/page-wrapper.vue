@@ -12,8 +12,9 @@
     :isScrolling="isScrolling"
   )
 
-  ink-paper(
+  cear-paper(
     :name="$parent.paperName"
+    v-bind="$parent.paperOptions"
   )
     .page(
       :class="[ 'page-'+ name, rootClass ]"

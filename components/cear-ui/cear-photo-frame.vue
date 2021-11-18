@@ -1,5 +1,5 @@
 <template lang="pug">
-.ink-photo-frame(
+.cear-photo-frame(
   :class="rootClass"
 )
   // @FIXME: Improve Safari perf
@@ -190,10 +190,10 @@ export default {
 </script>
 
 <style lang="stylus">
-.ink-photo-frame
+.cear-photo-frame
   max-width: 100%
 
-  @keyframes ink-mask-enter
+  @keyframes cear-mask-enter
     0%
       mask-position: 4000% 0%
 
@@ -204,7 +204,7 @@ export default {
       mask-position: 100% top
 
   &.is-show-static-frame
-    mask-image: url(@/assets/ink-ui/static-frame-mask.png)
+    mask-image: url(@/assets/cear-ui/static-frame-mask.png)
     mask-size: 100% 100%
 
   .mask-wrapper
@@ -218,8 +218,8 @@ export default {
   .mask-wrapper
     &.enter-transition
       mask-size: 4000% 100%
-      mask-image: url(@/assets/ink-ui/ink-transition-sprite-mask.png)
-      animation: ink-mask-enter 2s steps(39) 0.5s both
+      mask-image: url(@/assets/cear-ui/ink-transition-sprite-mask.png)
+      animation: cear-mask-enter 2s steps(39) 0.5s both
       mask-position: 4000% top
 
     &.scene-transition

@@ -1,6 +1,6 @@
 <template lang="pug">
 .limit-layout.default-layout
-  ink-photo-frame.global-frame(
+  cear-photo-frame.global-frame(
     :distortedBorderSpeed="3"
     :distortedFrequencyAmount="0.6"
     :isShowStaticFrame="isShowStaticFrame"
@@ -10,8 +10,8 @@
         ref="pageWrapper"
         keep-alive
       )
-  ink-svg-filters
-  ink-mask.distort-filter-def( :id="0" :enableDistort="false" :enableSpot="false" :enableGrain="false" )
+  cear-svg-filters
+  cear-mask.distort-filter-def( :id="0" :enableDistort="false" :enableSpot="false" :enableGrain="false" )
 </template>
 
 <script>
@@ -42,7 +42,7 @@ export default {
 
   .global-frame
     .mask-wrapper
-      background-color: primary(5)
+      background-color: brand(5)
 
     &,
     .inner-content,

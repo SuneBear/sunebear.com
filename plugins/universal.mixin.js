@@ -5,7 +5,7 @@ const pageMixin = {
 
   data() {
     return {
-      paperName: 'dotted',
+      paperName: 'solar-dotted',
       isSafari: isSafari(),
       isShowHeader: true,
       isShowFooter: false

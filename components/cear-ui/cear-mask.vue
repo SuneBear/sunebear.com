@@ -1,5 +1,5 @@
 <template lang="pug">
-.ink-mask(
+.cear-mask(
   :style="applyDistortStyle"
   :class="{ 'enable-grain': enableGrain, 'enable-mask': finalEnableMask }"
 )
@@ -190,14 +190,14 @@ export default {
 
 <style lang="stylus">
 // @FIXME: Resolve Safari compatibility
-.ink-mask
-  height 100%
+.cear-mask
+  // display: inline
 
   // @TODO: Replace mask image with inline svg grainBackground
   &.enable-grain
     // mask-image: s('url(inline.svg#grainBackground)')
-    mask-image: url(@/assets/ink-ui/mask-grain-noise.png)
-    // mask-image: url(@/assets/ink-ui/mask-grain-noise.svg)
+    mask-image: url(@/assets/cear-ui/mask-grain-noise.png)
+    // mask-image: url(@/assets/cear-ui/mask-grain-noise.svg)
     mask-repeat: repeat
     mask-type: luminance
     // @FIXME: Chrome not support mask-mode: luminance
@@ -209,5 +209,5 @@ export default {
     display flex
     mask-size: 1000px
     mask-repeat: repeat
-    mask-image: url(@/assets/ink-ui/ink-spot-mask.png)
+    mask-image: url(@/assets/cear-ui/ink-spot-mask.png)
 </style>

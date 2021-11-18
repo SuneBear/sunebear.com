@@ -1,4 +1,40 @@
-// Keyframes
+// Atomic
+.trans,
+.transition
+  transition: 300ms
+
+[class*="anim-"],
+.animation
+  animation-fill-mode: both
+  animation-iteration-count: infinite
+  animation-duration: var(--duration, 300ms)
+  animation-delay: var(--delay, 0ms)
+
+.delay-small
+  --delay: 0.2s
+
+.delay-medium
+  --delay: 0.4s
+
+.delay-large
+  --delay: 0.7s
+
+.delay-second
+  --delay: 1s
+
+.duration-small
+  --duration: 0.2s
+
+.duration-medium
+  --duration: 0.4s
+
+.duration-large
+  --duration: 0.7s
+
+.duration-second
+  --duration: 1s
+
+// Keyframes & Animations
 @keyframes anim-vert-shake
   0%
     -webkit-transform: none
@@ -18,25 +54,20 @@
   100%
     filter s('url(#filter-squiggly-4)')
 
-// Atomic
-.trans,
-.transition
-  transition: 300ms
-
-.anim,
-.animation
-  webkit-animation-fill-mode: both
-  animation-duration: var(--duration, 300ms)
-  animation-delay: var(--delay, 0ms)
-
 .anim-vert-shake,
 .anim-vert-shake-hover:hover
-  animation: anim-vert-shake .25s steps(2) infinite
+  animation-name anim-vert-shake
+  animation-duration .25s
+  animation-timing-function steps(2)
 
 .anim-squiggly,
 .anim-squiggly-hover:hover
-  animation: anim-squiggly .5s linear infinite
+  animation-name anim-squiggly
+  animation-duration var(--duration, .7s)
+  animation-timing-function linear
 
   &.anim-vert-shake,
   &.anim-squiggly-hover
-    animation: anim-squiggly .5s linear infinite, anim-vert-shake .25s steps(2) infinite
+    animation-name anim-squiggly, anim-vert-shake
+    animation-duration var(--duration, .7s), 0.25s
+    animation-timing-function linear, steps(2)
