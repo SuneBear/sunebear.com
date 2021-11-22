@@ -79,7 +79,7 @@ export default {
     },
     isSticker: {
       type: Boolean,
-      default: true
+      default: false
     },
     background: {
       type: String,
@@ -87,7 +87,7 @@ export default {
     },
     backgroundB: {
       type: String,
-      default: '#ddd'
+      // default: '#ddd'
     },
     color: {
       type: String,
@@ -167,7 +167,7 @@ export default {
 
     rootStyle() {
       return {
-        width: this.width,
+        width: `var(--width, this.width)`,
         color: this.color
       }
     },
@@ -207,7 +207,7 @@ export default {
         '--radius': `${this.cssBorderRadius}`,
         '--suspend-duration': `${this.suspendDuration || this.random.range(5, 15)}s`,
         transform: `rotate(${this.rotation}deg)`,
-        background: this.cssBackground,
+        background: `var(--background, ${this.cssBackground})`,
         borderRadius: this.cssBorderRadius
       }
     },

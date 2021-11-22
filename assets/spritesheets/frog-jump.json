@@ -1,0 +1,140 @@
+{
+  "frames": [
+    {
+      "filename": "0.png",
+      "frame": {
+        "x": 2,
+        "y": 2,
+        "w": 470,
+        "h": 470
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 470,
+        "h": 470
+      },
+      "sourceSize": {
+        "w": 470,
+        "h": 470
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "1.png",
+      "frame": {
+        "x": 2,
+        "y": 476,
+        "w": 470,
+        "h": 470
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 470,
+        "h": 470
+      },
+      "sourceSize": {
+        "w": 470,
+        "h": 470
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "2.png",
+      "frame": {
+        "x": 2,
+        "y": 950,
+        "w": 470,
+        "h": 470
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 470,
+        "h": 470
+      },
+      "sourceSize": {
+        "w": 470,
+        "h": 470
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "3.png",
+      "frame": {
+        "x": 2,
+        "y": 1424,
+        "w": 470,
+        "h": 470
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 470,
+        "h": 470
+      },
+      "sourceSize": {
+        "w": 470,
+        "h": 470
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "filename": "3.png",
+      "frame": {
+        "x": 2,
+        "y": 1424,
+        "w": 470,
+        "h": 470
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 470,
+        "h": 470
+      },
+      "sourceSize": {
+        "w": 470,
+        "h": 470
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    }
+  ],
+  "meta": {
+    "app": "http://free-tex-packer.com",
+    "version": "0.6.7",
+    "image": "frog-jump.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 474,
+      "h": 1896
+    },
+    "scale": 1
+  }
+}

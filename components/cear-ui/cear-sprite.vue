@@ -22,6 +22,15 @@ export const CEAR_SPRITES = [
   },
 
   {
+    name: 'frogJump',
+    src: require('@/assets/spritesheets/frog-jump.png'),
+    spritesheet: require('@/assets/spritesheets/frog-jump.json'),
+    collection: 'animal',
+    fps: 6,
+    isPlayable: true
+  },
+
+  {
     name: 'butterflyFly',
     src: require('../sketches/the-sinking-isle/assets/spritesheets/butterfly.png'),
     spritesheet: require('../sketches/the-sinking-isle/assets/spritesheets/butterfly.json'),
@@ -44,6 +53,8 @@ const SPEITE_DEFAULT_OPTIONS = {
   isPlayable: true
 }
 
+// @TODO: Support endDelay param, replace repeated frames
+// @TODO: Support position trimmted sprite
 export default {
 
   props: {

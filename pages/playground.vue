@@ -20,6 +20,7 @@ page-wrapper(
     .section-cear-sitcker.mt-8
       .text-h5.mb-4 cear-sticker
       .row.no-gutters
+        cear-sticker( name="frogJump" )
         cear-sticker( name="butterflyFly" label="Butterfly" )
         cear-sticker.anim-squiggly.delay-small( width="10%" name="stillGroundItems" )
         cear-sticker.anim-squiggly.delay-medium( name="stillGroundItems" )
@@ -105,18 +106,18 @@ page-wrapper(
       .row.no-gutters.mb-2
         p Organic shape container
       .row.no-gutters
-        cear-blob( needHoverAnimate ) css blob
-        cear-blob( needAnimate )
+        cear-blob( isSticker needHoverAnimate ) css blob
+        cear-blob( isSticker needAnimate )
           el-image(
             style="width: 100%; height: 100%"
             fit="cover"
             :src="mockSquareImage"
           )
-        cear-blob( type="svg" needHoverAnimate background="#a24bcf" :seed="[63738,21308,42091,51417]" backgroundB="#4b79cf"  )
+        cear-blob( isSticker type="svg" needHoverAnimate background="#a24bcf" :seed="[63738,21308,42091,51417]" backgroundB="#4b79cf"  )
           cear-icon( fill="white" name="rainy-fill" )
-        cear-blob( type="svg" needAnimate background="#f97c23" backgroundB="#F9D423" ) svg blob
+        cear-blob( isSticker type="svg" needAnimate background="#f97c23" backgroundB="#F9D423" ) svg blob
         cear-blob(
-          type="svg" width="60%" :seed="blobSeed"
+          type="svg" width="70%" :seed="blobSeed"
           background="#D3CCE3" backgroundB="#E9E4F0"
           @click.native="refreshBlobSeed"
           v-slot="{ pointAmount, contrast }"
@@ -178,7 +179,7 @@ export default {
 
   mounted() {
     this.brandColor = cssVar('brand')
-    this.setupDebug()
+    // this.setupDebug()
     this.initTestNotify()
   },
 
@@ -263,9 +264,6 @@ export default {
 
   .cear-icon
     font-size: 36px
-
-  .container
-    max-width: 780px
 
   .cear-blob,
   .cear-sticker

@@ -1,5 +1,27 @@
 <template lang="pug">
-.site-navbar
+.site-navbar.d-flex.flex-row.flex-md-column
+  nuxt-link( to="/?section=top")
+    //- @TODO: Click logo to start a story
+    cear-sticker.anim-squiggly.mb-4(
+      name="logoBear"
+    )
+  .nav-list
+    nuxt-link.nav-item( to="/?section=top" exact-path )
+      .item-dot
+        cear-blob( needAnimate )
+      .el-link.item-text {{ $t('nav.home') }}
+    nuxt-link.nav-item( to="/blog?section=top" exact-path )
+      .item-dot
+        cear-blob( needAnimate )
+      .el-link.item-text {{ $t('nav.blog') }}
+    nuxt-link.nav-item( to="/playground?section=top" exact-path )
+      .item-dot
+        cear-blob( needAnimate )
+      .el-link.item-text {{ $t('nav.playground') }}
+    nuxt-link.nav-item( to="/about?section=top" exact-path )
+      .item-dot
+        cear-blob( needAnimate )
+      .el-link.item-text {{ $t('nav.about') }}
 </template>
 
 <script>
@@ -10,5 +32,90 @@ export default {
 
 <style lang="stylus">
 .site-navbar
-  null
+  --nav-offset: 22px
+  position absolute
+  // width: 100%
+  padding: 2rem 2.5rem
+
+  &:hover
+    --text-opacity: 1
+    // --nav-offset: 0
+
+  @media $mediaInMiddleScrren
+    position: fixed
+    left: 0.5rem
+    top: 1rem
+    --text-opacity: 0
+
+  .illustration-logoBear
+    // border-radius: 50%
+    // border: 3px solid $secondary
+
+  .nav-item
+    display: flex
+    align-items: center
+    margin-bottom: 10px
+    padding: 0 12px
+    transform: translateX(var(--nav-offset))
+    transition: 318ms
+
+    .item-dot
+      // background-color: primary(90)
+      transition: 418ms
+      position relative
+      width: 20px
+      height: 20px
+      margin-right: 12px
+      border: 1px solid transparent
+      border-radius: 3px
+
+      .cear-blob
+        --width: 10px
+        --background: transparent
+        position absolute
+        inset: 4px
+
+      .css-blob
+        border: 2px solid primary(80)
+
+    .item-text
+      transition: 318ms
+      opacity: var(--text-opacity)
+      color: primary(80)
+      // padding: 0 8px
+      // border: 1px solid primary(80)
+      // border-radius: 3px
+
+    for num in (1..10)
+      &:nth-child({num})
+        .item-dot,
+        .item-text
+          // transition-delay: (num * 50ms)
+
+    &:hover
+      .item-dot
+        border-color: primary(80)
+        transition-delay: 0ms !important
+
+      .item-text
+        opacity: 1
+        color: primary(100)
+        text-decoration: none !important
+
+    &.nuxt-link-active
+      .item-text
+        color: $brand
+
+      .item-dot
+        .css-blob
+          --background: primary(80)
+
+      &:hover
+        .item-dot
+          background-color: primary(80)
+
+          .css-blob
+            --background: secondary(100)
+            border-width: 1px
+
 </style>

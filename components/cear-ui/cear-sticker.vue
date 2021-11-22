@@ -13,11 +13,12 @@
     )
     .sticker-entity.sticker-illustration(
       v-else-if="sticker.type === 'illustration'"
+      :class="[ 'illustration-' + sticker.name ]"
       :style="entityStyle"
     )
     .sticker-entity.sticker-label(
       v-else-if="sticker.type === 'label'"
-      :class="[ 'label-' - sticker.name ]"
+      :class="[ 'label-' + sticker.name ]"
       :style="entityStyle"
     )
       .label-content.is-inner(
@@ -78,7 +79,18 @@ absurdDesignList.map(el => {
 
 const CEAR_STICKER_OPTIONS_LIST = [
   {
-
+    name: 'logo',
+    src: require('@/assets/stickers/logo.png'),
+    scale: 1,
+    width: 50,
+    height: 50
+  },
+  {
+    name: 'logoBear',
+    src: require('@/assets/stickers/logo-bear.png'),
+    scale: 0.1,
+    width: 980,
+    height: 732
   }
 ]
 CEAR_STICKER_OPTIONS_LIST.map(addSticker)
@@ -211,7 +223,9 @@ export default {
       width: 100% !important
 
   .sticker-entity
-    background-size: cover
+    // background-size: cover
+    background-size: contain
+    background-position: center center
 
   .label-content
     null
