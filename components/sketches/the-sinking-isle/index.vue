@@ -1,7 +1,25 @@
 <template lang="pug">
 .sketch.sketch-the-sinking-isle(
 )
-  .dom-wrapper( :class="{ 'is-inited': isInited }" )
+  .dom-wrapper(
+    :class="{ 'is-inited': isInited, 'is-show-menu': isShowMainMenu }"
+  )
+    tsi-menu(
+      v-if="isInited"
+      v-model="isShowMainMenu"
+      :storyRoles="storyRoles"
+      :storyMessages="storyMessages"
+    )
+    cear-story.is-absolute-center(
+      ref="story"
+      enableActionBar
+      :needAnimate="true"
+      :roles="storyRoles"
+      :initialMessages="storyMessages"
+      @messageSent="({ messages }) => storyMessages = messages"
+      @messageClearAll="() => storyMessages = []"
+      scrollHeight="50vh"
+    )
     .sketch-title.is-absolute-center {{ $t('tsi.sketch.title') }}
   .canvas-wrapper(
     ref="canvasWrapper"
@@ -12,19 +30,28 @@
 import { __DEBUG__ } from '~/utils/dev'
 import { loadingSketch } from './loading-2d-sketch'
 
+const STORY_MESSAGES_CACHE_KEY = 'TSI/StoryMessages'
+
 export default {
   data(){
     return {
       isNeedLoading: !__DEBUG__,
+
+      // Context States
       isLoading: true,
       loadProgress: 0,
-      isInited: false,
+      isInited: __DEBUG__,
       isError: false,
       isPlaying: true,
       isMuteAudio: false,
+      isShowMainMenu: true,
       enableUserInput: true,
       enablePlayerDrift: false,
-      cameraTarget: 'player'
+      cameraTarget: 'player',
+
+      // Context Data
+      storyRoles: [],
+      storyMessages: []
     }
   },
 
@@ -45,17 +72,26 @@ export default {
   watch: {
     loadProgress() {
       if (this.loadProgress >=1) {
-        console.log('Sketch loaded')
-        loadingSketch.destory()
+        this.handleLoaded()
       }
+    },
+
+    storyMessages() {
+      localStorage.setItem(STORY_MESSAGES_CACHE_KEY, JSON.stringify(this.storyMessages))
+    },
+
+    isShowMainMenu() {
+      // console.log('isShowMainMenu', this.isShowMainMenu)
     }
   },
 
-  mounted() {
-    this.initSketch()
-  },
-
   activated() {
+    if (!this.sketch) {
+      this.initSketch()
+    } else {
+      this.sketch.resize()
+    }
+
     if (!this.isLoading) {
       this.isPlaying = true
     }
@@ -67,7 +103,7 @@ export default {
 
   methods: {
     async initSketch () {
-      if (this.isInited) {
+      if (this.isInited && !this.enableDebug) {
         return
       }
 
@@ -81,21 +117,49 @@ export default {
       this.isLoading = true
 
       try {
+        this.initContextData()
         window.TONE_SILENCE_LOGGING = true
         // Export sketch to window
         const { theSinkingIsleSketch } = await import('./sketch')
-        window.sketch = window.theSinkingIsleSketch = theSinkingIsleSketch
+        this.sketch = window.sketch = window.theSinkingIsleSketch = theSinkingIsleSketch
         await theSinkingIsleSketch.init({
           container: this.$refs.canvasWrapper,
           $vm: this
         })
-        this.isInited = true
       } catch(error) {
         console.log('Init sektch error', error)
         this.isError = true
       }
 
       this.isLoading = false
+    },
+
+    async initContextData() {
+      let storyMessages = [
+        { user: 'bear', message: '> Hello from Polar Bear. \n\n Welcome to chat with me'  },
+        { user: 'user', message: 'You know who i am?'  },
+        { user: 'bear', message: 'I guess you are a kind people'  }
+      ]
+
+      if (process.client && localStorage.getItem(STORY_MESSAGES_CACHE_KEY)) {
+        const localMessages = JSON.parse(localStorage.getItem(STORY_MESSAGES_CACHE_KEY))
+        if (localMessages.length) storyMessages = localMessages
+      }
+
+      this.storyRoles = [
+        { name: 'bear', avatar: require('@/assets/mock/bear9.png'), isDefault: true },
+        { name: 'user', isMe: true }
+      ]
+
+      this.storyMessages = storyMessages
+
+      this.$story = this.$refs.story
+    },
+
+    async handleLoaded() {
+      console.log('Sketch loaded')
+      await loadingSketch.destory()
+      this.isInited = true
     }
   }
 }
@@ -118,13 +182,14 @@ export default {
     left: 0
     top: 0
     transition: opacity 1000ms, transform 1000ms
+
     &.fade-out
       will-change: transform, opacity
       opacity: 0
       transform: scale(1.5)
 
   .dom-wrapper
-    z-index: 233
+    z-index: $zIndexSketchUI
     pointer-events: none
     color: #383838
     opacity: 0
@@ -137,6 +202,14 @@ export default {
       top: 50%
       left: 50%
       transform: translate3d(-50%, 50%, 0)
+
+    > .cear-story
+      position: fixed
+      padding: 0 24px
+      max-width: 800px
+      transform: translate3d(-50%, 0, 0)
+      left: 50%
+      bottom: 0
 
     .sketch-title
       display: none

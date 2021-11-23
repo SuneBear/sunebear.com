@@ -1,5 +1,6 @@
 <template lang="pug">
 .page-wrapper.scrollable-container(
+  :class="[ 'ref-page-' + name ]"
   v-infinite-scroll="handleLoadMore"
   infinite-scroll-disabled="disableLoadMore"
   :infinite-scroll-distance="1500"

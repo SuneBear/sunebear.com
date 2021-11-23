@@ -1,6 +1,7 @@
 <template lang="pug">
 page-wrapper(
   name="index"
+  :class="{ 'is-tsi-wrapper': true }"
 )
   the-sinking-isle
 </template>
@@ -10,7 +11,8 @@ export default {
 
   data() {
     return {
-      paperName: 'secondary'
+      paperName: 'secondary',
+      isShowFooter: false
     }
   },
 

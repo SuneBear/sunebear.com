@@ -48,6 +48,14 @@ export default {
     --backgroud: brandLightness(96)
 
   &.background-line
-    background-image: url(@/assets/cear-ui/patterns/lined-paper-2.png)
+    // background-image: url(@/assets/cear-ui/patterns/lined-paper-2.png)
+    background-color: hsl(111deg 60% 94%)
+    background-image: repeating-linear-gradient(0deg, primary(3), primary(3) 1px, transparent 1px, transparent);
+    background-size: 20px 20px
+
+  &.background-music-note
+    // background-color #fdfdf5
+    // background-image: url(@/assets/cear-ui/patterns/cocorini-umbrella.png)
+    // background-blend-mode: softer-light
 
 </style>

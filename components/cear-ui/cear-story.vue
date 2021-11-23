@@ -132,6 +132,14 @@ export default {
       }
     },
 
+    initialMessages() {
+      if (!this.needAnimate) {
+        this.initData()
+      } else {
+        this.historyMessages = this.initialMessages
+      }
+    },
+
     hasFinished() {
       if (this.needAnimate && this.hasFinished) {
         console.log('Story animte finished')
@@ -152,7 +160,7 @@ export default {
     initData() {
       if (!this.needAnimate) {
         this.currentMessages = [
-          ...this.currentMessages,
+          // ...this.currentMessages,
           ...this.initialMessages.map(message => this.formatMessageData({
             ...message,
             status: 'sent'
@@ -267,8 +275,8 @@ export default {
       })
     },
 
-    addMessage(message, { force = false, unshift = false } = {}) {
-      if (typeof message === 'string') {
+    addMessage(message, { force = false, unshift = false, ...options } = {}) {
+      if (typeof message === 'string' || typeof message === 'number') {
         message = {
           message,
           ...options

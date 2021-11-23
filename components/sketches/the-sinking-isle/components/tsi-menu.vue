@@ -1,0 +1,260 @@
+<template lang="pug">
+.tsi-main-menu( :class="{ 'is-show': value }" )
+  client-only
+    global-events(
+      @keyup.esc="toggle(currentTabId)"
+    )
+  .menu-navbar.d-flex
+    //- @TODO: Support icon morphing
+    .shadow-handler.is-grass(
+      @click="toggle(tab.id)"
+      v-for="tab in tabs"
+      :class="{ 'is-active': tab.id === currentTabId }"
+    )
+      cear-icon(
+        circle
+        fill="var(--secondary)"
+        shadow="black"
+        :name="tab.id === currentTabId ? 'close-line' : tab.icon"
+      )
+  .menu-modal.d-flex.align-center.justify-center
+    .modal-dialog-box
+      transition( name="el-fade-in" )
+        .menu-tab.tab-main( v-if="currentTabId === 'main'" )
+          .tab-title {{ currentTab.name }}
+          .menu-items
+            cear-button( type="secondary" shadow="rgba(var(--brand-rgb), 0.6)" @click="hide" size="big" ) {{ $t('menu.start') }}
+      transition( name="el-fade-in" )
+        .menu-tab.tab-story( v-if="currentTabId === 'story'" )
+          //- .tab-title {{ currentTab.name }}
+          .tab-title &nbsp;
+          cear-story(
+            ref="story"
+            :needAnimate="false"
+            :roles="storyRoles"
+            :initialMessages="storyMessages"
+            scrollHeight="80vh"
+          )
+</template>
+
+<script>
+const DEFAULT_TAB_ID = 'main'
+
+export default {
+  props: {
+    value: {
+      type: [Boolean]
+    },
+    storyRoles: {
+      type: Array
+    },
+    storyMessages: {
+      type: Array
+    }
+  },
+
+  model: {
+    prop: 'value'
+  },
+
+  data() {
+    return {
+      tabs: [
+        { name: this.$t('story.history'), id: 'story', icon: 'chat-history-fill' },
+        { name: this.$t('tsi.sketch.title'), id: 'main', icon: 'settings-2-fill' }
+      ],
+      currentTabId: null
+    }
+  },
+
+  computed: {
+    currentTab() {
+      return this.tabs.find(el => el.id === this.currentTabId)
+    }
+  },
+
+  watch: {
+    value() {
+      this._toggleBodyClass()
+    }
+  },
+
+  created() {
+    this._injectInitedClass()
+
+    if (this.value) {
+      this._toggleBodyClass()
+      this.currentTabId = DEFAULT_TAB_ID
+    }
+  },
+
+  activated() {
+    this._injectInitedClass()
+    this._toggleBodyClass()
+  },
+
+  methods: {
+    _injectInitedClass() {
+      // @FIXME: Should dispatch classStatus event via eventBus
+      if (process.client) {
+        setTimeout(() => {
+          document.querySelector('.page-wrapper')?.classList.add('is-inited-sketch')
+        }, 50)
+      }
+    },
+
+    _toggleBodyClass() {
+      if (process.client) {
+        const $wrapper = document.querySelector('.page-wrapper')
+        $wrapper.classList.toggle('is-main-menu-opened', this.value)
+      }
+    },
+
+    show(tabId) {
+      this.currentTabId = tabId || DEFAULT_TAB_ID
+      this.$emit('input', true)
+    },
+
+    hide() {
+      setTimeout(() => {
+        this.currentTabId = null
+        this.$emit('input', false)
+      })
+    },
+
+    toggle(tabId = DEFAULT_TAB_ID) {
+      if (this.value && tabId === this.currentTabId) {
+        this.hide()
+      } else {
+        this.show(tabId)
+      }
+    }
+  }
+}
+</script>
+
+<style lang="stylus">
+// Set navbar transitoion
+.is-tsi-wrapper.is-inited-sketch
+  .site-navbar
+    transition: 500ms
+    opacity: 0
+    transform: translateY(-24px) scale(0.85)
+
+  // navbar secondary theme
+  .nav-list,
+  .nav-item.nuxt-link-active .item-text
+    filter: invert(100)
+
+  &.is-main-menu-opened
+    .site-navbar
+      opacity 1
+      transform: translateY(0%) scale(1)
+
+.tsi-main-menu
+  .menu-navbar
+    position: absolute
+    z-index: 2
+    top: 2rem
+    right: 2rem
+    font-size: s('min(6vw, 45px)')
+    pointer-events: initial
+
+    .cear-icon
+      margin-left: 1rem
+
+  .menu-modal
+    transition: 1000ms
+    position absolute
+    inset: 0
+    background-color: secondary(0)
+    pointer-events: none
+
+  .modal-dialog-box
+    margin: 24px
+
+  .menu-items
+    .el-button
+      min-width: 200px
+
+  .menu-tab
+    position absolute
+    width: 100%
+    left: 50%
+    top: 50%
+    transform: translate3d(-50%, -50%, 0)
+    display: flex
+    flex-direction: column
+    align-items: center
+
+  .tab-title
+    color: $secondary
+    margin-bottom: 20px
+
+  .tab-main
+    top: 40%
+
+    > *
+      opacity: 0.9
+
+    glow-text-shadow()
+      $color = brand(50)
+      text-shadow:
+        1px 1px 2px primary(50),
+        0 0 5px secondary(60),
+        0 0 10px secondary(60),
+        0 0 15px secondary(60),
+        0 0 20px $color,
+        0 0 35px $color,
+        0 0 40px $color,
+        0 0 50px $color
+
+    glow-text-shadow-b()
+      $color = brand(50)
+      text-shadow:
+        1px 1px 2px primary(50),
+        0 0 5px secondary(60),
+        0 0 10px secondary(60),
+        0 0 15px secondary(60),
+        0 0 20px $color,
+        0 0 35px $color,
+        0 0 40px $color,
+        0 0 50px $color
+
+    .el-button
+      font-weight: 400 !important
+      color: primary(70) !important
+      text-shadow:
+        1px 1px 2px brand(50),
+        0 0 5px secondary(60),
+        0 0 10px secondary(60),
+        0 0 15px secondary(60),
+        0 0 20px brand(50),
+        0 0 35px brand(50),
+        0 0 40px brand(50),
+        0 0 50px brand(50)
+
+    @keyframes text-glow
+      from
+        glow-text-shadow()
+      to
+        glow-text-shadow-b()
+
+    .tab-title
+      font-family: var(--fonts-title)
+      font-size: s('max(2.5vw, 40px)')
+      font-weight: 300
+      margin-bottom: 30px
+      animation: text-glow 1s linear infinite alternate
+      will-change: text-shadow
+
+  .cear-story
+    max-width: 800px
+    width: 100%
+    padding: 0 24px
+
+  &.is-show
+    .menu-modal
+      pointer-events: initial
+      background-color: primary(30)
+</style>

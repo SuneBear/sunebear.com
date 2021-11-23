@@ -96,6 +96,8 @@ export default {
 
 // Tweakpane
 .tp-dfwv
-  left: 8px
+  top: auto !important
+  left: 2rem
+  bottom: 2rem
   z-index: 23333
 </style>

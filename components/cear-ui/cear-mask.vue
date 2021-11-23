@@ -73,6 +73,7 @@
 import { random } from '~/utils/random'
 import { isSafari } from '~/utils/env'
 
+// @TODO: Refine spot and gradin like paper texture, could try backgroundImage + blendMode
 export default {
   props: {
     id: {
@@ -93,7 +94,7 @@ export default {
     },
     enableGrain: {
       type: Boolean,
-      default: true
+      default: false
     },
     // @TODO: Optimize long element distort
     isBlock: {
@@ -168,7 +169,7 @@ export default {
       const maskSize = random.range(20, 140)
 
       return {
-        'mask-size': `${maskSize}%`,
+        // 'mask-size': `${maskSize}%`,
         'mask-position': `${maskSize - 100 / 2}% center`
       }
     },
@@ -207,7 +208,9 @@ export default {
   .spot-layer
     height 100%
     display flex
-    mask-size: 1000px
     mask-repeat: repeat
-    mask-image: url(@/assets/cear-ui/ink-spot-mask.png)
+    // mask-size: 1000px
+    // mask-image: url(@/assets/cear-ui/ink-spot-mask.png)
+    mask-size: 50px
+    mask-image: url(@/assets/cear-ui/mask-grit.png)
 </style>

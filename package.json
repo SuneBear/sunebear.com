@@ -45,6 +45,7 @@
     "tone": "^14.7.77",
     "tweakpane": "^3.0.5",
     "viewport-units-buggyfill": "^0.6.2",
+    "vue-global-events": "^1.2.1",
     "vue-resize-directive": "^1.2.0",
     "vue-rough-notation": "^0.1.11",
     "vuetify": "^2.5.10"

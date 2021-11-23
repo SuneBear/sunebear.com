@@ -33,8 +33,6 @@ const pageMixin = {
 
     this.firstfromPageName = from.name || localStorage.getItem(vm._uid)
 
-    console.log(123, to)
-
     if (to.query.section) {
       this.scrollToSection(to.query.section)
     }

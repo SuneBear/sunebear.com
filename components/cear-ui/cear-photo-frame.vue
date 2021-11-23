@@ -236,7 +236,7 @@ export default {
   .mask-overlay
     pointer-events: none
     position: absolute
-    z-index: $zIndexMask
+    z-index: $zIndexPhotoFrame
     inset: -1px
     transition: 800ms
 
@@ -255,6 +255,7 @@ export default {
 
   .inner-content
     position: relative
+    overflow: hidden
 
     > *
       max-width: 100%

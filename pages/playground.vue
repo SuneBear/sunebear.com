@@ -61,6 +61,7 @@ page-wrapper(
       .row.no-gutters
         cear-button( icon="leaf-fill") Default
         cear-button( vertShakeHover squigglyHover size="medium" circle icon="leaf-fill" shadow="var(--primary)")
+        cear-button( size="medium" circle icon="settings-2-fill" shadow="var(--primary)")
         cear-button( squiggly vertShake size="big" round iconShadow="var(--mark)" icon="rainy-fill")
         cear-button( round shadow="var(--brand)" border="var(--primary)" icon="apps-fill")
         cear-button( type="brand-light" size="big" icon="bear-smile-fill") Brand Light
@@ -179,7 +180,7 @@ export default {
 
   mounted() {
     this.brandColor = cssVar('brand')
-    // this.setupDebug()
+    this.setupDebug()
     this.initTestNotify()
   },
 

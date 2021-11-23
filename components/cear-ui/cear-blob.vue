@@ -167,7 +167,7 @@ export default {
 
     rootStyle() {
       return {
-        width: `var(--width, this.width)`,
+        width: `var(--width, ${this.width})`,
         color: this.color
       }
     },

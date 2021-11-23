@@ -19,12 +19,34 @@ body
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0)
   font-family: var(--fonts-body)
 
-a
-  text-decoration: none
-
 ::selection
   background: $brand50
 
 .limit-layout
   margin: 0 auto
   height: 100vh
+
+// Handlers
+.handler
+  cursor pointer
+
+.shadow-handler
+  cursor pointer
+  transition: opacity 318ms, transform 118ms
+  opacity: 1
+
+  &:hover
+    opacity: 0.8
+
+  &.is-grass
+    opacity: 0.6
+
+    &.is-active,
+    &:hover
+      opacity: 0.8
+
+  &:active
+    transform: translateY(3px)
+
+a
+  text-decoration: none

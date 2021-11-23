@@ -101,7 +101,7 @@ export default {
     },
 
     getDefaultShadowByType() {
-      if (!this.type || this.type === 'default') {
+      if (!this.type || this.type === 'default' || this.type === 'secondary-ghost') {
         return 'rgba(var(--primary-rgb), 0.15)'
       }
 
@@ -146,6 +146,11 @@ export default {
 
       &.el-button--small
         padding-bottom: 7px !important
+
+    .front-layer.is-circle,
+    .front-layer.is-round
+      margin-top: -3px
+      margin-left: -1px
 
     .back-layer
       filter: drop-shadow(1px 4px 0 var(--shadow))

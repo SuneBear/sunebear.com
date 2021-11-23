@@ -2,7 +2,9 @@
 page-wrapper(
   name="about"
 )
-  | About
+  .section
+    .container
+      | About
 </template>
 
 <script>

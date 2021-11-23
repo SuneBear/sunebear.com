@@ -224,6 +224,7 @@ export default {
 
   .sticker-entity
     // background-size: cover
+    background-repeat: no-repeat
     background-size: contain
     background-position: center center
 

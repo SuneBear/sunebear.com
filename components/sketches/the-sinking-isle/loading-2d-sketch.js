@@ -44,6 +44,7 @@ class LoadingSketch {
     this.$container.appendChild(this.$canvas)
     window.addEventListener('resize', this.resize)
     this.generateCircleDots()
+    this.isInited = true
 
     if (this.isPlaying) {
       this.play()
@@ -244,7 +245,9 @@ class LoadingSketch {
   }
 
   async destory() {
-    await this.fadeout()
+    if (this.isInited) {
+      await this.fadeout()
+    }
     this.stop()
     window.removeEventListener('resize', this.resize)
     this.$container?.removeChild(this.$canvas)

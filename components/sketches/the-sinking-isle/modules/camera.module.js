@@ -218,8 +218,8 @@ export default class CameraModule extends Module {
     }
 
     // Follow Target
-    const cameraZoomOut = this.$vm.isShowPanel
-    const uiZoom = cameraZoomOut ? 2 : 0
+    const cameraZoomOut = this.$vm.isShowMainMenu
+    const uiZoom = cameraZoomOut ? 8 : 0
     this.currentUIZoom = math.damp(this.currentUIZoom, uiZoom, 2, delta)
     this.playerFollow.currentDistance = math.damp(
       this.playerFollow.currentDistance,

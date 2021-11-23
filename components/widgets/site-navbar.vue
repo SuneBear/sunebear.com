@@ -34,6 +34,7 @@ export default {
 .site-navbar
   --nav-offset: 22px
   position absolute
+  z-index: $zIndexHeader
   // width: 100%
   padding: 2rem 2.5rem
 
