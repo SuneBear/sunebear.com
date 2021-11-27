@@ -42,7 +42,7 @@ const pageMixin = {
 
   methods: {
     scrollToSection(sectionName) {
-      const $page = document.querySelector('.page')
+      const $page = document.querySelector('.page-wrapper')
       const $section = sectionName === 'top' ? $page : document.querySelector(
         `.section-${sectionName}`
       )

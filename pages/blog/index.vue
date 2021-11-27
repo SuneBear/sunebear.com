@@ -4,7 +4,15 @@ page-wrapper(
 )
   .section
     .container
-      | Blog
+      //- .text-h4.mb-8
+      //-   cear-notation( isShow ) Blog
+
+      .blog-list
+        nuxt-content-card(
+          v-for="nuxtContent in articles"
+          isInList
+          :content="nuxtContent"
+        )
 </template>
 
 <script>
@@ -12,7 +20,17 @@ export default {
 
   head() {
     return {
-      title: 'Blog'
+      title: this.$t('nav.blog')
+    }
+  },
+
+  async asyncData ({ $content }) {
+    const articles = await $content('blog')
+      .sortBy('date', 'desc')
+      .fetch()
+
+    return {
+      articles
     }
   },
 

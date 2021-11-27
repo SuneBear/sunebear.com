@@ -14,6 +14,7 @@ export default {
 
 <style lang="stylus">
 .site-footer
+  position relative
   width: 100%
   padding: 2rem 2.5rem
   height: var(--footer-height)

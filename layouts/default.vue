@@ -32,6 +32,7 @@ export default {
 
   head() {
     return {
+      titleTemplate: `%s - ${this.$t('sunebaer')}`,
       bodyAttrs: {
         // style: `zoom: ${this.zoom}`
       }
@@ -68,7 +69,7 @@ export default {
   max-height: 100%
 
   .container
-    max-width: 780px
+    max-width: 700px
 
   .global-frame
     .mask-wrapper
@@ -100,4 +101,14 @@ export default {
   left: 2rem
   bottom: 2rem
   z-index: 23333
+
+// Print scrollable content
+@media print
+  body, .default-layout, .page-wrapper
+    display: block !important
+    position: relative !important
+    width: auto !important
+    height: auto !important
+    overflow: visible !important
+    margin-left: 0 !important
 </style>

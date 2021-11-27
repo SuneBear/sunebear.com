@@ -2,7 +2,7 @@
 page-wrapper(
   name="playground"
 )
-  .container.pt-8
+  .container
     .text-h4.pb-2.anim-squiggly
       cear-notation( isShow :color="brandColor" ) UI Playground
 
@@ -75,7 +75,6 @@ page-wrapper(
     .section-cear-story.mt-8
       .text-h5.mb-4 cear-story
       .row.no-gutters
-        readable-render( :content="testMarkdownTemplate" :contentData="testMarkdownTemplateData" )
         cear-story.mt-8(
           ref="story"
           enableActionBar
@@ -118,7 +117,7 @@ page-wrapper(
           cear-icon( fill="white" name="rainy-fill" )
         cear-blob( isSticker type="svg" needAnimate background="#f97c23" backgroundB="#F9D423" ) svg blob
         cear-blob(
-          type="svg" width="70%" :seed="blobSeed"
+          type="svg" width="80%" :seed="blobSeed"
           background="#D3CCE3" backgroundB="#E9E4F0"
           @click.native="refreshBlobSeed"
           v-slot="{ pointAmount, contrast }"
@@ -129,6 +128,20 @@ page-wrapper(
           <br/>
           | pointAmount: {{ pointAmount }}, constrast: {{ contrast }}
 
+    .text-h4.pb-2.anim-squiggly.mt-10
+      cear-notation( isShow :color="brandColor" ) Widget Playground
+
+    .section.mt-8
+      .text-h5.mb-4
+        | readable-render
+      readable-render.mb-8(
+        :content="testMarkdownTemplate"
+        :contentData="testMarkdownTemplateData"
+      )
+      readable-render(
+        type="nuxtContent"
+        :content="nuxtContent"
+      )
 </template>
 
 <script>
@@ -151,7 +164,15 @@ export default {
 
   head() {
     return {
-      title: 'Playground'
+      title: this.$t('nav.playground')
+    }
+  },
+
+  async asyncData ({ $content }) {
+    const nuxtContent = await $content('playground').fetch()
+
+    return {
+      nuxtContent
     }
   },
 
@@ -164,7 +185,7 @@ export default {
       enableStoryAnimte: false,
       isShowNotationGroup: true,
       storyInputMessage: null,
-      testMarkdownTemplate: "#### readable-render \n Support markdown syntax and <cear-notation isShow>Vue Component such as `cear-notation`, support variable: this is `{{ testVar }}`</cear-notation>",
+      testMarkdownTemplate: "### Render type: markdown (marked) \n Support markdown syntax and <cear-notation isShow>Vue Component such as `cear-notation`, support variable: this is `{{ testVar }}`</cear-notation>",
       testMarkdownTemplateData: {
         testVar: 'testVarValue'
       },
@@ -180,8 +201,16 @@ export default {
 
   mounted() {
     this.brandColor = cssVar('brand')
-    this.setupDebug()
+  },
+
+  activated() {
     this.initTestNotify()
+    this.setupDebug()
+  },
+
+  deactivated() {
+    this.$notify.closeAll()
+    this.debug.dispose()
   },
 
   watch: {

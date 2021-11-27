@@ -49,9 +49,11 @@ export default {
 
   &.background-line
     // background-image: url(@/assets/cear-ui/patterns/lined-paper-2.png)
-    background-color: hsl(111deg 60% 94%)
-    background-image: repeating-linear-gradient(0deg, primary(3), primary(3) 1px, transparent 1px, transparent);
-    background-size: 20px 20px
+    background-color: hsl(52deg 27% 95%)
+    background-image:
+      url(@/assets/cear-ui/patterns/noise.png),
+      repeating-linear-gradient(0deg, primary(2), primary(2) 1px, transparent 1px, transparent);
+    background-size: auto, 20px 20px
 
   &.background-music-note
     // background-color #fdfdf5

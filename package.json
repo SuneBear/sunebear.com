@@ -7,7 +7,7 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
-    "@nuxt/content": "1.14.0",
+    "@nuxt/content": "1.15.0",
     "@nuxtjs/i18n": "^7.0.3",
     "@nuxtjs/svg-sprite": "^0.5.2",
     "@tweakpane/plugin-essentials": "^0.1.3",

@@ -40,6 +40,7 @@ const options = {
 
 // @TODO: Support reverse aniamtion, animation delay
 // @TODO: Adjust highlight maxRandomnessOffset, roughness, multiples height
+// @FIXME: Invisible bug as SSR
 export default {
   props: {
     type: {
@@ -96,7 +97,7 @@ export default {
 
     iterations: {
       type: Number,
-      default: () => getInkNoiseRangeFloor(1, options.iterations)
+      default: () => getInkNoiseRangeFloor(2, options.iterations)
     },
 
     brackets: {
@@ -146,6 +147,12 @@ export default {
     this.$watch('padding', value => {
       this.annotation.padding = value
     })
+  },
+
+  activated() {
+    if (this.isShow) {
+      this.show()
+    }
   },
 
   beforeDestroy() {
@@ -223,4 +230,8 @@ export default {
 
 .rough-annotation
   // filter: s('url(#filter-distort-0)')
+
+  // @FIXME: Modify position and style in print mode
+  @media print
+    display: none
 </style>

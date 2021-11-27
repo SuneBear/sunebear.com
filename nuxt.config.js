@@ -63,6 +63,13 @@ export default {
 
   modules: ['@nuxtjs/i18n', '@nuxt/content'],
 
+  content: {
+    liveEdit: false,
+    markdown: {
+      // remarkPlugins: ['remark-breaks']
+    }
+  },
+
   i18n: {
     defaultLocale: 'zh-Hans',
     strategy: 'no_prefix',

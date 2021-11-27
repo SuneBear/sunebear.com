@@ -1,7 +1,7 @@
 <template lang="pug">
 .readable-render(
 )
-  client-only.marked-content( v-if="type === 'markdown'")
+  client-only.marked-content( v-if="type === 'markdown' || type === 'marked'")
     dynamic-template( :template="parseMarkdownToHtml(content)" :templateData="contentData" )
   nuxt-content( v-else-if="type === 'nuxtContent'" :document="content" )
   .html-content( v-else v-html="content" )
@@ -12,12 +12,14 @@ import marked from 'marked'
 import Markdown from '@nuxt/content/parsers/markdown'
 import { getDefaults, processMarkdownOptions } from '@nuxt/content/lib/utils'
 
+// Notice: Therea are so many limits in Nuxt Content Vue Component,
+//         such as not support: camelCase, self-closing tag, slot, contextData
 // @TODO: Write a marked plugin to pass contentData to Vue component
-// @TODO: Support nuxtContent type in runtime, remove prismjs error
+// @TODO: Replace nuxtContent with marked, support SSR
 export default {
   props: {
     content: {
-      type: String
+      type: [String, Object]
     },
 
     contentData: {
@@ -52,7 +54,7 @@ export default {
       if (this.type === 'markdown') {
         this.parsedContent = this.parseMarkdownToHtml(this.content)
       } else if (this.type === 'nuxtContent') {
-        this.parsedContent = await this.parseMarkdownToAst(this.content)
+        // this.parsedContent = await this.parseMarkdownToAst(this.content)
       }
       this.$forceUpdate()
     },
@@ -105,6 +107,7 @@ export default {
   p
     margin-top 0
     margin-bottom 1.46em
+    white-space: pre-line
 
   a
     color #111
@@ -152,7 +155,7 @@ export default {
   hr
     display block
     width 14%
-    margin 40px auto 34px
+    margin 40px 0 34px
     border 0 none
     border-top 3px solid #dededc
   blockquote
@@ -228,6 +231,8 @@ export default {
   h5,
   h6
     color #222223
+    font-weight: 400
+
   h4,
   h5,
   h6

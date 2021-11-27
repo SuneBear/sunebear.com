@@ -52,6 +52,10 @@ export default {
     // border-radius: 50%
     // border: 3px solid $secondary
 
+  .nav-list
+    @media print
+      display: none
+
   .nav-item
     display: flex
     align-items: center

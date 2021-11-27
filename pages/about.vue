@@ -4,7 +4,9 @@ page-wrapper(
 )
   .section
     .container
-      | About
+      nuxt-content-card(
+        :content="nuxtContent"
+      )
 </template>
 
 <script>
@@ -12,7 +14,15 @@ export default {
 
   head() {
     return {
-      title: 'About'
+      title: this.$t('nav.about')
+    }
+  },
+
+  async asyncData ({ $content }) {
+    const nuxtContent = await $content('about').fetch()
+
+    return {
+      nuxtContent
     }
   }
 

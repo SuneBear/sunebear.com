@@ -15,7 +15,7 @@
         circle
         fill="var(--secondary)"
         shadow="black"
-        :name="tab.id === currentTabId ? 'close-line' : tab.icon"
+        :name="tab.id === currentTabId ? 'close-short-line' : tab.icon"
       )
   .menu-modal.d-flex.align-center.justify-center
     .modal-dialog-box
@@ -105,8 +105,10 @@ export default {
 
     _toggleBodyClass() {
       if (process.client) {
-        const $wrapper = document.querySelector('.page-wrapper')
-        $wrapper.classList.toggle('is-main-menu-opened', this.value)
+        setTimeout(() => {
+          const $wrapper = document.querySelector('.page-wrapper')
+          $wrapper.classList.toggle('is-main-menu-opened', this.value)
+        }, 10)
       }
     },
 
