@@ -5,7 +5,6 @@ cear-mask.cear-icon(
 )
   svg-icon(
     :name="name"
-    :title="name"
     :fill="fill"
     :stroke="stroke"
     :style="style"
@@ -27,7 +26,6 @@ export default {
       type: Number,
       default: 0.02
     },
-
     'name': String,
     'size': String,
     'isLine': {

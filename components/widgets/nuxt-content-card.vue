@@ -2,7 +2,7 @@
 .nuxt-content-card( :class="{ 'is-in-list': isInList }" )
   component.handler( :is="onTitleClick ? 'div' : 'nuxt-link'" :to="content.path"  @click="handleTitleClick" )
     h1.content-title.mb-2.mb-md-4
-      cear-notation( isShow isHalfHighlight :animate="false" ) {{ content.title }}
+      cear-notation( isShow isHalfHighlight ) {{ content.title }}
 
   .content-meta.mb-4.mb-md-8
     | {{ $t('content.meta', { date: formattedData, author: this.author }) }}
@@ -54,6 +54,7 @@ export default {
 
 <style lang="stylus">
 .nuxt-content-card
+  font-family: var(--fonts-blog)
 
   &.is-in-list
     .nuxt-content
@@ -61,12 +62,15 @@ export default {
       -webkit-box-orient: vertical
       -webkit-line-clamp: 8
       overflow: hidden
+      max-height: 280px
+
+      @media $mediaInMobile
+        max-height: 220px
 
   & + &
     margin-top: 48px
 
   .content-title
-    // @FIXME: Replace Menlo font, support weight 500
     // font-family: var(--fonts-title)
     font-weight: 400
     position relative

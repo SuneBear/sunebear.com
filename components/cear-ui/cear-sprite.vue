@@ -132,7 +132,8 @@ export default {
         // @REF: https://github.com/alexx855/Responsive-CSS-image-sprites
         backgroundSize: `${w / frame.w * 100}%`,
         backgroundPosition: `${frame.x / (w - frame.w) * 100}% ${frame.y / (h - frame.h) * 100}%`,
-        aspectRatio: `${frame.w} / ${frame.h}`,
+        // aspectRatio: `${frame.w} / ${frame.h}`,
+        paddingTop: `${frame.h / frame.w * 100}%`,
         transform: `scaleX(${ this.isFlipX ? -1 : 1 })`
       }
     },

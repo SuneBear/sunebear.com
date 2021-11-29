@@ -62,12 +62,13 @@ export default {
     // zoom: 1.3
 
 .default-layout
-  // @HACK: keep fullscreen with zoom
-  position fixed
   width: 100vw
   max-width: 100%
   height: 100vh
   max-height: 100%
+  // @HACK: keep fullscreen with zoom
+  @media mediaInMiddleScrren
+    position fixed
 
   .container
     max-width: 700px

@@ -17,7 +17,7 @@ span.svg-defs-wrapper
     :enableMask="false"
   )
 
-  svg.cear-svg-filters
+  svg.cear-svg-filters.svg-defs-wrapper
     defs
       //- squiggly
       filter( id="filter-squiggly-0" )

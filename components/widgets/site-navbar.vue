@@ -35,6 +35,7 @@ export default {
   --nav-offset: 22px
   position absolute
   z-index: $zIndexHeader
+  font-family: var(--fonts-ui)
   // width: 100%
   padding: 2rem 2.5rem
 

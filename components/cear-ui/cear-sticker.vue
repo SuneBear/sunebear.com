@@ -202,7 +202,9 @@ export default {
 
       return {
         backgroundImage: `url(${sticker.src})`,
-        aspectRatio: `${sticker.width} / ${sticker.height}`,
+        // @REF: https://web.dev/aspect-ratio/
+        // aspectRatio: `${sticker.width} / ${sticker.height}`,
+        paddingTop: `${sticker.height / sticker.width * 100}%`,
         transform: `scaleX(${ this.isFlipX ? -1 : 1 })`
       }
     },

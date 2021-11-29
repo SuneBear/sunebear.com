@@ -62,7 +62,7 @@
           )
 
   .spot-layer(
-    v-if="finalEnableMask && enableSpot"
+    v-if="enableSpot"
     :style="applySpotStyle"
   )
     slot
@@ -179,7 +179,7 @@ export default {
         return null
       }
 
-      const maskSize = random.range(20, 140)
+      const maskSize = random.range(20, 140).toFixed(2)
 
       return {
         // 'mask-size': `${maskSize}%`,

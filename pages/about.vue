@@ -31,5 +31,8 @@ export default {
 
 <style lang="stylus">
 .page-about
-  null
+  .nuxt-content-card
+    .content-title
+      font-weight: bold
+
 </style>

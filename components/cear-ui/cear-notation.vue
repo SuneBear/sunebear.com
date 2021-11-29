@@ -239,6 +239,9 @@ export default {
       padding: 0 0.2em
       box-decoration-break: clone
 
+      @media print
+        padding: 0 0em
+
 .rough-annotation
   // filter: s('url(#filter-distort-highlight)')
 
