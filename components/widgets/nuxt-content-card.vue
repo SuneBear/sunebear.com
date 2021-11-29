@@ -2,7 +2,7 @@
 .nuxt-content-card( :class="{ 'is-in-list': isInList }" )
   component.handler( :is="onTitleClick ? 'div' : 'nuxt-link'" :to="content.path"  @click="handleTitleClick" )
     h1.content-title.mb-2.mb-md-4
-      cear-notation( isShow :animate="false" ) {{ content.title }}
+      cear-notation( isShow isHalfHighlight :animate="false" ) {{ content.title }}
 
   .content-meta.mb-4.mb-md-8
     | {{ $t('content.meta', { date: formattedData, author: this.author }) }}
@@ -56,10 +56,11 @@ export default {
 .nuxt-content-card
 
   &.is-in-list
-    display: -webkit-box
-    -webkit-box-orient: vertical
-    -webkit-line-clamp: 10
-    overflow: hidden
+    .nuxt-content
+      display: -webkit-box
+      -webkit-box-orient: vertical
+      -webkit-line-clamp: 8
+      overflow: hidden
 
   & + &
     margin-top: 48px

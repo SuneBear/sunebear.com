@@ -81,6 +81,10 @@ export default {
       default: () => getInkNoiseNumber(options.strokeWidth)
     },
 
+    isHalfHighlight: {
+      type: Boolean
+    },
+
     needSpacing: {
       type: Boolean
     },
@@ -162,7 +166,13 @@ export default {
 
   methods: {
     show() {
-      this.annotation && this.annotation.show()
+      if (!this.annotation) {
+        return
+      }
+      if (this.isHalfHighlight) {
+        this.annotation._svg.classList.add('is-half-highlight')
+      }
+      this.annotation.show()
     },
 
     hide() {
@@ -214,6 +224,7 @@ export default {
       margin: 0 0.5em
 
 .cear-notation
+
   &.need-spacing
     margin: 0 0.5em
 
@@ -229,7 +240,16 @@ export default {
       box-decoration-break: clone
 
 .rough-annotation
-  // filter: s('url(#filter-distort-0)')
+  // filter: s('url(#filter-distort-highlight)')
+
+  &.is-half-highlight
+    filter: s('url(#filter-round-corner) url(#filter-distort-highlight)')
+
+    path
+      clip-path: polygon(0 0, 100% 0, 100% 100px, 0% 100px)
+
+  path
+    // stroke-linecap: round
 
   // @FIXME: Modify position and style in print mode
   @media print

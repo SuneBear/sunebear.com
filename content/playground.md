@@ -8,6 +8,8 @@ testVar: testVarValue
 
 Parsed in server, support vue component with a lot limits, should replace with `Marked`
 
+**Bold**, _Italic_, ~~Strikethrough~~
+
 -------
 
 <cear-sticker collection="plant"></cear-sticker>

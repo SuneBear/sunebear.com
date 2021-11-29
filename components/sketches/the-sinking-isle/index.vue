@@ -44,7 +44,7 @@ export default {
       isError: false,
       isPlaying: true,
       isMuteAudio: false,
-      isShowMainMenu: true,
+      isShowMainMenu: false,
       enableUserInput: true,
       enablePlayerDrift: false,
       cameraTarget: 'player',
