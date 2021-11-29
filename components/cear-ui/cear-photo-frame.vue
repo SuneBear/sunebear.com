@@ -4,7 +4,7 @@
 )
   // @FIXME: Improve Safari perf
   svg.svg-defs-wrapper
-    deps
+    defs
       filter(
         :id="filterId"
         width="100"
@@ -107,7 +107,7 @@ export default {
     },
 
     filterId() {
-      return `filter${this.cachedUid}`
+      return `filter-photo-frame-${this.cachedUid}`
     },
 
     applyFilterStyle() {
@@ -135,8 +135,8 @@ export default {
     }
   },
 
-  beforeCreate() {
-    this.cachedUid = this._uid
+  created() {
+    this.cachedUid = this._uid || 0
   },
 
   mounted() {

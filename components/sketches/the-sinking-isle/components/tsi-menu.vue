@@ -11,10 +11,14 @@
       v-for="tab in tabs"
       :class="{ 'is-active': tab.id === currentTabId }"
     )
+      //- @TODO: Switch a better perf way to apply distory
+      //- SVG Filter + Transform will drop sketch fps
       cear-icon(
         circle
         fill="var(--secondary)"
         shadow="black"
+        :enableDistort="false"
+        :enableDistortTransform="false"
         :name="tab.id === currentTabId ? 'close-short-line' : tab.icon"
       )
   .menu-modal.d-flex.align-center.justify-center
@@ -140,6 +144,7 @@ export default {
 .is-tsi-wrapper.is-inited-sketch
   .site-navbar
     transition: 500ms
+    pointer-events: none
     opacity: 0
     transform: translateY(-24px) scale(0.85)
 
@@ -151,6 +156,7 @@ export default {
   &.is-main-menu-opened
     .site-navbar
       opacity 1
+      pointer-events: initial
       transform: translateY(0%) scale(1)
 
 .tsi-main-menu

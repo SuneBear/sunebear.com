@@ -1,11 +1,13 @@
 <template lang="pug">
 cear-mask.cear-icon(
-  v-bind="$props"
+  v-bind="maskProps"
   :class="{ 'has-shadow': shadow }"
 )
   svg-icon(
-    v-bind="$props"
+    :name="name"
     :title="name"
+    :fill="fill"
+    :stroke="stroke"
     :style="style"
     :class="[ 'svg-symbol', 'symbol-' + name, { 'is-line': isLine } ]"
   )
@@ -16,6 +18,16 @@ import InkMask from './cear-mask'
 
 export default {
   props: {
+    ...InkMask.props,
+    maskId: {
+      type: [Number, String],
+      default: 'icon'
+    },
+    baseFrequency: {
+      type: Number,
+      default: 0.02
+    },
+
     'name': String,
     'size': String,
     'isLine': {
@@ -23,12 +35,7 @@ export default {
       default: false
     },
     // CSS Variables
-    'fill': String, 'stroke': String, 'shadow': String, 'circle': String,
-    ...InkMask.props,
-    baseFrequency: {
-      type: Number,
-      default: 0.02
-    }
+    'fill': String, 'stroke': String, 'shadow': String, 'circle': String
   },
 
   computed: {
@@ -50,6 +57,13 @@ export default {
         styleObject['--shadow'] = this.shadow
       }
       return styleObject
+    },
+
+    maskProps() {
+      return Object.keys(InkMask.props).reduce((acc, key) => {
+        acc[key] = this[key]
+        return acc
+      }, {})
     }
   }
 }

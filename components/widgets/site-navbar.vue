@@ -8,19 +8,19 @@
   .nav-list
     nuxt-link.nav-item( to="/?section=top" exact-path )
       .item-dot
-        cear-blob( needAnimate )
+        cear-blob( )
       .el-link.item-text {{ $t('nav.home') }}
     nuxt-link.nav-item( to="/blog?section=top" exact-path )
       .item-dot
-        cear-blob( needAnimate )
+        cear-blob( )
       .el-link.item-text {{ $t('nav.blog') }}
     nuxt-link.nav-item( to="/playground?section=top" exact-path )
       .item-dot
-        cear-blob( needAnimate )
+        cear-blob( )
       .el-link.item-text {{ $t('nav.playground') }}
     nuxt-link.nav-item( to="/about?section=top" exact-path )
       .item-dot
-        cear-blob( needAnimate )
+        cear-blob( )
       .el-link.item-text {{ $t('nav.about') }}
 </template>
 

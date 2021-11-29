@@ -194,7 +194,7 @@ export default class Enviroment extends Module {
       })
     )
     this.terrainDepth.layers.set(RENDER_LAYERS.GROUND_DEPTH)
-    this.terrainDepth.scale.set(this.config.worldSize, 1, this.config.worldSize)
+    this.terrainDepth.scale.set(this.config.worldSize * 1.1, 1, this.config.worldSize * 1.1)
     this.terrainDepth.position.y = -10
     this.terrainDepth.name = 'groundDepth'
     this.scene.add(this.terrainDepth)

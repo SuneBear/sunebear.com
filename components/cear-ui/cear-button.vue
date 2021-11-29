@@ -11,11 +11,11 @@
     v-else
   )
     cear-mask(
-      v-bind="$props"
+      v-bind="maskProps"
       :baseFrequency="finalBaseFrequency"
     )
       el-button.back-layer(
-        v-bind="$props"
+        v-bind="elButtonProps"
         @click="handleButtonClick"
       )
         .d-flex.align-center
@@ -25,7 +25,7 @@
             .svg-symbol
           slot
     el-button.front-layer(
-      v-bind="$props"
+      v-bind="elButtonProps"
     )
       .d-flex.align-center.justify-center
         cear-icon( v-if="icon" :shadow="iconShadow" :name="icon" )
@@ -41,11 +41,15 @@ export default {
   props: {
     ...Button.props,
     ...InkMask.props,
-    isSquare: {
-      type: Boolean
+    maskId: {
+      type: [Number, String],
+      default: 'button'
     },
     baseFrequency: {
       type: [ Number, String ],
+    },
+    isSquare: {
+      type: Boolean
     },
     size: {
       type: String,
@@ -92,6 +96,20 @@ export default {
       }
 
       return this.baseFrequency
+    },
+
+    maskProps() {
+      return Object.keys(InkMask.props).reduce((acc, key) => {
+        acc[key] = this[key]
+        return acc
+      }, {})
+    },
+
+    elButtonProps() {
+      return Object.keys(Button.props).reduce((acc, key) => {
+        acc[key] = this[key]
+        return acc
+      }, {})
     }
   },
 

@@ -100,6 +100,7 @@ export default class Renderer extends Module {
         })
         .on('change', ({ value }) => {
           this.postProcess.finalUniforms.enableShadow.value = value
+
           this.scene.traverse(_child => {
             if (_child instanceof THREE.Mesh) {
               _child.material.needsUpdate = true
@@ -382,6 +383,7 @@ export default class Renderer extends Module {
 
     this.submitFrame.preRender()
 
+    // Main renderer
     this.instance.clear()
     if (this.usePostprocess) {
       // Render single layer

@@ -15,11 +15,6 @@
 
   //- Global Defs
   cear-svg-filters
-  cear-mask.distort-filter-def(
-    id="highlight"
-    :displacementScale="12" :baseFrequency="0.03"
-    :enableDistort="false" :enableSpot="false" :enableGrain="false"
-  )
 </template>
 
 <script>

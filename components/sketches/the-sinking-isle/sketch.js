@@ -30,6 +30,7 @@ import TestModule from './modules/test.module'
 import assets from './assets'
 
 import { cssVar } from '~/utils/color'
+import { rafps } from './utils/fps'
 
 class TheSinkingIsleSketch {
 
@@ -42,6 +43,7 @@ class TheSinkingIsleSketch {
       height: window.innerHeight,
       pixelRatio: Math.min(Math.max(window.devicePixelRatio, 1), 2),
       worldSize: 256,
+      fps: 60,
       brandHex: cssVar('--brand'),
       enablePlayground: false
     }
@@ -155,7 +157,7 @@ class TheSinkingIsleSketch {
       this.debug = new Pane()
       this.debug.containerElem_.style.width = '320px'
       // Replaced stats.js with tweakpane/plugin-essentials
-      this.stats = new StatsManager(false)
+      // this.stats = new StatsManager(false)
     }
 
     if (this.debug) {
@@ -238,7 +240,10 @@ class TheSinkingIsleSketch {
   }
 
   play() {
-    this.update()
+    if (!this.rafps) {
+      this.rafps = rafps(this.update, this.config.fps)
+    }
+    this.rafps.play()
     this.module.play()
     this.audio.resume()
   }
@@ -253,18 +258,18 @@ class TheSinkingIsleSketch {
   }
 
   @autobind
-  update() {
+  update(frame) {
+    if (!this.$vm.isPlaying) {
+      return
+    }
+
+    const delta = 1 / this.config.fps
     // const delta = this.time.getDelta()
-    const delta = 1 / 40
     // Clamp delta time for long frames
-    this.delta = math.clamp(delta, 1 / 40, 1 / 20)
+    this.delta = math.clamp(delta, 1 / 60, 1 / 20)
     this.time.elapsedTime += this.delta
 
     this.module.update(this.delta, this.time.elapsedTime, this.clock.oldTime)
-
-    if (this.$vm.isPlaying) {
-      requestAnimationFrame(this.update)
-    }
   }
 
 }

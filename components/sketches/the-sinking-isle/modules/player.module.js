@@ -75,7 +75,7 @@ export default class Player extends Module {
   }
 
   setupSpringCharacterMoveSystem() {
-    const maxRadialDist = 12
+    const maxRadialDist = this.config.worldSize // 12
     const snapThreshold = maxRadialDist * 2
     this.maxRadialDistSq = maxRadialDist * maxRadialDist
     this.snapThresholdSq = snapThreshold * snapThreshold

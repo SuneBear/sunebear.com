@@ -5,10 +5,10 @@
 )
   client-only
     svg.svg-defs-wrapper.noise-background(
-      v-if="isNeedGrainNoiseSvg"
+      v-if="needDef && isNeedGrainNoiseSvg"
       id="grainBackground"
     )
-      deps
+      defs
         filter( id="grain" )
           feTurbulence(
             in="neutral-gray"
@@ -27,9 +27,9 @@
 
   client-only
     svg.svg-defs-wrapper.distort-filter(
-      v-if="finalEnableMask"
+      v-if="needDef || (finalEnableMask && enableDistort)"
     )
-      deps
+      defs
         filter(
           :id="filterId"
         )
@@ -76,8 +76,12 @@ import { isSafari } from '~/utils/env'
 // @TODO: Refine spot and gradin like paper texture, could try backgroundImage + blendMode
 export default {
   props: {
-    id: {
+    maskId: {
       type: [Number, String]
+    },
+
+    needDef: {
+      type: Boolean
     },
 
     enableMask: {
@@ -87,6 +91,10 @@ export default {
     enableDistort: {
       type: Boolean,
       default: true
+    },
+    enableDistortTransform: {
+      type: Boolean,
+      type: true
     },
     enableSpot: {
       type: Boolean,
@@ -137,8 +145,8 @@ export default {
   created() {
     this.cachedUid = this._uid
 
-    if (typeof this.id !== 'undefined') {
-      this.cachedUid = this.id
+    if (typeof this.maskId !== 'undefined') {
+      this.cachedUid = this.maskId
     }
   },
 
@@ -147,19 +155,24 @@ export default {
       return `filter-distort-${this.cachedUid}`
     },
     finalEnableMask() {
-      return !this.isSafari && this.enableMask
+      return !this.needDef && !this.isSafari && this.enableMask
     },
     applyDistortStyle() {
       if (!this.finalEnableMask || !this.enableDistort) {
         return null
       }
 
-      return {
+      const style = {
         filter: `url(#${this.filterId})`,
-        transform: `rotateX(${this.rotateDeg}deg) rotateY(${
+      }
+
+      if (this.enableDistortTransform) {
+        style.transform = `rotateX(${this.rotateDeg}deg) rotateY(${
           this.rotateDeg
         }deg) skewX(${random.sign() * this.skewDeg}deg) translate3d(0,0,0)`
       }
+
+      return style
     },
     applySpotStyle() {
       if (!this.finalEnableMask || !this.enableSpot) {
@@ -175,12 +188,12 @@ export default {
     },
     rotateDeg() {
       if (this.isBlock) {
-        return random.range(-0.1, 0.1)
+        return random.range(-0.1, 0.1).toFixed(2)
       }
-      return random.range(-1, 1)
+      return random.range(-1, 1).toFixed(2)
     },
     skewDeg() {
-      return random.range(-2, 2)
+      return random.range(-2, 2).toFixed(2)
     },
     randomSeed() {
       return random.rangeFloor(0, 100)

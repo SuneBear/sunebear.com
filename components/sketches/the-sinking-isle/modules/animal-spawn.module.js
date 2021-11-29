@@ -18,6 +18,7 @@ export default class AnimalSpawn extends Module {
     this.butterfly = new PlayableMeshSpriteObject({
       spritesheet
     })
+    this.butterfly.name = 'butterfly'
     this.butterfly.position.y = 2
     this.butterfly.setFlip(true)
     this.scene.add(this.butterfly)
