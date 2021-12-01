@@ -61,7 +61,7 @@ export function CharacterPhysicsSpring() {
         math.dampVector(
           rawVelocity,
           zeroVec3D,
-          0.5,
+          1.5,
           dt,
           rawVelocity
         )

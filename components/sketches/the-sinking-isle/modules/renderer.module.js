@@ -84,6 +84,7 @@ export default class Renderer extends Module {
     this.instance.shadowMap.autoUpdate = false
     this.instance.shadowMap.needsUpdate = this.instance.shadowMap.enabled
     this.instance.toneMapping = THREE.ReinhardToneMapping // THREE.LinearToneMapping
+    this.instance.toneMappingExposure = 2.5
 
     this.context = this.instance.getContext()
 
@@ -254,14 +255,11 @@ export default class Renderer extends Module {
         .addInput(this.postProcess.finalPass.uniforms.exposure, 'value', {
           label: 'exposure',
           min: 0,
-          max: 2
+          max: 10
         })
         .on('change', ({ value }) => {
-          this.instance.toneMappingExposure = Math.pow(value, 4.0)
-          this.postProcess.finalPass.uniforms.exposure.value = Math.pow(
-            value,
-            4.0
-          )
+          this.instance.toneMappingExposure = value
+          this.postProcess.finalPass.uniforms.exposure.value = value
         })
 
       debugFolder.addInput(

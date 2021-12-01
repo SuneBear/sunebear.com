@@ -44,6 +44,10 @@ export default [
         name: 'envTerrainModel',
         source: require('./gltfs/env-terrain.glb').default
       },
+      {
+        name: 'boidFishModel',
+        source: require('./gltfs/boid-fish.glb').default
+      },
 
       // Spritesheets
       {

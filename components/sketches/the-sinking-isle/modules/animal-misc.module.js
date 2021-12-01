@@ -2,7 +2,7 @@ import Module from '../engine/module'
 import { PlayableMeshSpriteObject } from '../objects/mesh-sprite.object'
 import { parseSpritesheets } from '../utils/spritesheet'
 
-export default class AnimalSpawn extends Module {
+export default class AnimalMisc extends Module {
 
   constructor(sketch) {
     super(sketch)

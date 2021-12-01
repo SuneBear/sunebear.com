@@ -53,7 +53,7 @@ export default class Player extends Module {
     this.minSpeed = 0.0
     this.maxSpeed = 3
     // @Config: Final factor for all moveTarget, springPlayerMove
-    this.speedFactor = 1 // 0.4
+    this.speedFactor = 0.8 // 0.4
 
     this.boost = 0
     this.boostFactor = 0

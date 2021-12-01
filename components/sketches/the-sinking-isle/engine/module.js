@@ -26,7 +26,7 @@ export default class Module {
     this.renderer = sketch.renderer
     this.tween = sketch.tween
     this.submitFrame = sketch.submitFrame
-    this.player = sketch.player || new THREE.Object3D()
+    this.player = sketch.player
     this.enviromentGround = sketch.enviromentGround
     this.enviromentTrace = sketch.enviromentTrace
     this.enviroment = sketch.enviroment
