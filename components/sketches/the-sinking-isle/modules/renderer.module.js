@@ -73,7 +73,7 @@ export default class Renderer extends Module {
     this.instance.domElement.style.height = '100%'
 
     this.instance.setClearColor(this.clearColor, 1)
-    this.instance.setSize(this.config.width, this.config.height)
+    this.instance.setSize(this.sizes.width, this.sizes.height)
     this.instance.setPixelRatio(this.config.pixelRatio)
 
     this.instance.physicallyCorrectLights = true
@@ -170,8 +170,8 @@ export default class Renderer extends Module {
       ? THREE.WebGLRenderTarget
       : THREE.WebGLMultisampleRenderTarget
     this.renderTarget = new RenderTargetClass(
-      this.config.width,
-      this.config.height,
+      this.sizes.width,
+      this.sizes.height,
       {
         generateMipmaps: false,
         minFilter: THREE.LinearFilter,
@@ -235,10 +235,8 @@ export default class Renderer extends Module {
       }),
       'baseTexture'
     )
-    this.postProcess.composer = new EffectComposer(
-      this.instance
-    )
-    this.postProcess.composer.setSize(this.config.width, this.config.height)
+    this.postProcess.composer = new EffectComposer(this.instance)
+    this.postProcess.composer.setSize(this.sizes.width, this.sizes.height)
     this.postProcess.composer.setPixelRatio(this.config.pixelRatio)
 
     this.postProcess.composer.addPass(this.postProcess.renderPass)
@@ -286,7 +284,8 @@ export default class Renderer extends Module {
   }
 
   resize() {
-    const { width, height, pixelRatio } = this.config
+    const { width, height } = this.sizes
+    const { pixelRatio } = this.config
 
     // Instance
     this.instance.setSize(width, height)

@@ -160,7 +160,7 @@ export default {
     border-top 3px solid #dededc
   blockquote
     margin 0 0 1.24em 0
-    border-left 3px solid #dadada
+    border-left 3px solid #bbbbbb
     padding-left 12px
     color #666664
     a

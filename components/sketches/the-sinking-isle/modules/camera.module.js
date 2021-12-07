@@ -26,7 +26,7 @@ export default class CameraModule extends Module {
     // Set up
     this.instance = new THREE.PerspectiveCamera(
       30,
-      this.config.width / this.config.height,
+      this.sizes.width / this.sizes.height,
       0.1,
       1000
     )
@@ -41,9 +41,19 @@ export default class CameraModule extends Module {
 
     const normalPosY = this.config.worldSize / 6
     this.modePresets = [
-      { name: 'normal', fov: 15, zoom: 1, position: [ -2, normalPosY, normalPosY * 1.4 ] },
-      { name: 'god', fov: 30, zoom: 1, position: [ 0, 80, 20 ] },
-      { name: 'ortho', fov: 45, zoom: 1, position: [ 0, this.config.worldSize * 3.8, 0 ] }
+      {
+        name: 'normal',
+        fov: 15,
+        zoom: 1,
+        position: [-2, normalPosY, normalPosY * 1.4]
+      },
+      { name: 'god', fov: 30, zoom: 1, position: [0, 80, 20] },
+      {
+        name: 'ortho',
+        fov: 45,
+        zoom: 1,
+        position: [0, this.config.worldSize * 3.8, 0]
+      }
     ]
 
     // Default
@@ -78,7 +88,10 @@ export default class CameraModule extends Module {
     this.currentUIZoom = 0
     this.userZoomDistance = 10
     this.offset = new THREE.Vector3(1, 1, 1)
-    this.offset.applyAxisAngle(new THREE.Vector3(0, 1, 0), math.degToRad(45 * -1))
+    this.offset.applyAxisAngle(
+      new THREE.Vector3(0, 1, 0),
+      math.degToRad(45 * -1)
+    )
     this.frustum = new THREE.Frustum()
     this.projScreenMatrix = new THREE.Matrix4()
     this.first = true
@@ -95,7 +108,7 @@ export default class CameraModule extends Module {
       speedZoomSpringOut: 4,
       shake: 0,
       shakeSpeed: 1,
-      shakeTime: 0,
+      shakeTime: 0
     }
 
     // this.modes.debug.orbitControls.target = this.playerFollow.currentTarget
@@ -104,7 +117,7 @@ export default class CameraModule extends Module {
 
   listenModePresetSwitch() {
     // @FIXME: Invalid in prod
-    this.control.on('keydown.camera', (key) => {
+    this.control.on('keydown.camera', key => {
       if (typeof key !== 'number') {
         return
       }
@@ -122,7 +135,10 @@ export default class CameraModule extends Module {
     // Update offset
     if (this.curPreset.name === 'normal') {
       this.offset?.set(1, 1, 1)
-      this.offset?.applyAxisAngle(new THREE.Vector3(0, 1, 0), math.degToRad(45 * -1))
+      this.offset?.applyAxisAngle(
+        new THREE.Vector3(0, 1, 0),
+        math.degToRad(45 * -1)
+      )
     } else {
       this.offset?.set(0, 0, 0)
     }
@@ -138,7 +154,7 @@ export default class CameraModule extends Module {
       duration: 699,
       easing: 'linear'
     })
-    const [x,y,z] = this.curPreset.position
+    const [x, y, z] = this.curPreset.position
     this.switchPresetAnimer
       .add({
         targets: camera.position,
@@ -146,23 +162,26 @@ export default class CameraModule extends Module {
         y,
         z
       })
-      .add({
-        targets: camera,
-        zoom: this.curPreset.zoom
-      }, 0)
+      .add(
+        {
+          targets: camera,
+          zoom: this.curPreset.zoom
+        },
+        0
+      )
     // await this.switchPresetAnimer.finished
     // camera.position.set(...this.curPreset.position)
     // camera.zoom = this.curPreset.zoom
   }
 
   resize() {
-    this.instance.aspect = this.config.width / this.config.height
+    this.instance.aspect = this.sizes.width / this.sizes.height
     this.instance.updateProjectionMatrix()
 
-    this.modes.default.instance.aspect = this.config.width / this.config.height
+    this.modes.default.instance.aspect = this.sizes.width / this.sizes.height
     this.modes.default.instance.updateProjectionMatrix()
 
-    this.modes.debug.instance.aspect = this.config.width / this.config.height
+    this.modes.debug.instance.aspect = this.sizes.width / this.sizes.height
     this.modes.debug.instance.updateProjectionMatrix()
   }
 
@@ -178,7 +197,7 @@ export default class CameraModule extends Module {
     this.instance.updateMatrixWorld() // To be used in projection
   }
 
-  updateFocusTargetSystem (delta) {
+  updateFocusTargetSystem(delta) {
     if (!this.$vm.cameraTarget instanceof THREE.Vector3) {
       return
     }
@@ -243,9 +262,15 @@ export default class CameraModule extends Module {
     // Camera shake
     const ampl = this.playerFollow.shake
     const shakeTime = this.playerFollow.shakeTime
-    camera.position.x += this.random.noise3D(shakeTime, camera.position.y, camera.position.z) * ampl
-    camera.position.y += this.random.noise3D(camera.position.x, shakeTime, camera.position.z) * ampl
-    camera.position.z += this.random.noise3D(camera.position.x, camera.position.y, shakeTime) * ampl
+    camera.position.x +=
+      this.random.noise3D(shakeTime, camera.position.y, camera.position.z) *
+      ampl
+    camera.position.y +=
+      this.random.noise3D(camera.position.x, shakeTime, camera.position.z) *
+      ampl
+    camera.position.z +=
+      this.random.noise3D(camera.position.x, camera.position.y, shakeTime) *
+      ampl
 
     // Apply preset
     camera.fov = this.curPreset.fov
@@ -257,10 +282,12 @@ export default class CameraModule extends Module {
     const maxZoom = 1.5
     const constantZoomFactor = 0.9
     const targetZoomAtAspect = 0.9
-    const targetAspect = 1440 / 900
-    const currentAspect = this.config.width / this.config.height
+    const targetAspect = this.config.width / this.config.height
+    const currentAspect = this.sizes.width / this.sizes.height
     const targetFactor = currentAspect / targetAspect
-    cameraZoom += math.clamp(targetZoomAtAspect * targetFactor, minZoom, maxZoom) * constantZoomFactor
+    cameraZoom +=
+      math.clamp(targetZoomAtAspect * targetFactor, minZoom, maxZoom) *
+      constantZoomFactor
     camera.zoom = cameraZoom
 
     if (__DEBUG__) {
