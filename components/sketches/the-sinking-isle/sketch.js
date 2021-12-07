@@ -34,17 +34,16 @@ import { cssVar } from '~/utils/color'
 import { rafps } from './utils/fps'
 
 class TheSinkingIsleSketch {
-
-  constructor () {
+  constructor() {
     // Dev, Config
     this.config = {
       seed: Random.getRandomSeed(),
       debug: true,
-      width: window.innerWidth,
-      height: window.innerHeight,
+      width: 1440,
+      height: 900,
       pixelRatio: Math.min(Math.max(window.devicePixelRatio, 1), 2),
       worldSize: 256,
-      fps: 60,
+      fps: 2, // 60
       brandHex: cssVar('--brand'),
       enablePlayground: false
     }
@@ -53,13 +52,11 @@ class TheSinkingIsleSketch {
 
     // Renderer and Managers
     this.scene = new THREE.Scene()
+    this.sizes = null
     this.camera = null
     this.renderer = null
     this.player = null
     this.time = this.clock = new THREE.Clock()
-    this.sizes = new SizesManager({
-      onResize: this.resize
-    })
     this.asset = null
     this.audio = null
     this.module = new ModuleManager(this)
@@ -73,9 +70,7 @@ class TheSinkingIsleSketch {
     this.random = Random(this.config.seed, 'Sketch')
   }
 
-  async init({
-    container, $vm, config = {}
-  }) {
+  async init({ container, $vm, config = {} }) {
     this.container = container
     this.$vm = $vm
     this.config = { ...this.config, ...config }
@@ -112,7 +107,7 @@ class TheSinkingIsleSketch {
         loadProgress: this.asset.getLoadPreogress()
       })
     })
-    this.asset.on('error', (error) => {
+    this.asset.on('error', error => {
       console.log('Asset error', error)
     })
 
@@ -166,7 +161,7 @@ class TheSinkingIsleSketch {
         title: 'Dev',
         expanded: true
       })
-      folder.addInput(this.config, 'enablePlayground').on('change', (e) => {
+      folder.addInput(this.config, 'enablePlayground').on('change', e => {
         if (this.config.enablePlayground) {
           this.module.add(TestModule)
         } else {
@@ -179,8 +174,18 @@ class TheSinkingIsleSketch {
   }
 
   setupCamera() {
+    this.sizes = new SizesManager({
+      container: this.container,
+      onResize: this.resize
+    })
+
     const cameraModule = this.module.add(CameraModule)
     this.camera = cameraModule.instance
+
+    this.sizes.camera = this.camera
+    setTimeout(() => {
+      this.sizes.resize()
+    })
   }
 
   setupRenderer() {
@@ -234,10 +239,6 @@ class TheSinkingIsleSketch {
       return
     }
 
-    const boundings = this.container.getBoundingClientRect()
-    this.config.width = boundings.width
-    this.config.height = boundings.height
-
     this.module.resize()
   }
 
@@ -273,7 +274,6 @@ class TheSinkingIsleSketch {
 
     this.module.update(this.delta, this.time.elapsedTime, this.clock.oldTime)
   }
-
 }
 
 export const theSinkingIsleSketch = new TheSinkingIsleSketch()

@@ -46,7 +46,7 @@ export default class Enviroment extends Module {
       // @TODO: Support multiple scenes, and smooth switch
       // @values: isle | forest | tundra
       name: 'isle',
-      waterCollectionName: "still-water-items",
+      waterCollectionName: 'still-water-items',
       isBarrenGround: true,
       hasLakes: true,
       hasIce: false,
@@ -130,7 +130,9 @@ export default class Enviroment extends Module {
           },
           causticsMap: {
             value: this.asset.items[
-              this.envState.hasIce ? 'iceCausticsTexture' : 'waterCausticsTexture'
+              this.envState.hasIce
+                ? 'iceCausticsTexture'
+                : 'waterCausticsTexture'
             ]
           },
           distortMap: {
@@ -153,7 +155,9 @@ export default class Enviroment extends Module {
   setupSamples() {
     const { envState, lakeGeo, grid } = this
     this.samplesData = generateEnvSamples({
-      envState, geo: lakeGeo, grid
+      envState,
+      geo: lakeGeo,
+      grid
     })
 
     Object.assign(this.envState, this.samplesData)
@@ -194,7 +198,11 @@ export default class Enviroment extends Module {
       })
     )
     this.terrainDepth.layers.set(RENDER_LAYERS.GROUND_DEPTH)
-    this.terrainDepth.scale.set(this.config.worldSize * 1.1, 1, this.config.worldSize * 1.1)
+    this.terrainDepth.scale.set(
+      this.config.worldSize * 1.1,
+      1,
+      this.config.worldSize * 1.1
+    )
     this.terrainDepth.position.y = -10
     this.terrainDepth.name = 'groundDepth'
     this.scene.add(this.terrainDepth)
@@ -216,8 +224,8 @@ export default class Enviroment extends Module {
 
   setupPostUnderWaterDistort() {
     const maskTarget = new THREE.WebGLRenderTarget(
-      this.config.width,
-      this.config.height
+      this.sizes.width,
+      this.sizes.height
     )
     maskTarget.texture.format = THREE.RGBFormat
     maskTarget.texture.minFilter = THREE.NearestFilter
