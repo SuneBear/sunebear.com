@@ -132,4 +132,19 @@ export default class Sizes extends EventEmitter {
       height: size.y
     }
   }
+
+  getObjectScaleByWidth(object, newWidth) {
+    const { width } = this.getObjectScreenDimension(object)
+
+    if (typeof newWidth === 'undefined') {
+      console.warn('[sizes] getObjectScaleByWidth: newWidth was undefined')
+    }
+
+    return newWidth / width
+  }
+
+  setObjectScaleByWidth(object, newWidth) {
+    const scale = this.getObjectScaleByWidth(object, newWidth)
+    object.scale.multiplyScalar(scale)
+  }
 }
