@@ -123,8 +123,8 @@ class TheSinkingIsleSketch {
       }
     })
 
-    this.$vm.$watch('isMuteAudio', () => {
-      if (this.$vm.isMuteAudio) {
+    this.$vm.$watch('cachedContext.isMuteAudio', () => {
+      if (this.$vm.cachedContext.isMuteAudio) {
         this.audio.mute()
       } else {
         this.audio.unmute()
@@ -135,7 +135,7 @@ class TheSinkingIsleSketch {
   setupAudio() {
     this.audio = new AudioManager(this.asset.getAudioItems())
 
-    if (this.$vm.isMuteAudio) {
+    if (this.$vm.cachedContext.isMuteAudio) {
       this.audio.mute()
     }
 
@@ -169,7 +169,7 @@ class TheSinkingIsleSketch {
         }
       })
       folder.addInput(this.$vm, 'isPlaying')
-      folder.addInput(this.$vm, 'isMuteAudio')
+      folder.addInput(this.$vm.cachedContext, 'isMuteAudio')
     }
   }
 

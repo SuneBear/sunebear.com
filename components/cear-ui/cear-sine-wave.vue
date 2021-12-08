@@ -1,5 +1,5 @@
 <template lang="pug">
-.cear-wave(
+.cear-sine-wave(
   :class="rootClass"
   v-resize:throttle="handleResize"
 )
@@ -92,6 +92,9 @@ export default {
       type: Boolean,
       default: true
     },
+    isFlat: {
+      type: Boolean
+    },
     // @TODO: Convert this param to smoothness
     tension: {
       type: Number,
@@ -106,6 +109,10 @@ export default {
     speed: {
       type: Number,
       default: 2
+    },
+    needTransition: {
+      type: Boolean,
+      default: false
     },
     needAnimate: {
       type: Boolean,
@@ -137,6 +144,7 @@ export default {
       return {
         'is-line': this.isLine,
         'is-round': this.isRound,
+        'need-transition': this.needTransition,
         'need-animate': this.needAnimate,
         'need-hover-reveal': this.needHoverReveal
       }
@@ -182,6 +190,9 @@ export default {
 
   watch: {
     pathWidth() {
+      this.generatePath()
+    },
+    isFlat() {
       this.generatePath()
     },
     sineStep() {
@@ -254,7 +265,13 @@ export default {
           // x += Math.cos(this.sineStep / 10)
         }
 
+        if (this.isFlat) {
+          // @REF: https://stackoverflow.com/questions/21638169/svg-line-with-gradient-stroke-wont-display-straight
+          y = this.amplitudeY / 2 + noiseHeight * 0.1
+        }
+
         y = math.clamp(y, padding, height - padding)
+
         points.push([x, y])
       }
 
@@ -290,7 +307,7 @@ export default {
 </script>
 
 <style lang="stylus">
-.cear-wave
+.cear-sine-wave
 
   &,
   svg
@@ -323,6 +340,10 @@ export default {
     &:hover
       .wave-path
         clip-path: inset(0)
+
+  &.need-transition
+    .wave-path
+      transition: 0.3s
 
   &.need-animate
     .wave-path

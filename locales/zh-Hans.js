@@ -1,7 +1,11 @@
 export default {
   'sunebaer': '舒乐熊',
 
-  'tsi.sketch.title': '暂未下沉的离岛',
+  'tsi.title': '暂未下沉的离岛',
+  'tsi.menu.start': '开始探索',
+  'tsi.menu.intro': '介绍',
+  'tsi.menu.setting': '设置',
+  'tsi.menu.sound': '声音',
 
   'action.skip': '跳过',
   'action.continue': '继续',
@@ -16,8 +20,6 @@ export default {
   'nav.blog': '博客',
   'nav.about': '关于',
   'nav.playground': '实验场',
-
-  'menu.start': '开始探索',
 
   'placeholder': '填充'
 }

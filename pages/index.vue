@@ -18,7 +18,7 @@ export default {
 
   head() {
     return {
-      title: this.$t('tsi.sketch.title')
+      title: this.$t('tsi.title')
     }
   }
 

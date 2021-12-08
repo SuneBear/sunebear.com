@@ -1,5 +1,5 @@
 export default {
-  'tsi.sketch.title': 'The Sinking Isle',
+  'tsi.title': 'The Sinking Isle',
 
   'action.skip': 'Skip',
   'action.continue': 'Continue',

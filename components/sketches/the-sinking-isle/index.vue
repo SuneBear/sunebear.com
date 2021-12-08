@@ -20,7 +20,7 @@
       @messageClearAll="() => storyMessages = []"
       scrollHeight="50vh"
     )
-    .sketch-title.is-absolute-center {{ $t('tsi.sketch.title') }}
+    .sketch-title.is-absolute-center {{ $t('tsi.title') }}
   .canvas-wrapper(
     ref="canvasWrapper"
   )
@@ -30,6 +30,7 @@
 import { __DEBUG__ } from '~/utils/dev'
 import { loadingSketch } from './loading-2d-sketch'
 
+const CONTEXT_CACHE_KEY = 'TSI/Context'
 const STORY_MESSAGES_CACHE_KEY = 'TSI/StoryMessages'
 
 export default {
@@ -37,19 +38,22 @@ export default {
     return {
       isNeedLoading: !__DEBUG__,
 
-      // Context States
+      // Context States & Data
       isLoading: true,
       loadProgress: 0,
       isInited: __DEBUG__,
       isError: false,
       isPlaying: true,
-      isMuteAudio: false,
-      isShowMainMenu: false,
+      isShowMainMenu: true,
       enableUserInput: true,
       enablePlayerDrift: false,
       cameraTarget: 'player',
 
-      // Context Data
+      // Persistent
+      cachedContext: {
+        isMuteAudio: false
+      },
+
       storyRoles: [],
       storyMessages: []
     }
@@ -73,6 +77,13 @@ export default {
     loadProgress() {
       if (this.loadProgress >=1) {
         this.handleLoaded()
+      }
+    },
+
+    cachedContext: {
+      deep: true,
+      handler () {
+        localStorage.setItem(CONTEXT_CACHE_KEY, JSON.stringify(this.cachedContext))
       }
     },
 
@@ -140,6 +151,11 @@ export default {
         { user: 'user', message: 'You know who i am?'  },
         { user: 'bear', message: 'I guess you are a kind people'  }
       ]
+
+      if (process.client && localStorage.getItem(CONTEXT_CACHE_KEY)) {
+        const context = JSON.parse(localStorage.getItem(CONTEXT_CACHE_KEY))
+        Object.assign(this.cachedContext, context)
+      }
 
       if (process.client && localStorage.getItem(STORY_MESSAGES_CACHE_KEY)) {
         const localMessages = JSON.parse(localStorage.getItem(STORY_MESSAGES_CACHE_KEY))

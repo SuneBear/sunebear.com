@@ -11,23 +11,54 @@
       v-for="tab in tabs"
       :class="{ 'is-active': tab.id === currentTabId }"
     )
-      //- @TODO: Switch a better perf way to apply distory
-      //- SVG Filter + Transform will drop sketch fps
-      cear-icon(
-        circle
-        fill="var(--secondary)"
-        shadow="black"
-        :enableDistort="false"
-        :enableDistortTransform="false"
-        :name="tab.id === currentTabId ? 'close-short-line' : tab.icon"
+      el-tooltip(
+        :content="tab.tooltip || tab.name"
+        :disabled="tab.id === currentTabId"
       )
+        //- @TODO: Switch a better perf way to apply distory
+        //- SVG Filter + Transform will drop sketch fps
+        cear-icon(
+          circle
+          fill="var(--secondary)"
+          shadow="black"
+          :enableDistort="false"
+          :enableDistortTransform="false"
+          :name="tab.id === currentTabId ? 'close-short-line' : tab.icon"
+        )
   .menu-modal.d-flex.align-center.justify-center
     .modal-dialog-box
       transition( name="el-fade-in" )
         .menu-tab.tab-main( v-if="currentTabId === 'main'" )
           .tab-title {{ currentTab.name }}
           .menu-items
-            cear-button( type="secondary" shadow="rgba(var(--brand-rgb), 0.6)" @click="hide" size="big" ) {{ $t('menu.start') }}
+            cear-button( type="secondary" shadow="rgba(var(--brand-rgb), 0.6)" @click="hide" size="big" ) {{ $t('tsi.menu.start') }}
+            //- cear-button( type="secondary-ghost" shadow="rgba(var(--brand-rgb), 0.6)" @click="showIntroModal" size="big" ) {{ $t('tsi.menu.intro') }}
+            .setting-item.d-flex.justify-space-between.align-center(
+              @click="handleToggleSoundClick"
+            )
+              .left-part.d-flex.align-center.flex-shrink-0.ml-1
+                cear-icon(
+                  fill="var(--secondary)"
+                  :enableDistort="false"
+                  :enableDistortTransform="false"
+                  :name="$parent.cachedContext.isMuteAudio ? 'volume-mute-fill' : 'volume-up-fill'"
+                )
+                //- | {{ $t('tsi.menu.sound') }}
+
+              .control-part.d-flex.align-center.mr-3
+                //- el-switch(
+                //-   :value="!$parent.cachedContext.isMuteAudio"
+                //- )
+                cear-sine-wave(
+                  isLine :lineWidth="2"
+                  needTransition
+                  :needAnimate="false"
+                  :isFlat="$parent.cachedContext.isMuteAudio"
+                  color="rgba(var(--secondary-rgb), 0.0)"
+                  colorB="rgba(var(--secondary-rgb), 0.7)"
+                  amplitudeX="10%"
+                  :amplitudeY="30"
+                )
       transition( name="el-fade-in" )
         .menu-tab.tab-story( v-if="currentTabId === 'story'" )
           //- .tab-title {{ currentTab.name }}
@@ -65,7 +96,7 @@ export default {
     return {
       tabs: [
         { name: this.$t('story.history'), id: 'story', icon: 'chat-history-fill' },
-        { name: this.$t('tsi.sketch.title'), id: 'main', icon: 'settings-2-fill' }
+        { name: this.$t('tsi.title'), tooltip: this.$t('tsi.menu.setting'), id: 'main', icon: 'settings-2-fill' }
       ],
       currentTabId: null
     }
@@ -114,6 +145,14 @@ export default {
           $wrapper.classList.toggle('is-main-menu-opened', this.value)
         }, 10)
       }
+    },
+
+    handleToggleSoundClick() {
+      this.$parent.cachedContext.isMuteAudio = !this.$parent.cachedContext.isMuteAudio
+    },
+
+    showIntroModal() {
+      // @TODO
     },
 
     show(tabId) {
@@ -183,7 +222,29 @@ export default {
 
   .menu-items
     .el-button
+      width: 100%
+
+    .cear-sine-wave
+      width: 170px
+      margin-left: -8px
+
+    .setting-item
+      cursor: pointer
+      padding-top: 4px
+      font-size: 20px
+      font-weight: 500
+
+      .control-part
+        min-height: 32px
+
+      .svg-symbol
+        opacity: 0.6
+        font-size: 30px
+
+    .cear-button,
+    .setting-item
       min-width: 200px
+      margin-bottom: 12px
 
   .menu-tab
     position absolute
@@ -200,7 +261,8 @@ export default {
     margin-bottom: 20px
 
   .tab-main
-    top: 40%
+    top: 50%
+    color: $secondary
 
     > *
       opacity: 0.9
@@ -241,6 +303,11 @@ export default {
         0 0 35px brand(50),
         0 0 40px brand(50),
         0 0 50px brand(50)
+
+      &.el-button--secondary-ghost
+        background-color: secondary(5)
+        color: secondary(70) !important
+        text-shadow: 0 0 5px secondary(60)
 
     @keyframes text-glow
       from
