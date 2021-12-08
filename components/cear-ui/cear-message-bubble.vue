@@ -8,24 +8,37 @@
     .cover.avatar(
       :style="{ backgroundImage: `url(${user.avatar})` }"
     )
-  .bubble-body
-    .bubble-bg-wrapper
-      cear-mask(
-      )
-        .bubble-bg
-    .bubble-content
-      .typing-indicator.d-flex.align-center(
-        v-if="status === 'typing'"
-      )
-        .typing-dot
-        .typing-dot
-        .typing-dot
-      transition( name="el-fade-in" )
-        readable-render(
-          v-if="status !== 'typing'"
-          :content="message"
-          :contentData="{ needAnimate }"
+  .bubble-body-wrapper
+    .bubble-body
+      .bubble-bg-wrapper
+        cear-mask(
         )
+          .bubble-bg
+      .bubble-content
+        .typing-indicator.d-flex.align-center(
+          v-if="status === 'typing'"
+        )
+          .typing-dot
+          .typing-dot
+          .typing-dot
+        transition( name="el-fade-in" )
+          readable-render(
+            v-if="status !== 'typing'"
+            :content="message"
+            :contentData="{ needAnimate }"
+          )
+
+      .action-bar.mt-3.d-flex.flex-column(
+        v-if="isShowActionBar"
+      )
+        .action-item(
+          v-for="action in actions"
+        )
+          cear-button(
+            size="small"
+            type="brand"
+            @click="handleActionClick(action)"
+          ) {{ action.text }}
 </template>
 
 <script>
@@ -61,6 +74,31 @@ export default {
         name: null,
         avatar: null
       })
+    },
+
+    // Action Part
+    needAction: {
+      type: Boolean
+    },
+
+    isActionPerformed: {
+      type: Boolean,
+      default: false
+    },
+
+    isPersistantAction: {
+      type: Boolean,
+      default: false
+    },
+
+    // Action schema:
+    // - type: reply | other
+    // - text: String
+    // - responsive: String
+    // - perform: Fucntion @TODO
+    actions: {
+      type: Array,
+      default: () => []
     },
 
     // Play contorl
@@ -99,6 +137,21 @@ export default {
         { 'is-system': this.isSystem },
         `status-${this.status}`
       ]
+    },
+
+    isShowActionBar() {
+      return [
+        this.status !== 'typing' ,
+        !this.isActionPerformed || (this.isActionPerformed && this.isPersistantAction),
+        this.actions.length
+      ].every(fn => fn)
+    }
+  },
+
+  methods: {
+    handleActionClick(action) {
+      this.$emit('actionPerformed', this, action)
+      action.perform && action.perform(this)
     }
   }
 
@@ -106,11 +159,21 @@ export default {
 </script>
 
 <style lang="stylus">
+$avatarSpacing = 20px
+$userWidth = 68px
+
 .cear-message-bubble
   width: 100%
 
   & + &
     margin-top: 20px
+
+  &.is-system
+    justify-content center
+    margin-left: $avatarSpacing
+
+    .bubble-bg
+      // background-color: primary(75)
 
   &.is-me
     justify-content flex-end
@@ -122,6 +185,7 @@ export default {
   .bubble-user
     flex-shrink: 0
     margin-right: 0px
+    width: $userWidth
 
     .avatar
       width: 48px
@@ -129,13 +193,15 @@ export default {
       border-radius: 50%
       border: 2px solid $secondary
       // transform: scale(0.8)
-      margin-right: 20px
+      margin-right: $avatarSpacing
       transform-origin: left top
+
+  .bubble-body-wrapper
+    max-width: 70%
 
   .bubble-body
     position relative
     padding: 10px 20px
-    max-width: 70%
 
   .bubble-bg-wrapper
     position absolute
@@ -187,4 +253,7 @@ export default {
 
     &:nth-child(3n)
       animation-delay: .5s
+
+  .action-item
+    pointer-events: initial
 </style>

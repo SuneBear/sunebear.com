@@ -22,6 +22,7 @@
       )
         cear-message-bubble(
           v-bind="message"
+          @actionPerformed="handleMessagePerformed"
         )
   .story-action-bar.d-flex.justify-center(
     v-if="enableActionBar"
@@ -42,11 +43,21 @@ import { math } from '~/utils/math'
 const MIN_DELAY = 0
 const FADE_DURATION = 500
 
+const COMMON_ROLE_MAP = {
+  system: { name: 'system', isSystem: true },
+  user: { name: 'user', isMe: true }
+}
+
 // @TODO: Optimize list animation
+// @TODO: Support divider/date type mesesage
 export default {
 
   props: {
     needAnimate: {
+      type: Boolean,
+      default: true
+    },
+    needAction: {
       type: Boolean,
       default: true
     },
@@ -166,6 +177,7 @@ export default {
             status: 'sent'
           }))
         ]
+        this.historyMessages = [...this.currentMessages]
       } else {
         this.add(this.initialMessages.map(this.formatMessageData))
       }
@@ -322,7 +334,45 @@ export default {
         return this.defauleRole
       }
 
-      return this.roles.find(role => role.name === name) || {}
+      if (name)
+
+      return this.roles.find(role => role.name === name) || COMMON_ROLE_MAP[name]
+    },
+
+    updateMessage(id, patch) {
+      this.historyMessages = this.historyMessages.map(el => {
+        if (el.id === id) {
+          Object.assign(el, patch)
+        }
+        return el
+      })
+
+      this.currentMessages = this.currentMessages.map(el => {
+        if (el.id === id) {
+          Object.assign(el, patch)
+        }
+        return el
+      })
+
+      this.$emit('messageUpdated', { messages: this.historyMessages })
+    },
+
+    handleMessagePerformed($messageVm, action) {
+      this.updateMessage($messageVm.id, {
+        isActionPerformed: true
+      })
+
+      // Auto reply logic
+      if (action.type === 'reply') {
+        const nextMessages = [ { user: 'user', message: action.text } ]
+        if (action.responsive) {
+          nextMessages.push({ message: action.responsive })
+        }
+        this.add(nextMessages, { force: true })
+        return
+      }
+
+      this.switchNext(true)
     },
 
     formatMessageData(message) {
@@ -356,6 +406,7 @@ export default {
         id: this.genId(),
         createdDate: Date.now(),
         needAnimate: this.needAnimate,
+        needAction: this.needAction,
         isMe: role.isMe,
         isSystem: role.isSystem,
         status: role.isMe ? 'sent' : 'typing',

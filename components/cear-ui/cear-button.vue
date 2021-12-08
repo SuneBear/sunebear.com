@@ -150,6 +150,7 @@ export default {
 
 <style lang="stylus">
 .cear-button
+  display: inline-flex
   font-family: var(--fonts-ui)
   padding-right: 6px
   padding-bottom: 6px
@@ -188,6 +189,7 @@ export default {
 
   // Case: Block
   &.is-block
+    display: block
     width: 100%
     // max-width: 400px
 

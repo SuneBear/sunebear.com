@@ -33,6 +33,9 @@ import assets from './assets'
 import { cssVar } from '~/utils/color'
 import { rafps } from './utils/fps'
 
+const LOWEST_FPS = 2 // enable low FPS when dev UI
+const HIGH_FPS = 60
+
 class TheSinkingIsleSketch {
   constructor() {
     // Dev, Config
@@ -43,7 +46,7 @@ class TheSinkingIsleSketch {
       height: 900,
       pixelRatio: Math.min(Math.max(window.devicePixelRatio, 1), 2),
       worldSize: 256,
-      fps: 2, // 60
+      fps: HIGH_FPS,
       brandHex: cssVar('--brand'),
       enablePlayground: false
     }

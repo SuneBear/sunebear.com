@@ -31,8 +31,9 @@
         .menu-tab.tab-main( v-if="currentTabId === 'main'" )
           .tab-title {{ currentTab.name }}
           .menu-items
-            cear-button( type="secondary" shadow="rgba(var(--brand-rgb), 0.6)" @click="hide" size="big" ) {{ $t('tsi.menu.start') }}
-            //- cear-button( type="secondary-ghost" shadow="rgba(var(--brand-rgb), 0.6)" @click="showIntroModal" size="big" ) {{ $t('tsi.menu.intro') }}
+            cear-button( isBlock type="secondary" shadow="rgba(var(--brand-rgb), 0.6)" @click="hide" size="big" )
+              | {{ $parent.cachedContext.hasFinishedOnboard ? $t('tsi.menu.continue') : $t('tsi.menu.start') }}
+            //- cear-button( isBlock type="secondary-ghost" shadow="rgba(var(--brand-rgb), 0.6)" @click="showIntroModal" size="big" ) {{ $t('tsi.menu.intro') }}
             .setting-item.d-flex.justify-space-between.align-center(
               @click="handleToggleSoundClick"
             )
@@ -62,18 +63,18 @@
       transition( name="el-fade-in" )
         .menu-tab.tab-story( v-if="currentTabId === 'story'" )
           //- .tab-title {{ currentTab.name }}
-          .tab-title &nbsp;
           cear-story(
             ref="story"
             :needAnimate="false"
             :roles="storyRoles"
             :initialMessages="storyMessages"
-            scrollHeight="80vh"
+            @messageUpdated="({ messages }) => $parent.storyMessages = messages"
+            scrollHeight="75vh"
           )
 </template>
 
 <script>
-const DEFAULT_TAB_ID = 'main'
+const DEFAULT_TAB_ID = 'story'
 
 export default {
   props: {
@@ -259,6 +260,12 @@ export default {
   .tab-title
     color: $secondary
     margin-bottom: 20px
+
+  .tab-story
+    padding-top: var(--header-height)
+
+    .cear-story .scrollable-y
+      null
 
   .tab-main
     top: 50%

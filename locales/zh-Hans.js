@@ -1,8 +1,11 @@
+import story from './zh-Hans/story'
+
 export default {
   'sunebaer': '舒乐熊',
 
   'tsi.title': '暂未下沉的离岛',
   'tsi.menu.start': '开始探索',
+  'tsi.menu.continue': '继续探索',
   'tsi.menu.intro': '介绍',
   'tsi.menu.setting': '设置',
   'tsi.menu.sound': '声音',
@@ -10,6 +13,7 @@ export default {
   'action.skip': '跳过',
   'action.continue': '继续',
 
+  story,
   'story.history': '探索记录',
   'story.clear': '清除故事',
 

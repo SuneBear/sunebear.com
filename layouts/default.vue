@@ -67,11 +67,14 @@ export default {
   height: 100vh
   max-height: 100%
   // @HACK: keep fullscreen with zoom
-  @media mediaInMiddleScrren
+  @media $mediaInMiddleScrren
     position fixed
 
   .container
-    max-width: 700px
+    max-width: clamp(375px, 50vw, 700px)
+
+    @media $mediaInMiddleScrren
+      padding-left: 2vw
 
   .global-frame
     .mask-wrapper

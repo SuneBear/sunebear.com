@@ -44,13 +44,14 @@ export default {
       isInited: __DEBUG__,
       isError: false,
       isPlaying: true,
-      isShowMainMenu: true,
+      isShowMainMenu: false,
       enableUserInput: true,
       enablePlayerDrift: false,
       cameraTarget: 'player',
 
       // Persistent
       cachedContext: {
+        hasFinishedOnboard: false,
         isMuteAudio: false
       },
 
@@ -92,6 +93,7 @@ export default {
     },
 
     isShowMainMenu() {
+      // this.startOnboard()
       // console.log('isShowMainMenu', this.isShowMainMenu)
     }
   },
@@ -163,13 +165,25 @@ export default {
       }
 
       this.storyRoles = [
-        { name: 'bear', avatar: require('@/assets/mock/bear9.png'), isDefault: true },
-        { name: 'user', isMe: true }
+        { name: 'bear', avatar: require('@/assets/mock/bear9.png'), isDefault: true }
       ]
 
       this.storyMessages = storyMessages
 
       this.$story = this.$refs.story
+    },
+
+    startOnboard() {
+      if (this.isShowMainMenu || this.cachedContext.hasFinishedOnboard || !this.isInited) {
+        return
+      }
+
+      this.$story.add({
+        user: 'system', message: 'Onboard', autoSwitch: false,
+        actions: [ { type: 'reply', text: 'test', responsive: 'responsive' } ]
+      })
+
+      // this.cachedContext.hasFinishedOnboard = true
     },
 
     async handleLoaded() {

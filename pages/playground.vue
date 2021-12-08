@@ -150,6 +150,7 @@ import { cssVar } from '~/utils/color'
 import { Random } from '~/utils/random'
 
 let storyMessages = [
+  { user: 'system', message: `First visit is on ${new Date().toLocaleDateString()}`  },
   { user: 'bear', message: '> Hello from Polar Bear. \n\n Welcome to chat with me'  },
   { user: 'user', message: 'You know who i am?'  },
   { user: 'bear', message: 'I guess you are a kind people'  }
@@ -192,8 +193,7 @@ export default {
       mockSquareImage: require('@/assets/mock/cear-portrait.jpg'),
       mockLongRectImage: require('@/assets/mock/unsplace-sea-rect.jpg'),
       storyRoles: [
-        { name: 'bear', avatar: require('@/assets/mock/bear9.png'), isDefault: true },
-        { name: 'user', isMe: true }
+        { name: 'bear', avatar: require('@/assets/mock/bear9.png'), isDefault: true }
       ],
       storyMessages
     }
