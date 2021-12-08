@@ -74,7 +74,7 @@
 </template>
 
 <script>
-const DEFAULT_TAB_ID = 'story'
+const DEFAULT_TAB_ID = 'main'
 
 export default {
   props: {
