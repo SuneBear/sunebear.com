@@ -51,13 +51,17 @@ export const generateStillLifeItemsMap = module => {
     // @TODO: Build scene via glb file, support 3d model as patch
     itemCollectionNames.map(name => {
       const scene = new THREE.Scene()
+      const sizeLimit = 256
       Object.keys(spritesMap).map(key => {
         const item = spritesMap[key]
         if (item.type === name) {
           const object = new MeshSpriteObject()
-          const wholeScale = item.height / 256
+          const wholeScale = item.height / sizeLimit
           const aspect = item.width / item.height
           object.scale.set(wholeScale * aspect, wholeScale, 1)
+          if (item.width > sizeLimit) {
+            object.scale.multiplyScalar(sizeLimit / item.width)
+          }
           object.userData.textureName$ = key
           object.userData.tag = item.tag || 'untagged'
           scene.add(object)

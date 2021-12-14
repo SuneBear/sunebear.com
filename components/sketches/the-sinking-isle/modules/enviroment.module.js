@@ -11,8 +11,11 @@ import { EnvWaterPlaneObject } from '../objects/env-water-plane.object'
 import { RENDER_LAYERS } from '../utils/constants'
 import { insideWaterPolys } from '../utils/water-util'
 
+import planeVertexShader from '../shaders/env-plane.vert'
+import maskFragmentShader from '../shaders/env-noise-mask.frag'
 import vertexShader from '../shaders/base.vert'
-import fragmentShader from '../shaders/post-under-water-distort.frag'
+import distortFragmentShader from '../shaders/post-under-water-distort.frag'
+
 import { Random } from '~/utils/random'
 
 // @TODO: Render world boundary
@@ -26,6 +29,7 @@ export default class Enviroment extends Module {
     this.setupLake()
     this.setupSamples()
     this.setupTerrain()
+    this.setupNoiseMask()
     // this.setupOctopus()
     this.setupPostUnderWaterDistort()
   }
@@ -33,6 +37,18 @@ export default class Enviroment extends Module {
   setupScene() {
     // @TODO: Only show black scene when reneder bloom effect
     this.scene.background = new THREE.Color(0x000000) // new THREE.Color(0xffffff)
+
+    // Lights
+    const ambientLight = new THREE.AmbientLight(0xffffff)
+    ambientLight.layers.enable(RENDER_LAYERS.OUTLINE)
+    // ambientLight.layers.enable(RENDER_LAYERS.BLOOM)
+    this.scene.add(ambientLight)
+
+    const directionLight = new THREE.DirectionalLight(0xffffff)
+    directionLight.position.set(0.5, 0, 0.866) // ~60º
+    directionLight.layers.enable(RENDER_LAYERS.OUTLINE)
+    // directionLight.layers.enable(RENDER_LAYERS.BLOOM)
+    this.scene.add(directionLight)
   }
 
   setupInfo() {
@@ -208,6 +224,39 @@ export default class Enviroment extends Module {
     this.scene.add(this.terrainDepth)
   }
 
+  setupNoiseMask() {
+    const size = this.config.worldSize * 2
+
+    const geometry = new THREE.PlaneGeometry(size, size, 1, 1)
+    geometry.rotateX(-Math.PI / 2)
+
+    const material = new THREE.ShaderMaterial({
+      vertexShader: vertexShader,
+      fragmentShader: maskFragmentShader,
+      uniforms: {
+        grainNoiseMap: {
+          value: this.asset.items.grainNoiseTexture
+        },
+      },
+      depthTest: false,
+      depthWrite: true,
+      transparent: true,
+      side: THREE.DoubleSide
+    })
+
+    this.noiseMask = new THREE.Mesh(
+      geometry
+    )
+    this.noiseMask.material = material
+    this.noiseMask.renderOrder = RENDER_LAYERS.NOISE_MASK
+    this.noiseMask.layers.set(RENDER_LAYERS.NOISE_MASK)
+    this.noiseMask.name = 'noiseMask'
+    this.noiseMask.position.y = 10
+
+    this.noiseMask.material.blending = THREE.AdditiveBlending
+    this.scene.add(this.noiseMask)
+  }
+
   setupOctopus() {
     this.octopus = this.asset.items.octopusModel.children[0]
     this.octopus.material = new THREE.MeshPhysicalMaterial({
@@ -238,7 +287,7 @@ export default class Enviroment extends Module {
     const postCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1)
     const postMaterial = new THREE.ShaderMaterial({
       vertexShader,
-      fragmentShader,
+      fragmentShader: distortFragmentShader,
       uniforms: {
         colorMap: { value: mainTarget.texture },
         maskMap: { value: maskTarget.texture },

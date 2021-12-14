@@ -1,12 +1,14 @@
-uniform sampler2D baseTexture;
-uniform sampler2D bloomTexture;
+uniform sampler2D map;
+uniform sampler2D bloomMap;
 uniform sampler2D blueNoiseMap;
 uniform sampler2D shadowMap;
+uniform sampler2D outlineMap;
 uniform sampler2D lutMap;
 uniform float exposure;
 uniform vec2 resolution;
 uniform bool enableShadow;
 uniform bool enableBloom;
+uniform bool enableOutline;
 uniform bool enableVignette;
 uniform bool enableLut;
 uniform bool enableMono;
@@ -34,6 +36,7 @@ vec3 blendSoftLight(vec3 base, vec3 blend, float opacity) {
   return (blendSoftLight(base, blend) * opacity + base * (1.0 - opacity));
 }
 
+// Tone Mapping
 #define gamma 2.2
 vec3 simpleReinhardToneMapping(vec3 color, float exposure)
 {
@@ -87,7 +90,18 @@ highp vec3 colorLUT(in highp vec3 textureColor, in highp sampler2D lookupTable) 
 }
 
 void main() {
-  vec4 baseColor = texture2D(baseTexture, vUv);
+  vec4 baseColor = texture2D(map, vUv);
+
+  // Style: Outline
+  if (enableOutline) {
+    vec4 outlineColor = texture2D(outlineMap, vUv);
+    if (outlineColor.r > 0.2 && outlineColor.a > 0.5) {
+      baseColor.rgb = blendOverlay(baseColor.rgb, outlineColor.rgb, 0.5) * 0.9;
+    }
+    // baseColor.rgb = outlineColor.rgb;
+  }
+
+  // Style: Shadow
   if (enableShadow) {
     baseColor -= texture2D(shadowMap, vUv) * 0.2;
     // baseColor.rgb = blendSoftLight(baseColor.rgb, texture2D(shadowMap, vUv).rgb);
@@ -95,13 +109,16 @@ void main() {
 
   // Effect: Bloom
   // @FIXME: Switch a better way to blend bloom, and mix with ToneMapping
-  vec4 bloomColor = vec4(1.0) * texture2D(bloomTexture, vUv);
+  vec4 bloomColor = vec4(1.0) * texture2D(bloomMap, vUv);
   vec4 mixedBloomColor = (1.0 - ((1.0 - baseColor) * (1.0 - bloomColor)));
   float bloomAmount = 0.8;
   vec4 blendColor = enableBloom ? mixedBloomColor * bloomAmount + baseColor * (1. - bloomAmount) : baseColor;
 
   // Color: ToneMapping
-  // blendColor.rgb = linearToneMapping(blendColor.rgb, exposure);
+  // blendColor.rgb = linearToneMapping(blendColor.rgb, 1.0);
+
+  // Color: Luma
+  blendColor.rgb += exposure / 45.0;
 
   // Effect: Vignitte
   vec2 nq = vUv / (20.0 / resolution.xy);
@@ -117,7 +134,7 @@ void main() {
     blendColor.rgb = colorLUT(blendColor.rgb, lutMap);
   }
 
-  // Effect: GrayColor
+  // Effect: Mono
   float grayColor = dot(blendColor.rgb, vec3(0.22, 0.707, 0.071));
   if (enableMono) {
     blendColor.r = grayColor;

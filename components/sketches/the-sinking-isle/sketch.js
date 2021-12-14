@@ -4,10 +4,10 @@ import anime from 'animejs'
 
 import { ModuleManager } from './engine/module'
 import SizesManager from './engine/sizes'
-import AssetManager from './engine/asset'
 import ControlManager from './engine/control'
 import AudioManager from './engine/audio'
 import StatsManager from './engine/stats'
+import { asset } from './engine/asset'
 import { Random, autobind, math } from './engine/utils'
 
 import CameraModule from './modules/camera.module'
@@ -97,7 +97,8 @@ class TheSinkingIsleSketch {
   }
 
   async loadAssets() {
-    this.asset = new AssetManager(assets)
+    this.asset = asset
+    this.asset.loadAssets(assets)
 
     this.asset.on('progress', () => {
       if (this.progressAnimer) {

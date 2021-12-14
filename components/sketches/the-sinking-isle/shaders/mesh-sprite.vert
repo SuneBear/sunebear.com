@@ -39,6 +39,7 @@ void main () {
   vec3 curDirection = vec3(curDirection2D.x, 0.0, curDirection2D.y);
   float gradientY = clamp(vertexWorldPos.y / 0.25, 0.0, 1.0);
   vertexWorldPos += 0.05 * position.y * spriteHeight * camRightWorld * sin(time*7.0) * curDirection * pow(dCol.r, 2.0) * 2.0 * gradientY;
+
   if (silhouette) {
     float xSkew = -60.0 * (PI/180.0);
     float ySkew = 0.0;
@@ -46,6 +47,7 @@ void main () {
     vertexWorldPos.xyz -= camRightWorld * realVertexWorldPos.y * 0.5;
     vertexWorldPos.z += -0.15;
   }
+
   vWorldPosition = vertexWorldPos;
   gl_Position = projectionMatrix * viewMatrix * vec4(vertexWorldPos, 1.0);
 }

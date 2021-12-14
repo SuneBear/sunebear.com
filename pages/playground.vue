@@ -193,7 +193,7 @@ export default {
       mockSquareImage: require('@/assets/mock/cear-portrait.jpg'),
       mockLongRectImage: require('@/assets/mock/unsplace-sea-rect.jpg'),
       storyRoles: [
-        { name: 'bear', avatar: require('@/assets/mock/bear9.png'), isDefault: true }
+        { name: 'bear', avatar: require('@/assets/story/bear14-avatar3.png'), isDefault: true }
       ],
       storyMessages
     }

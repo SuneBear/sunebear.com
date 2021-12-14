@@ -150,7 +150,7 @@ export default {
 
 <style lang="stylus">
 .cear-button
-  display: inline-flex
+  display: inline-block
   font-family: var(--fonts-ui)
   padding-right: 6px
   padding-bottom: 6px

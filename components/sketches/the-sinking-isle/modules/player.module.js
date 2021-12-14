@@ -4,6 +4,7 @@ import { math } from '../engine/utils'
 
 import { CharacterPhysicsSpring } from './character/character-physics-spring'
 import { CharacterObject } from '../objects/character.object'
+import { convertToToonMaterial } from '../objects/mesh-toon.material'
 import { RENDER_LAYERS } from '../utils/constants'
 
 // @TODO: Refactor playerMove, springEngine, moveTarget
@@ -15,6 +16,8 @@ export default class Player extends Module {
     super(sketch)
 
     this.setupInstance()
+    this.setupCharacter()
+    this.setupBoat()
     this.setupUnderStateSystem()
     this.setupMoveTargetSystem()
     this.setupSpringCharacterMoveSystem()
@@ -25,12 +28,84 @@ export default class Player extends Module {
     this.instance.name = 'player'
     this.instance.module = this
 
-    this.characterObject = new CharacterObject()
-    this.characterObject.layers.enable(RENDER_LAYERS.BLOOM)
+    this.instance.renderOrder = -10
     this.instance.position.set(0, 0, 0)
+    this.instance.rotation.y = Math.PI / 2
 
-    this.instance.add(this.characterObject)
     this.scene.add(this.instance)
+  }
+
+  setupCharacter() {
+    const model = this.asset.items.playerCharacterModel
+    const scene = model.scene
+
+    scene.position.x = -0.4
+    scene.position.y = 0.4
+    scene.rotation.y = Math.PI / 2
+    scene.scale.multiplyScalar(0.2)
+
+    scene.traverse(obj => {
+      if (obj.material) {
+        convertToToonMaterial(obj, {
+          emissive: 0x000000,
+          emissiveIntensity: 0.1,
+          outlineColor: 0x010101,
+          outlineThickness: 0.002
+        })
+      }
+    })
+
+    const mixer = new THREE.AnimationMixer(scene)
+    // const paddleClipAction = mixer.clipAction(model.animations[1])
+    // paddleClipAction.reset().play()
+
+    // this.characterObject = new CharacterObject()
+    // this.characterObject.layers.enable(RENDER_LAYERS.BLOOM)
+    // this.instance.add(this.characterObject)
+
+    this.characterMixer = mixer
+    this.characterObject = scene
+    this.instance.add(scene)
+  }
+
+  setupBoat() {
+    const model = this.asset.items.playerBoatModel
+    const boat = model.scene
+
+    boat.name = 'boat'
+
+    boat.position.x = 0.3
+    boat.rotation.y = -Math.PI / 2
+    boat.scale.multiplyScalar(0.32)
+
+    boat.traverse(obj => {
+      if (obj.name.includes('paddle')) {
+        convertToToonMaterial(obj, {
+          displacementScale: 20,
+          color: 0xa70505,
+          emissive: 0xa70505,
+          emissiveIntensity: 0.2,
+          outlineThickness: 0.001
+        })
+        obj.scale.multiply(new THREE.Vector3(2, 2, 1))
+      } else if (obj.material) {
+        convertToToonMaterial(obj, {
+          displacementScale: 0.4,
+          bumpScale: 1,
+          outlineThickness: 0.003,
+          outlineAlpha: 0.01
+        })
+        obj.material.transparent = true
+      }
+    })
+
+    const mixer = new THREE.AnimationMixer(boat)
+    const paddleClipAction = mixer.clipAction(model.animations[1])
+    paddleClipAction.reset().play()
+
+    this.boatMixer = mixer
+    this.boatObject = boat
+    this.instance.add(boat)
   }
 
   setupUnderStateSystem() {
@@ -96,7 +171,17 @@ export default class Player extends Module {
 
   update(delta, elapsed) {
     this.updateMoveTargetSystem(delta)
-    this.characterObject.update(delta, elapsed)
+    this.updateWaterBuoyancy(elapsed)
+    this.boatMixer.update(delta)
+  }
+
+  updateWaterBuoyancy(time) {
+    const obj = this.instance
+    obj.position.y = obj.position.y + Math.cos(time) * 0.002
+
+    // Rotate object slightly
+    obj.rotation.x = obj.rotation.x + Math.cos(time * 0.5) * 0.001
+    obj.rotation.z = obj.rotation.z + Math.sin(time * 0.5) * 0.0001
   }
 
   updateMoveTargetSystem(delta) {
@@ -308,7 +393,10 @@ export default class Player extends Module {
       .copy(spring.velocity)
       .multiplyScalar(0.2 / spring.maxVelocity)
 
-    if (this.hasSmoothTarget && spring.velocity.length() > this.speedFactor / 5) {
+    if (
+      this.hasSmoothTarget &&
+      spring.velocity.length() > this.speedFactor / 5
+    ) {
       playerMesh.rotation.y = -math.dampAngle(
         -playerMesh.rotation.y,
         Math.atan2(this.moveDirection.z, this.moveDirection.x),
@@ -324,9 +412,10 @@ export default class Player extends Module {
     const springScale = 1.1
     if (
       !this.enviroment.isInsideLake([
-        spring.position.x * springScale + positionOffset, spring.position.z * springScale + positionOffset
+        spring.position.x * springScale + positionOffset,
+        spring.position.z * springScale + positionOffset
       ])
-    ){
+    ) {
       smoothTarget.x *= 0.5
       smoothTarget.z *= 0.5
       spring.position.copy(playerMesh.position)

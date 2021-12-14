@@ -84,7 +84,7 @@ export default class Assets extends EventEmitter {
     return items
   }
 
-  async loadAssets(assets) {
+  async loadAssets(assets = []) {
     if (assets.length) {
       this.groups = {}
       this.groups.assets = [...assets]
@@ -154,3 +154,6 @@ export default class Assets extends EventEmitter {
     }
   }
 }
+
+// Export as singleton
+export const asset = new Assets()

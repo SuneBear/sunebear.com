@@ -44,7 +44,7 @@ export default {
       isInited: __DEBUG__,
       isError: false,
       isPlaying: true,
-      isShowMainMenu: false,
+      isShowMainMenu: !__DEBUG__,
       enableUserInput: true,
       enablePlayerDrift: false,
       cameraTarget: 'player',
@@ -165,7 +165,7 @@ export default {
       }
 
       this.storyRoles = [
-        { name: 'bear', avatar: require('@/assets/mock/bear9.png'), isDefault: true }
+        { name: 'bear', avatar: require('@/assets/story/bear14-avatar3.png'), isDefault: true }
       ]
 
       this.storyMessages = storyMessages

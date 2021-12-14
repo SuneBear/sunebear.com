@@ -10,6 +10,7 @@ import * as EssentialsPlugin from '@tweakpane/plugin-essentials'
 import Module from '../engine/module'
 import vertexShader from '../shaders/base.vert'
 import fragmentShader from '../shaders/post-processing.frag'
+import { OutlineEffect } from '../utils/hack-deps/three/outline-effect'
 import { RENDER_LAYERS } from '../utils/constants'
 
 export default class Renderer extends Module {
@@ -32,6 +33,7 @@ export default class Renderer extends Module {
 
     this.setInstance()
     this.setPostProcess()
+    this.setupEffect()
 
     this.resize()
     if (!this.debug) {
@@ -84,7 +86,7 @@ export default class Renderer extends Module {
     this.instance.shadowMap.autoUpdate = false
     this.instance.shadowMap.needsUpdate = this.instance.shadowMap.enabled
     this.instance.toneMapping = THREE.ReinhardToneMapping // THREE.LinearToneMapping
-    this.instance.toneMappingExposure = 2.5
+    this.instance.toneMappingExposure = 4.5
 
     this.context = this.instance.getContext()
 
@@ -169,6 +171,7 @@ export default class Renderer extends Module {
     const RenderTargetClass = THREE.WebGLMultisampleRenderTarget
       ? THREE.WebGLRenderTarget
       : THREE.WebGLMultisampleRenderTarget
+
     this.renderTarget = new RenderTargetClass(
       this.sizes.width,
       this.sizes.height,
@@ -180,6 +183,16 @@ export default class Renderer extends Module {
         encoding: THREE.sRGBEncoding
       }
     )
+
+    this.outlineRenderTarget = new RenderTargetClass(
+      this.sizes.width,
+      this.sizes.height,
+      {
+        format: THREE.RGBFormat,
+        encoding: THREE.sRGBEncoding
+      }
+    )
+
     this.postProcess.bloomComposer = new EffectComposer(this.instance)
     this.postProcess.bloomComposer.renderToScreen = false
     this.postProcess.bloomComposer.addPass(this.postProcess.renderPass)
@@ -190,15 +203,18 @@ export default class Renderer extends Module {
 
     // Final Pass
     this.postProcess.finalUniforms = {
-      baseTexture: { value: null },
-      bloomTexture: {
+      map: { value: null },
+      bloomMap: {
         value: this.postProcess.bloomComposer.renderTarget2.texture
-      },
-      blueNoiseMap: {
-        value: this.asset.items.blueNoiseTexture
       },
       shadowMap: {
         value: this.renderTarget.texture
+      },
+      outlineMap: {
+        value: this.outlineRenderTarget.texture
+      },
+      blueNoiseMap: {
+        value: this.asset.items.blueNoiseTexture
       },
       lutMap: {
         value: this.asset.items.lutTexture
@@ -217,6 +233,9 @@ export default class Renderer extends Module {
       enableBloom: {
         value: true
       },
+      enableOutline: {
+        value: true
+      },
       enableVignette: {
         value: true
       },
@@ -233,7 +252,7 @@ export default class Renderer extends Module {
         vertexShader,
         fragmentShader
       }),
-      'baseTexture'
+      'map'
     )
     this.postProcess.composer = new EffectComposer(this.instance)
     this.postProcess.composer.setSize(this.sizes.width, this.sizes.height)
@@ -265,6 +284,12 @@ export default class Renderer extends Module {
         'value',
         { label: 'enableBloom' }
       )
+
+      debugFolder.addInput(
+        this.postProcess.finalPass.uniforms.enableOutline,
+        'value',
+        { label: 'enableOutline' }
+      )
       debugFolder.addInput(
         this.postProcess.finalPass.uniforms.enableVignette,
         'value',
@@ -281,6 +306,15 @@ export default class Renderer extends Module {
         { label: 'enableMono' }
       )
     }
+  }
+
+  setupEffect() {
+    this.outlineEffect = new OutlineEffect(this.instance, {
+      defaultThickness: 0,
+      defaultColor: [ 0, 0, 0 ],
+      defaultAlpha: 0,
+      defaultKeepAlive: false
+    })
   }
 
   resize() {
@@ -300,6 +334,16 @@ export default class Renderer extends Module {
     fxaaPass.material.uniforms['resolution'].value.y = 1 / (height * pixelRatio)
 
     finalUniforms.resolution.value.set(width, height)
+  }
+
+  renderOutline() {
+    this.camera.layers.set(RENDER_LAYERS.OUTLINE)
+
+    this.instance.setRenderTarget(this.outlineRenderTarget)
+    this.outlineEffect.render(this.scene, this.camera)
+    this.instance.setRenderTarget(null)
+
+    this.camera.layers.enableAll()
   }
 
   // @TODO: Use a better way to draw shadows
@@ -361,6 +405,7 @@ export default class Renderer extends Module {
 
   render() {
     this.renderShadows()
+    this.renderOutline()
 
     if (this.usePostprocess) {
       this.postProcess.composer.render()

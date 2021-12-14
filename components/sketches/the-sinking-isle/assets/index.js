@@ -48,6 +48,14 @@ export default [
         name: 'boidFishModel',
         source: require('./gltfs/boid-fish.glb').default
       },
+      {
+        name: 'playerCharacterModel',
+        source: require('./gltfs/player-character.glb').default
+      },
+      {
+        name: 'playerBoatModel',
+        source: require('./gltfs/player-boat.glb').default
+      },
 
       // Spritesheets
       {
@@ -73,6 +81,12 @@ export default [
       {
         name: 'blueNoiseTexture',
         source: require('./textures/bluenoise-0.png'),
+        type: 'texture',
+        options: REPEAT_TEXTURE_OPTIONS
+      },
+      {
+        name: 'grainNoiseTexture',
+        source: require('@/assets/cear-ui/mask-grain-noise.png'),
         type: 'texture',
         options: REPEAT_TEXTURE_OPTIONS
       },
@@ -119,16 +133,6 @@ export default [
         source: require('./textures/floor-overlay.jpg'),
         type: 'texture',
         options: REPEAT_TEXTURE_OPTIONS
-      },
-      {
-        name: 'colorDataTexture',
-        source: require('./textures/color-data.png'),
-        type: 'texture'
-      },
-      {
-        name: 'blomeDataTexture',
-        source: require('./textures/biome-data.png'),
-        type: 'texture'
       },
       {
         name: 'waterCausticsTexture',

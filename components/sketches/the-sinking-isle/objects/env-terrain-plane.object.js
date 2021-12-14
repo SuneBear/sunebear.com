@@ -27,7 +27,7 @@ export class EnvTerrainPlaneObject extends THREE.Mesh {
       options
     )
 
-    const hightMapData = getImageData(options.heightMapTexture.image)
+    // const hightMapData = getImageData(options.heightMapTexture.image)
     const width = options.planeSize * options.planeScale
     const height = options.planeSize * options.planeScale
     const uvMat = new THREE.Matrix3()

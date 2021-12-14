@@ -5,6 +5,12 @@ export class CharacterObject extends THREE.Mesh {
   constructor(options) {
     super()
 
+    // this.setupCube()
+
+    this.position.y = 0.1
+  }
+
+  setupCube() {
     this.geometry = new THREE.BoxGeometry(2, 1, 1).toNonIndexed()
     const positionAttribute = this.geometry.getAttribute( 'position' )
     const colors = []
@@ -18,9 +24,7 @@ export class CharacterObject extends THREE.Mesh {
     }
     this.geometry.setAttribute( 'color', new THREE.Float32BufferAttribute( colors, 3 ))
     this.material = new THREE.MeshBasicMaterial({ vertexColors: true })
-    this.material.depthTest = true
-    this.renderOrder = 10
-    this.position.y = 0.1
+    this.material.transparent = true
   }
 
   waterBuoyancy(time) {

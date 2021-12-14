@@ -151,6 +151,7 @@ void main () {
   #endif
 
   // gl_FragColor = vec4(vec3(col), edgeAlpha);
+
   gl_FragColor = clamp(gl_FragColor.rgba, 0.0, 1.0);
   // vec3 distortion = texture2D(mapWaterNormal, vTextureUv * distortionScale).rgb * 2.0 - 1.0;
   // gl_FragColor = vec4(vec3(wakeData.r), 1.0);

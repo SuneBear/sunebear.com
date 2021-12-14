@@ -12,8 +12,8 @@ function createSpriteMaterial(uniforms) {
       derivatives: true
     },
     transparent: true,
-    depthTest: false,
-    depthWrite: false,
+    depthTest: true,
+    depthWrite: true,
     side: THREE.DoubleSide,
     fragmentShader,
     vertexShader,
