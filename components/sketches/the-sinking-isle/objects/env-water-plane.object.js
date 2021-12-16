@@ -75,7 +75,7 @@ export class EnvWaterPlaneObject extends THREE.Mesh {
         HAS_SURF_UV: true
       },
       transparent: true,
-      depthWrite: true,
+      depthWrite: false,
       depthTest: true,
       side: THREE.DoubleSide
     })

@@ -39,10 +39,11 @@ export default class Player extends Module {
     const model = this.asset.items.playerCharacterModel
     const scene = model.scene
 
-    scene.position.x = -0.4
-    scene.position.y = 0.4
+    scene.position.x = -0.35
+    scene.position.y = 0.6
     scene.rotation.y = Math.PI / 2
-    scene.scale.multiplyScalar(0.2)
+    scene.scale.multiplyScalar(0.58)
+    scene.scale.z = 0.9
 
     scene.traverse(obj => {
       if (obj.material) {
@@ -101,9 +102,10 @@ export default class Player extends Module {
 
     const mixer = new THREE.AnimationMixer(boat)
     const paddleClipAction = mixer.clipAction(model.animations[1])
-    paddleClipAction.reset().play()
+    paddleClipAction.loop = THREE.LoopOnce
 
     this.boatMixer = mixer
+    this.boatPaddleClipAction = paddleClipAction
     this.boatObject = boat
     this.instance.add(boat)
   }
@@ -232,6 +234,9 @@ export default class Player extends Module {
     let forceApplied = false
     if (this.control.isPressed('tap')) {
       forceApplied = true
+      if (!this.boatPaddleClipAction.isRunning()) {
+        this.boatPaddleClipAction.reset().play()
+      }
       this.speed = math.damp(this.speed, this.maxSpeed, 5, delta)
       this.boost = math.damp(this.boost, this.maxBoost, 2, delta)
     } else {

@@ -149,7 +149,7 @@ export default {
 
     async initContextData() {
       let storyMessages = [
-        { user: 'bear', message: '> Hello from Polar Bear. \n\n Welcome to chat with me'  },
+        { user: 'bear', message: '> Hello from SuneBear. \n\n Welcome to chat with me'  },
         { user: 'user', message: 'You know who i am?'  },
         { user: 'bear', message: 'I guess you are a kind people'  }
       ]
