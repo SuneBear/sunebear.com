@@ -76,7 +76,7 @@ export class EnvTerrainPlaneObject extends THREE.Mesh {
       side: THREE.DoubleSide
     })
 
-    this.position.y = -1
+    this.position.y = 0.01
     this.rotation.x = -Math.PI / 2
   }
 }

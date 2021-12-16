@@ -30,7 +30,7 @@ export default class Player extends Module {
 
     this.instance.renderOrder = -10
     this.instance.position.set(0, 0, 0)
-    this.instance.rotation.y = Math.PI / 2
+    this.instance.rotation.y = Math.PI * 1.25
 
     this.scene.add(this.instance)
   }

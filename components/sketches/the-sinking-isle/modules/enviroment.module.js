@@ -180,7 +180,7 @@ export default class Enviroment extends Module {
   }
 
   setupTerrain() {
-    const terrainModel = this.asset.items.envTerrainModel.scene
+    const terrainModel = this.asset.items.envTerrainModel?.scene
 
     this.terrain = new EnvTerrainPlaneObject({
       terrainGeo: terrainModel.children[0].geometry,

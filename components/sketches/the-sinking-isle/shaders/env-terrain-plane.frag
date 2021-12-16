@@ -68,8 +68,11 @@ void main () {
   col = mix(col, col * (1.0 - overlay), 0.075 * (biome.b));
   col = blendSoftLight(col, tex, 1.0 - darken * dataColor.r);
 
-  gl_FragColor = vec4(vec3(col), 1.0);
-  gl_FragColor = clamp(gl_FragColor, 0.0, 1.0);
-  gl_FragColor.rgb = mix(clearColor, gl_FragColor.rgb, edge0 * edge1);
-  gl_FragColor.rgb = mix(gl_FragColor.rgb, vec3(1.0), lake);
+  // gl_FragColor = vec4(vec3(col), 1.0);
+  // gl_FragColor = clamp(gl_FragColor, 0.0, 1.0);
+  // gl_FragColor.rgb = mix(clearColor, gl_FragColor.rgb, edge0 * edge1);
+  // gl_FragColor.rgb = mix(gl_FragColor.rgb, vec3(1.0), lake);
+
+  gl_FragColor.rgb = vec3(0.0);
+  gl_FragColor.a = 1.0;
 }
