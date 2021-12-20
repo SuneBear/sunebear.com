@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import Module from '../engine/module'
 import { Random } from '../engine/utils'
 
-export default class TemplateModule extends Module {
+export default class Template extends Module {
 
   constructor(sketch) {
     super(sketch)

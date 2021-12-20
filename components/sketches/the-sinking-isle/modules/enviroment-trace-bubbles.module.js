@@ -8,10 +8,10 @@ export default class EnviromentTraceBubbles extends Module {
   constructor(sketch) {
     super(sketch)
 
-    const random = Random(true, 'EnvTraceBubble')
+    const random = Random(true, 'TraceBubbles')
 
     const group = new THREE.Group()
-    group.name = 'traceBubble'
+    group.name = 'envTraceBubbles'
     this.scene.add(group)
 
     const sphere0 = new THREE.SphereBufferGeometry(1, 8, 8)

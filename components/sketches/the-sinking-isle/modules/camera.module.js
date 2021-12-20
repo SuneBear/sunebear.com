@@ -13,6 +13,9 @@ export default class CameraModule extends Module {
     // Set up
     this.mode = 'debug' // default | debug
     this.defaultPresetIndex = 0
+    this.params = {
+      panInstensity: 1
+    }
 
     this.setInstance()
     this.setModes()
@@ -87,6 +90,7 @@ export default class CameraModule extends Module {
     this.currentTarget = new THREE.Vector3()
     this.currentUIZoom = 0
     this.userZoomDistance = 10
+    this.panOffset = new THREE.Vector3()
     this.offset = new THREE.Vector3(1, 1, 1)
     this.offset.applyAxisAngle(
       new THREE.Vector3(0, 1, 0),
@@ -186,6 +190,7 @@ export default class CameraModule extends Module {
   }
 
   update(delta) {
+    this.updateParallexEffect()
     this.updateFocusTargetSystem(delta)
     this.updatePlayerFollowSystem(delta)
 
@@ -195,6 +200,22 @@ export default class CameraModule extends Module {
     // Apply coordinates
     this.instance.updateMatrix() // To be used in projection
     this.instance.updateMatrixWorld() // To be used in projection
+  }
+
+  updateParallexEffect() {
+    const { width, height } = this.sizes
+
+    const panX =
+      this.control.pan.value.x * width
+    const panY =
+      this.control.pan.value.y * width
+    const instensity =
+      this.params.panInstensity / Math.abs(this.instance.position.y || 1)
+
+    if (!isNaN(panX)) {
+      this.panOffset.x = -panX * instensity
+      this.panOffset.z = -panY * instensity * 1.2
+    }
   }
 
   updateFocusTargetSystem(delta) {
@@ -256,6 +277,7 @@ export default class CameraModule extends Module {
     )
     this.playerFollow.currentTarget.copy(this.currentTarget)
     camera.lookAt(this.currentTarget)
+    camera.position.addScaledVector(this.panOffset, this.currentUIZoom / 10)
     camera.position.add(controlCamera.position)
     camera.quaternion.copy(controlCamera.quaternion)
 

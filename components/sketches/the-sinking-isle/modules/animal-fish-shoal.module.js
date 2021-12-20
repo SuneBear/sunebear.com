@@ -20,7 +20,8 @@ export default class AnimalFishShoal extends Module {
         displacementScale: 1,
         emissive: 0xffffff,
         emissiveIntensity: 0.05,
-        outlineThickness: 0.007
+        outlineThickness: 0.003,
+        outlineColor: 0x3b69ae,
       })
     }
 

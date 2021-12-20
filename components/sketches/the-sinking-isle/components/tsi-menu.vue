@@ -6,14 +6,17 @@
     )
   .menu-navbar.d-flex
     //- @TODO: Support icon morphing
-    .shadow-handler.is-grass(
+    .shadow-handler.is-glass(
       @click="toggle(tab.id)"
       v-for="tab in tabs"
       :class="{ 'is-active': tab.id === currentTabId }"
     )
+      //- @FIXME: dynamic disabled will position a wrong place
       el-tooltip(
         :content="tab.tooltip || tab.name"
-        :disabled="tab.id === currentTabId"
+        :disabled="false"
+        :manual="tab.id === currentTabId"
+        :value="tab.id !== currentTabId ? undefined : false"
       )
         //- @TODO: Switch a better perf way to apply distory
         //- SVG Filter + Transform will drop sketch fps
@@ -22,7 +25,6 @@
           fill="var(--secondary)"
           shadow="black"
           :enableDistort="false"
-          :enableDistortTransform="false"
           :name="tab.id === currentTabId ? 'close-short-line' : tab.icon"
         )
   .menu-modal.d-flex.align-center.justify-center
@@ -208,7 +210,7 @@ export default {
     font-size: s('min(6vw, 45px)')
     pointer-events: initial
 
-    .cear-icon
+    .shadow-handler
       margin-left: 1rem
 
   .menu-modal

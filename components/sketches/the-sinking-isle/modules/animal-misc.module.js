@@ -1,3 +1,4 @@
+import * as THREE from 'three'
 import Module from '../engine/module'
 import { PlayableMeshSpriteObject } from '../objects/mesh-sprite.object'
 import { parseSpritesheets } from '../utils/spritesheet'
@@ -6,6 +7,11 @@ export default class AnimalMisc extends Module {
 
   constructor(sketch) {
     super(sketch)
+
+    this.container = new THREE.Group()
+    this.container.name = 'animalMisc'
+
+    this.scene.add(this.container)
 
     this.setupButterfly()
   }
@@ -21,7 +27,7 @@ export default class AnimalMisc extends Module {
     this.butterfly.name = 'butterfly'
     this.butterfly.position.y = 2
     this.butterfly.setFlip(true)
-    this.scene.add(this.butterfly)
+    this.container.add(this.butterfly)
   }
 
   update(delta) {

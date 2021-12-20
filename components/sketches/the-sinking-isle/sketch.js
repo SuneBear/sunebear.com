@@ -20,6 +20,7 @@ import EnviromentTraceBubblesModule from './modules/enviroment-trace-bubbles.mod
 import EnviromentModule from './modules/enviroment.module'
 import EnviromentGridModule from './modules/enviroment-grid.module'
 import EnviromentStillLifesModule from './modules/enviroment-still-lifes.module'
+import EnviromentBuildingsModule from './modules/enviroment-buildings.module'
 import AnimalFishShoalModule from './modules/animal-fish-shoal.module'
 import AnimalMiscModule from './modules/animal-misc.module'
 import PlayerModule from './modules/player.module'
@@ -199,7 +200,7 @@ class TheSinkingIsleSketch {
 
     const rendererModule = this.module.add(RendererModule)
     this.renderer = rendererModule.instance
-    this.control = new ControlManager(this.renderer.domElement)
+    this.control = new ControlManager(this.renderer.domElement, this.sizes)
     this.container.appendChild(this.renderer.domElement)
 
     this.module.set({ control: this.control })
@@ -213,6 +214,7 @@ class TheSinkingIsleSketch {
     this.module.add(EnviromentTraceBubblesModule)
     this.module.add(EnviromentGridModule)
     this.module.add(EnviromentStillLifesModule)
+    this.module.add(EnviromentBuildingsModule)
 
     this.module.set({ enviroment: this.enviroment })
   }
@@ -277,6 +279,7 @@ class TheSinkingIsleSketch {
     this.time.elapsedTime += this.delta
 
     this.module.update(this.delta, this.time.elapsedTime, this.clock.oldTime)
+    this.control.update(this.delta)
   }
 }
 

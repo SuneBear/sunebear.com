@@ -126,7 +126,7 @@ page-wrapper(
           <br/>
           | {{ blobSeed }}
           <br/>
-          | pointAmount: {{ pointAmount }}, constrast: {{ contrast }}
+          | pointAmount: {{ pointAmount }}, contrast: {{ contrast }}
 
     .text-h4.pb-2.anim-squiggly.mt-10
       cear-notation( isShow :color="brandColor" ) Widget Playground

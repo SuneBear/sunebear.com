@@ -10,7 +10,7 @@ export default {
   },
 
   bear: {
-
+    firstReachTheLakeEdge: ''
   },
 
 }

@@ -56,6 +56,10 @@ export default [
         name: 'playerBoatModel',
         source: require('./gltfs/player-boat.glb').default
       },
+      {
+        name: 'playerIceBearModel',
+        source: require('./gltfs/player-ice-bear.glb').default
+      },
 
       // Spritesheets
       {

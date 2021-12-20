@@ -7,7 +7,7 @@ let isInitedAudioContext = false
 
 // Currently support keyboard, mouse, touch inputs
 export default class Control extends EventEmitter {
-  constructor($canvas) {
+  constructor($canvas, sizes) {
     super()
 
     if ($canvas === undefined) {
@@ -16,12 +16,26 @@ export default class Control extends EventEmitter {
     }
 
     this.$canvas = $canvas
+    this.sizes = sizes
 
-    this.tapState = {
+    this.cursor = {
       x: 0,
       y: 0,
-      clientX: 0,
-      clientY: 0,
+      fromCenter: {
+        x: 0,
+        y: 0
+      },
+      ratio: {
+        x: 0,
+        y: 0,
+        fromCenter: {
+          x: 0,
+          y: 0
+        }
+      }
+    }
+
+    this.tapState = {
       multitouch: false,
       pressed: false,
       currentTouchId: null,
@@ -46,6 +60,7 @@ export default class Control extends EventEmitter {
     // this.handleTap = this.handleTap.bind(this)
 
     this.listenEvents()
+    this.setupPan()
   }
 
   listenEvents() {
@@ -94,8 +109,8 @@ export default class Control extends EventEmitter {
 
   getMouse() {
     return new THREE.Vector2(
-      this.tapState.x,
-      this.tapState.y
+      this.cursor.ratio.fromCenter.x,
+      this.cursor.ratio.fromCenter.y
     )
   }
 
@@ -159,12 +174,23 @@ export default class Control extends EventEmitter {
       typeof arg === 'number' ? keyCodesMap[arg] : swappedKeyCodesMap[arg]
   })()
 
-  processTapEvent(e) {
-    this.tapState.clientX = e.clientX
-    this.tapState.clientY = e.clientY
-    this.tapState.x = (e.clientX / this.$canvas.clientWidth) * 2 - 1
-    this.tapState.y = -(e.clientY / this.$canvas.clientHeight) * 2 + 1
-    return this.tapState
+  processCursorEvent(event) {
+    const cursor = this.cursor
+    const { width, height } = this.sizes
+
+    cursor.x = event.clientX
+    cursor.y = event.clientY
+
+    cursor.ratio.x = cursor.x /  width
+    cursor.ratio.y = cursor.y / height
+
+    cursor.fromCenter.x = cursor.x -  width / 2
+    cursor.fromCenter.y = -(cursor.y - height / 2)
+
+    cursor.ratio.fromCenter.x = cursor.fromCenter.x / width
+    cursor.ratio.fromCenter.y = cursor.fromCenter.y / height
+
+    return this.cursor
   }
 
   @autobind
@@ -193,7 +219,7 @@ export default class Control extends EventEmitter {
       return
     }
     this.tapState.pressed = true
-    this.processTapEvent(e)
+    this.processCursorEvent(e)
     this.trigger('mousedown', [this.tapState])
     this.trigger('tapdown', [this.tapState])
   }
@@ -203,10 +229,10 @@ export default class Control extends EventEmitter {
     if (this.shouldIgnoreTap(e)) {
       return
     }
+    this.processCursorEvent(e)
     if (this.needPressdMove && !this.tapState.pressed) {
       return
     }
-    this.processTapEvent(e)
     this.trigger('mousemove', [this.tapState])
   }
 
@@ -216,7 +242,7 @@ export default class Control extends EventEmitter {
       return
     }
     this.tapState.pressed = false
-    this.processTapEvent(e)
+    this.processCursorEvent(e)
     this.trigger('mouseup', [this.tapState])
     this.trigger('tapup', [this.tapState])
   }
@@ -248,7 +274,7 @@ export default class Control extends EventEmitter {
       this.tapState.currentTouchId = touch.identifier
       // trigger event start
       e.preventDefault()
-      this.processTapEvent(touch)
+      this.processCursorEvent(touch)
       this.tapState.pressed = true
     }
     this.tapState.multitouch = e.touches.length > 1
@@ -270,7 +296,7 @@ export default class Control extends EventEmitter {
       const t = e.changedTouches[i]
       if (t.identifier === this.tapState.currentTouchId) {
         this.tapState.pressed = true
-        this.processTapEvent(t)
+        this.processCursorEvent(t)
         break
       }
     }
@@ -292,7 +318,7 @@ export default class Control extends EventEmitter {
         const t = e.changedTouches[i]
         if (t.identifier === this.tapState.currentTouchId) {
           this.tapState.currentTouchId = null
-          this.processTapEvent(t)
+          this.processCursorEvent(t)
           break
         }
       }
@@ -305,7 +331,7 @@ export default class Control extends EventEmitter {
         if (t.identifier !== prevId) {
           this.tapState.currentTouchId = t.identifier
           this.tapState.pressed = true
-          this.processTapEvent(t)
+          this.processCursorEvent(t)
           break
         }
       }
@@ -316,7 +342,7 @@ export default class Control extends EventEmitter {
       const t = e.touches[0]
       this.tapState.currentTouchId = t.identifier
       this.tapState.pressed = true
-      this.processTapEvent(t)
+      this.processCursorEvent(t)
     }
 
     if (!this.tapState.currentTouchId) {
@@ -344,6 +370,92 @@ export default class Control extends EventEmitter {
     for (let key in this.pressedKeys) {
       this.pressedKeys[key] = false
     }
+  }
+
+  // @TODO: Move the logic to Interaction Module
+  setupPan() {
+    // Set up
+    this.pan = {}
+
+    this.pan.value = {}
+    this.pan.value.x = 0
+    this.pan.value.y = 0
+
+    this.pan.target = {}
+    this.pan.target.x = 0
+    this.pan.target.y = 0
+
+    this.pan.mobileLimit = 0.5
+    this.pan.easing = 1
+    this.pan.amplitude = {}
+    this.pan.amplitude.x = 0.1
+    this.pan.amplitude.y = 0.1
+
+    this.pan.deviceOrientationCallback = (event) => {
+      let x = 0
+      let y = 0
+      const limit = this.pan.mobileLimit
+
+      switch (window.orientation) {
+        case 90:
+          x = event.beta * 0.04
+          y = -event.gamma * 0.02 - Math.PI * 0.5
+          break
+
+        case -90:
+          x = -event.beta * 0.04
+          y = event.gamma * 0.02 - Math.PI * 0.5
+          break
+
+        default:
+        case 0:
+          x = event.gamma * 0.03
+          y = event.beta * 0.02 - Math.PI * 0.5
+          break
+      }
+
+      // Limit X
+      if (x > limit) {
+        x = limit
+      } else if (x < -limit) {
+        x = -limit
+      }
+
+      // Limit Y
+      if (y > limit) {
+        y = limit
+      } else if (y < -limit) {
+        y = -limit
+      }
+
+      x *= this.pan.amplitude.x
+      y *= -this.pan.amplitude.y
+
+      this.pan.target.x = x
+      this.pan.target.y = y
+    }
+
+    window.addEventListener(
+      'deviceorientation',
+      this.pan.deviceOrientationCallback,
+      false
+    )
+  }
+
+  update(delta) {
+    this.updatePan(delta)
+  }
+
+  updatePan(delta) {
+    this.pan.target.x =
+      this.cursor.ratio.fromCenter.x * this.pan.amplitude.x
+    this.pan.target.y =
+      -this.cursor.ratio.fromCenter.y * this.pan.amplitude.y
+
+    this.pan.value.x +=
+      (this.pan.target.x - this.pan.value.x) * this.pan.easing * delta
+    this.pan.value.y +=
+      (this.pan.target.y - this.pan.value.y) * this.pan.easing * delta
   }
 
   destory() {

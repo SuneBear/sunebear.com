@@ -71,7 +71,7 @@ export default class EnviromentGrid extends Module {
       underPlayer.lake = null
 
       // check active environment...
-      matchAgainstEnvironment(envState, grid)
+      matchAgainstEnvironment(envState)
     }
 
     const matchAgainstEnvironment = (state) => {

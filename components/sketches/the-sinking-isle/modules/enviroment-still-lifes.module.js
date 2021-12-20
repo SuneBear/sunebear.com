@@ -18,7 +18,7 @@ export default class EnviromentStillLifes extends Module {
     super(sketch)
 
     const container = new THREE.Group()
-    container.name = 'stillLifes'
+    container.name = 'envStillLifes'
     this.scene.add(container)
 
     const frustum = this.camera.frustum

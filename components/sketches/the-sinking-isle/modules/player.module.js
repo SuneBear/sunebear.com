@@ -5,6 +5,7 @@ import { math } from '../engine/utils'
 import { CharacterPhysicsSpring } from './character/character-physics-spring'
 import { CharacterObject } from '../objects/character.object'
 import { convertToToonMaterial } from '../objects/mesh-toon.material'
+import { WaterBuoyancyAnimation } from '../objects/animations'
 import { RENDER_LAYERS } from '../utils/constants'
 
 // @TODO: Refactor playerMove, springEngine, moveTarget
@@ -32,12 +33,18 @@ export default class Player extends Module {
     this.instance.position.set(0, 0, 0)
     this.instance.rotation.y = Math.PI * 1.25
 
+    this.instanceWaterBuoyancyAnimation = new WaterBuoyancyAnimation({
+      object: this.instance
+    })
+
     this.scene.add(this.instance)
   }
 
   setupCharacter() {
     const model = this.asset.items.playerCharacterModel
     const scene = model.scene
+
+    scene.name = 'character'
 
     scene.position.x = -0.35
     scene.position.y = 0.6
@@ -173,17 +180,8 @@ export default class Player extends Module {
 
   update(delta, elapsed) {
     this.updateMoveTargetSystem(delta)
-    this.updateWaterBuoyancy(elapsed)
+    this.instanceWaterBuoyancyAnimation.update(delta)
     this.boatMixer.update(delta)
-  }
-
-  updateWaterBuoyancy(time) {
-    const obj = this.instance
-    obj.position.y = obj.position.y + Math.cos(time) * 0.002
-
-    // Rotate object slightly
-    obj.rotation.x = obj.rotation.x + Math.cos(time * 0.5) * 0.001
-    obj.rotation.z = obj.rotation.z + Math.sin(time * 0.5) * 0.0001
   }
 
   updateMoveTargetSystem(delta) {
@@ -216,7 +214,7 @@ export default class Player extends Module {
       if (this.moveDirectionAngle === null)
         this.moveDirectionAngle = this.mouseDirectionAngle
     }
-    if (this.moveDirectionAngle !== null && this.mouseDirectionAngle !== null) {
+    if (this.control.isPressed('tap') && this.moveDirectionAngle !== null && this.mouseDirectionAngle !== null) {
       this.moveDirectionAngle = math.dampAngle(
         this.moveDirectionAngle,
         this.mouseDirectionAngle,
