@@ -284,6 +284,7 @@ export default class Enviroment extends Module {
 
     // Setup post processing stage
     const mainTarget = this.renderer.module.postProcess.composer.renderTarget1
+    const postSceneScale = 1
     const postCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1)
     const postMaterial = new THREE.ShaderMaterial({
       vertexShader,
@@ -294,7 +295,7 @@ export default class Enviroment extends Module {
         time: { value: 0 }
       }
     })
-    const postPlane = new THREE.PlaneBufferGeometry(2, 2)
+    const postPlane = new THREE.PlaneBufferGeometry(2 * postSceneScale, 2 * postSceneScale)
     const postQuad = new THREE.Mesh(postPlane, postMaterial)
     const postScene = new THREE.Scene()
     postScene.add(postQuad)

@@ -10,9 +10,21 @@ uniform bool silhouette;
 uniform vec3 tintColor;
 uniform vec3 shadowColor;
 
+vec3 linearToneMapping(vec3 color, float exposure)
+{
+  color *= exposure;
+  return color;
+}
+
 void main () {
   gl_FragColor = texture2D(map, vUv);
+
   gl_FragColor.rgb *= tintColor;
+
+  #if defined(TONE_MAPPING)
+    gl_FragColor.rgb = linearToneMapping(gl_FragColor.rgb, toneMappingExposure / 4.5);
+  #endif
+
   float alphaMap = gl_FragColor.a;
   if (alphaMap < 0.5) discard;
 

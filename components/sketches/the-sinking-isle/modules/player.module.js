@@ -55,7 +55,7 @@ export default class Player extends Module {
     scene.traverse(obj => {
       if (obj.material) {
         convertToToonMaterial(obj, {
-          emissive: 0x000000,
+          emissive: 0x404040,
           emissiveIntensity: 0.1,
           outlineColor: 0x010101,
           outlineThickness: 0.002
@@ -90,8 +90,8 @@ export default class Player extends Module {
       if (obj.name.includes('paddle')) {
         convertToToonMaterial(obj, {
           displacementScale: 20,
-          color: 0xa70505,
-          emissive: 0xa70505,
+          color: 0x870606,
+          emissive: 0x870606,
           emissiveIntensity: 0.2,
           outlineThickness: 0.001
         })
@@ -101,9 +101,9 @@ export default class Player extends Module {
           displacementScale: 0.4,
           bumpScale: 1,
           outlineThickness: 0.003,
-          outlineAlpha: 0.01
+          outlineAlpha: 0.01,
+          transparent: true
         })
-        obj.material.transparent = true
       }
     })
 

@@ -169,8 +169,8 @@ export default class Renderer extends Module {
      * Effect composer
      */
     const RenderTargetClass = THREE.WebGLMultisampleRenderTarget
-      ? THREE.WebGLRenderTarget
-      : THREE.WebGLMultisampleRenderTarget
+      ? THREE.WebGLMultisampleRenderTarget
+      : THREE.WebGLRenderTarget
 
     this.renderTarget = new RenderTargetClass(
       this.sizes.width,
@@ -324,6 +324,9 @@ export default class Renderer extends Module {
     // Instance
     this.instance.setSize(width, height)
     this.instance.setPixelRatio(pixelRatio)
+
+    // Render Target
+    this.outlineRenderTarget.setSize(width, height)
 
     // Post process
     const { fxaaPass, finalUniforms, composer } = this.postProcess

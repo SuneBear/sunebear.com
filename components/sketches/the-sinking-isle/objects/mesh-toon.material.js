@@ -25,9 +25,13 @@ export function createCustomToonMaterial({ uniforms }) {
 export function convertToToonMaterial(obj, params = {}) {
   const originMaterial = obj.material
 
+  if (originMaterial instanceof THREE.MeshToonMaterial) {
+    return originMaterial
+  }
+
   // @TIPS: Valid black color is 0x010101
   const outlineColor = (params.outlineColor || params.color) ? new THREE.Color(params.outlineColor || params.color) : originMaterial.color.clone()
-  const outlineColorOffset = params.outlineColorOffset !== undefined ? params.outlineColorOffset : -0.2
+  const outlineColorOffset = params.outlineColorOffset !== undefined ? params.outlineColorOffset : -0.5
   const outlineParameters = {
     thickness: typeof params.outlineThickness !== 'undefined' ? params.outlineThickness : 0.0025,
     color: outlineColor.offsetHSL(0, 0, params.outlineColor ? 0 : outlineColorOffset).toArray(),
@@ -43,7 +47,8 @@ export function convertToToonMaterial(obj, params = {}) {
     displacementScale: 0,
     bumpMap,
     bumpScale: 0,
-    map: originMaterial.map,
+    // gradientMap: asset.items.threeToneTexture,
+    map: originMaterial.map || originMaterial.emissiveMap,
     color: originMaterial.color,
     emissive: params.emissive !== undefined ? params.emissive : originMaterial.color,
     emissiveIntensity: 0.2,

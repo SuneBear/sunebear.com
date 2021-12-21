@@ -215,6 +215,10 @@ export default class CameraModule extends Module {
     if (!isNaN(panX)) {
       this.panOffset.x = -panX * instensity
       this.panOffset.z = -panY * instensity * 1.2
+      this.$vm.panOffset = {
+        x: this.panOffset.x,
+        z: this.panOffset.z
+      }
     }
   }
 

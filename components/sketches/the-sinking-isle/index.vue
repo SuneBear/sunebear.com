@@ -48,6 +48,10 @@ export default {
       enableUserInput: true,
       enablePlayerDrift: false,
       cameraTarget: 'player',
+      panOffset: {
+        x: 0,
+        y: 0
+      },
 
       // Persistent
       cachedContext: {

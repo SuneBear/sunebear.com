@@ -29,6 +29,7 @@
         )
   .menu-modal.d-flex.align-center.justify-center
     .modal-dialog-box
+
       transition( name="el-fade-in" )
         .menu-tab.tab-main( v-if="currentTabId === 'main'" )
           .tab-title {{ currentTab.name }}
@@ -62,6 +63,7 @@
                   amplitudeX="10%"
                   :amplitudeY="30"
                 )
+
       transition( name="el-fade-in" )
         .menu-tab.tab-story( v-if="currentTabId === 'story'" )
           //- .tab-title {{ currentTab.name }}

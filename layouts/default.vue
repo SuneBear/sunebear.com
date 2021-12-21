@@ -3,10 +3,12 @@
   v-resize:throttle.initial="handleResize"
 )
   cear-photo-frame.global-frame(
+    id="global-frame"
     :distortedBorderSpeed="3"
     :distortedFrequencyAmount="0.6"
     :isShowStaticFrame="isShowStaticFrame"
   )
+    //- @TODO: Move header to layout, define the transition property on each page to support leave effect
     transition( :duration="pageTransitionDuration" )
       nuxt(
         ref="pageWrapper"

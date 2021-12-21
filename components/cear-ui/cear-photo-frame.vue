@@ -2,7 +2,7 @@
 .cear-photo-frame(
   :class="rootClass"
 )
-  // @FIXME: Improve Safari perf
+  //- @FIXME: Improve Safari perf
   svg.svg-defs-wrapper
     defs
       filter(
@@ -60,6 +60,10 @@ import anime from 'animejs'
 export default {
 
   props: {
+    id: {
+      type: String
+    },
+
     strokeWidth: {
       type: String,
       default: '12px'
@@ -136,7 +140,7 @@ export default {
   },
 
   created() {
-    this.cachedUid = this._uid || 0
+    this.cachedUid = this.id || this._uid || 0
   },
 
   mounted() {

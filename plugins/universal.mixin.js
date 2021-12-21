@@ -3,8 +3,7 @@ import { isSafari } from '~/utils/env'
 
 const NAVBAR_OFFSET = 70
 
-const pageMixin = {
-
+const componentMixin = {
   data() {
     return {
       paperName: 'solar-dotted',
@@ -12,6 +11,11 @@ const pageMixin = {
       isShowHeader: true,
       isShowFooter: true
     }
+  },
+
+  transition: {
+    // name: "el-fade-in",
+    // duration: 1000
   },
 
   beforeRouteEnter(to, from, next) {
@@ -76,4 +80,4 @@ const pageMixin = {
 
 }
 
-Vue.mixin(pageMixin)
+Vue.mixin(componentMixin)

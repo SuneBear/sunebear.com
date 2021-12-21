@@ -16,6 +16,11 @@ const LINEAR_TEXTURE_OPTIONS = {
   magFilter: THREE.LinearFilter
 }
 
+const NEAREST_TEXTURE_OPTIONS = {
+  minFilter: THREE.NearestFilter,
+  magFilter: THREE.NearestFilter
+}
+
 const TRACE_AUDIO_OPTIONS = {
   lock: true,
   fadeIn: 1,
@@ -47,6 +52,10 @@ export default [
       {
         name: 'boidFishModel',
         source: require('./gltfs/boid-fish.glb').default
+      },
+      {
+        name: 'buildingSuneBearHomeModel',
+        source: require('./gltfs/building-sunebear-home.glb').default
       },
       {
         name: 'playerCharacterModel',
@@ -93,6 +102,18 @@ export default [
         source: require('@/assets/cear-ui/mask-grain-noise.png'),
         type: 'texture',
         options: REPEAT_TEXTURE_OPTIONS
+      },
+      {
+        name: 'fiveToneTexture',
+        source: require('./textures/five-tone.jpg'),
+        type: 'texture',
+        options: NEAREST_TEXTURE_OPTIONS
+      },
+      {
+        name: 'threeToneTexture',
+        source: require('./textures/three-tone.jpg'),
+        type: 'texture',
+        options: NEAREST_TEXTURE_OPTIONS
       },
       {
         name: 'lutTexture',

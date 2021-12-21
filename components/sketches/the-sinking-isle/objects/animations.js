@@ -1,10 +1,12 @@
+import { random } from '../engine/utils'
+
 // The object animations are different with Three.js AnimationMixer
 // They can integrare with engine control, dynamicly update animation params
 
 class ObjectAnimation {
 
   constructor() {
-    this.elapsed = 0
+    this.elapsed = random.range(0, Math.PI)
     this.isPlaying = true
   }
 
