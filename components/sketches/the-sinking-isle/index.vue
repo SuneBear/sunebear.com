@@ -38,27 +38,36 @@ export default {
     return {
       isNeedLoading: !__DEBUG__,
 
-      // Context States & Data
+      /*==== Context States & Data ====*/
+      // System States
       isLoading: true,
       loadProgress: 0,
       isInited: __DEBUG__,
       isError: false,
       isPlaying: true,
+
+      // UI
       isShowMainMenu: !__DEBUG__,
-      enableUserInput: true,
-      enablePlayerDrift: false,
-      cameraTarget: 'player',
+      isSwitchingScene: false,
+      isPlayingCutscene: false,
       panOffset: {
         x: 0,
         y: 0
       },
 
-      // Persistent
-      cachedContext: {
-        hasFinishedOnboard: false,
-        isMuteAudio: false
-      },
+      // Runtime
+      isForcePushingPlayer: false,
+      enablePlayerDrift: false,
+      cameraTarget: 'player',
 
+      /*==== Persistent Context States & Data ====*/
+      cachedContext: {
+        // Settings
+        isMuteAudio: false,
+
+        // Runtime
+        hasFinishedOnboard: false
+      },
       storyRoles: [],
       storyMessages: []
     }
@@ -69,12 +78,25 @@ export default {
       return __DEBUG__ || this.$route.query.debug
     },
 
-    enableUserMove() {
-      return this.enableUserInput
+    enableUserInput() {
+      return (
+        !this.isPlayingCutscene &&
+        !this.isSwitchingScene &&
+        !this.isShowMainMenu
+      )
+    },
+
+    enableUserMoveInput() {
+      return (
+        this.enableUserInput &&
+        !this.isForcePushingPlayer
+      )
     },
 
     isShowPanel() {
-      return false
+      return (
+        this.isShowMainMenu
+      )
     }
   },
 
@@ -106,7 +128,7 @@ export default {
     if (!this.sketch) {
       this.initSketch()
     } else {
-      this.sketch.resize()
+      this.sketch.sizes.resize()
     }
 
     if (!this.isLoading) {

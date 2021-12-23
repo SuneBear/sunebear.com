@@ -38,8 +38,8 @@ export default class Sizes extends EventEmitter {
     const container = this.options.container || document.body
 
     container.appendChild(this.$sizeViewport)
-    this.viewport.width = this.$sizeViewport.offsetWidth
-    this.viewport.height = this.$sizeViewport.offsetHeight
+    this.viewport.width = this.$sizeViewport.offsetWidth || window.innerWidth
+    this.viewport.height = this.$sizeViewport.offsetHeight || window.innerHeight
     container.removeChild(this.$sizeViewport)
 
     this.width = this.viewport.width

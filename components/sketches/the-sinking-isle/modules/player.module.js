@@ -185,10 +185,6 @@ export default class Player extends Module {
   }
 
   updateMoveTargetSystem(delta) {
-    if (!this.$vm.enableUserMove) {
-      return
-    }
-
     const userTargetPos = this.targetPos
     let speedMultiplier = 1
 
@@ -221,11 +217,13 @@ export default class Player extends Module {
         7,
         delta
       )
-      this.moveDirection.set(
-        Math.cos(this.moveDirectionAngle),
-        0,
-        Math.sin(this.moveDirectionAngle)
-      )
+      if (this.$vm.enableUserMoveInput) {
+        this.moveDirection.set(
+          Math.cos(this.moveDirectionAngle),
+          0,
+          Math.sin(this.moveDirectionAngle)
+        )
+      }
     }
 
     // Compute speed & boost
@@ -257,7 +255,9 @@ export default class Player extends Module {
       delta * totalSpeed * this.speedFactor +
       totalBoost * this.boostFactor * delta
 
-    userTargetPos.addScaledVector(this.moveDirection, directionIncrease)
+    if (this.$vm.enableUserMoveInput) {
+      userTargetPos.addScaledVector(this.moveDirection, directionIncrease)
+    }
 
     // Drift
     const drift = this.$vm.enablePlayerDrift
@@ -388,7 +388,7 @@ export default class Player extends Module {
       spring.moveToTarget = false
     }
 
-    if (!this.control.isPressed('tap')) {
+    if (!this.control.isPressed('tap') || !this.$vm.enableUserMoveInput) {
       spring.moveToTarget = false
     }
 
