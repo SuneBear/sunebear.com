@@ -10,6 +10,11 @@ const REPEAT_TEXTURE_OPTIONS = {
   wrapS: THREE.RepeatWrapping,
   wrapT: THREE.RepeatWrapping
 }
+const REPEAT_NO_MIPMAPS_TEXTURE_OPTIONS = {
+  ...REPEAT_TEXTURE_OPTIONS,
+  minFilter: THREE.LinearFilter,
+  generateMipmaps: false
+}
 
 const LINEAR_TEXTURE_OPTIONS = {
   minFilter: THREE.LinearFilter,
@@ -125,6 +130,12 @@ export default [
         name: 'testTexture',
         source: require('./textures/test.png'),
         type: 'texture'
+      },
+      {
+        name: 'spriteMaskTexture',
+        source: require('./textures/masks/f.png'),
+        type: 'texture',
+        options: REPEAT_NO_MIPMAPS_TEXTURE_OPTIONS
       },
       {
         name: 'octopusBaseTexture',

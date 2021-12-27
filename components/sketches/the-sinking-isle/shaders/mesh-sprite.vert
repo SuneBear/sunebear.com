@@ -13,6 +13,8 @@ varying vec3 vWorldPosition;
 
 #define PI 3.1415926538
 
+#pragma glslify: noise = require('glsl-noise/classic/3d');
+
 void main () {
   vUv = uv;
   vUv *= repeat;
@@ -29,6 +31,8 @@ void main () {
   vec2 vDataScreen = vDataUvPos4.xy / vDataUvPos4.w;
   vec2 vDataUv = vDataScreen.xy * 0.5 + 0.5;
   vec3 dCol = texture2D(envTraceMap, vDataUv).rgb;
+  // Mock Idle Effect
+  dCol += vec3(0.7);
   vec3 offsetPos = position.xyz;
   vec3 vertexWorldPos = centerWorldPos
     + camRightWorld * offsetPos.x * scale.x
@@ -47,6 +51,9 @@ void main () {
     vertexWorldPos.xyz -= camRightWorld * realVertexWorldPos.y * 0.5;
     vertexWorldPos.z += -0.15;
   }
+
+  // Fake Doddle Effect
+  // vertexWorldPos.x += noise(vec3(vertexWorldPos.xy, sin(time * 5.0))) * 0.02;
 
   vWorldPosition = vertexWorldPos;
   gl_Position = projectionMatrix * viewMatrix * vec4(vertexWorldPos, 1.0);

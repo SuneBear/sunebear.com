@@ -149,11 +149,12 @@ export default class EnviromentStillLifes extends Module {
         obj.visible = visible
 
         if (d.type !== 'token' && d.type !== 'patch') {
-          const t = d.sizeFactor // Math.sin(time) * 0.5 + 0.5;
+          const t = d.sizeFactor
           const instance = d.instance
+          // const t = Math.sin(instance.material.uniforms.time.value) * 0.5 + 0.5
           if (instance && instance.material) {
             if (instance.material.uniforms.spin) {
-              instance.material.uniforms.spin.value = 1 - t
+              instance.material.uniforms.spin.value = t
             }
             if (instance.material.uniforms.time) {
               instance.material.uniforms.time.value += dt
@@ -226,11 +227,11 @@ export default class EnviromentStillLifes extends Module {
     const delayOff = math.clamp01(
       tmp2D.set(d.x, d.z).length() / 50
     )
-    const delay = delayOff * 1 + this.random.range(0, 0.5)
+    const delay = delayOff * 1 + this.random.range(0, 1)
     this.tween.add({
       target: d,
       sizeFactor: [0, 1],
-      duration: 2,
+      duration: 3,
       delay
     })
   }

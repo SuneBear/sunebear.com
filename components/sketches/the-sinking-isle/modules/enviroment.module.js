@@ -262,7 +262,8 @@ export default class Enviroment extends Module {
     this.octopus.material = new THREE.MeshPhysicalMaterial({
       map: this.asset.items.octopusBaseTexture,
       transmission: 1,
-      metalness: 0.2,
+      roughness: 0.5,
+      metalness: 0.1,
       color: new THREE.Color(0xffffff),
       transparent: true
     })
@@ -272,7 +273,7 @@ export default class Enviroment extends Module {
   }
 
   setupPostUnderWaterDistort() {
-    const maskTarget = new THREE.WebGLRenderTarget(
+    const maskTarget = new THREE.WebGLMultisampleRenderTarget(
       this.sizes.width,
       this.sizes.height
     )
@@ -342,14 +343,17 @@ export default class Enviroment extends Module {
 
   updatePostUnderWaterDistort(delta) {
     this.postMaterial.uniforms.time.value += delta
+    const currentSceneBackground = this.scene.background
 
     // @FIXME: Remove the aliasing effect over water
     // @TODO: Move the post logic to renderer module
+    this.scene.background = null
     this.lakeGroup.children.map(lake => (lake.uniforms.isMask.value = true))
     this.renderer.clear()
     this.renderer.setRenderTarget(this.maskTarget)
     this.renderer.render(this.scene, this.camera)
     this.renderer.setRenderTarget(null)
+    this.scene.background = currentSceneBackground
     this.lakeGroup.children.map(lake => (lake.uniforms.isMask.value = false))
     this.renderer.module.render()
     if (this.renderer.module.usePostprocess) {

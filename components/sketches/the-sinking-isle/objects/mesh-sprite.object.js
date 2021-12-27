@@ -2,6 +2,8 @@ import * as THREE from 'three'
 
 import vertexShader from '../shaders/mesh-sprite.vert'
 import fragmentShader from '../shaders/mesh-sprite.frag'
+import { asset } from '../engine/asset'
+import { random } from '../engine/utils'
 
 const planeGeo = new THREE.PlaneGeometry(1, 1, 1, 1)
 planeGeo.translate(0, 0.5, 0)
@@ -20,6 +22,8 @@ function createSpriteMaterial(uniforms) {
     uniforms: {
       shadowColor: { value: new THREE.Color('#280422') },
       map: { value: null },
+      maskMap: { value: asset.items.spriteMaskTexture },
+      randomOffset: { value: random.value() },
       flip: { value: 1 },
       silhouette: { value: false, type: 'b' },
       useMapDiscard: { value: false, type: 'b' },
