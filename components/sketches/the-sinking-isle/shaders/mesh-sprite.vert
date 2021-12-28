@@ -39,7 +39,7 @@ void main () {
     + camUpWorld * offsetPos.y * scale.y;
   vec3 realVertexWorldPos = vertexWorldPos;
   vec3 vertexWorldBasePos = centerWorldPos;
-  vec2 curDirection2D = vec2(dCol.gb) * 2.0 - 1.0;
+  vec2 curDirection2D = vec2(dCol.gb) * 2.0 - 2.4;
   vec3 curDirection = vec3(curDirection2D.x, 0.0, curDirection2D.y);
   float gradientY = clamp(vertexWorldPos.y / 0.25, 0.0, 1.0);
   vertexWorldPos += 0.05 * position.y * spriteHeight * camRightWorld * sin(time*7.0) * curDirection * pow(dCol.r, 2.0) * 2.0 * gradientY;

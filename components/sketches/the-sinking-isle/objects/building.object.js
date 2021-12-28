@@ -9,6 +9,7 @@ export class BuildingGroupObject extends THREE.Group {
     super()
 
     this.options = {
+      materialOptions: {},
       materialOptionsMap: {},
       ...options
     }
@@ -38,6 +39,7 @@ export class BuildingGroupObject extends THREE.Group {
           // normalMap: asset.items.floorOverlayTexture,
           // normalScale: new THREE.Vector2(0.1, 0.1),
           transparent: false,
+          ...this.options.materialOptions,
           ...materialOptions
         })
         onModelSetup && onModelSetup(obj)

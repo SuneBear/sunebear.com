@@ -3,7 +3,7 @@ uniform sampler2D colorMap;
 uniform sampler2D maskMap;
 uniform float time;
 
-#define distortScale 0.003
+#define distortScale 0.009
 
 void main() {
   vec2 pos = vUv;

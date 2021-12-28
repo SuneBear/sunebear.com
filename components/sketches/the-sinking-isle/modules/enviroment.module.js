@@ -183,7 +183,7 @@ export default class Enviroment extends Module {
     const terrainModel = this.asset.items.envTerrainModel?.scene
 
     this.terrain = new EnvTerrainPlaneObject({
-      terrainGeo: terrainModel.children[0].geometry,
+      terrainGeo: terrainModel?.children[0].geometry,
       hasIce: this.lakeGeo.hasIce,
       planeScale: 1.2,
       planeSize: this.config.worldSize,

@@ -46,7 +46,7 @@ export default class Player extends Module {
 
     scene.name = 'character'
 
-    scene.position.x = -0.35
+    scene.position.x = 0.1
     scene.position.y = 0.6
     scene.rotation.y = Math.PI / 2
     scene.scale.multiplyScalar(0.58)

@@ -51,12 +51,12 @@ export default [
       },
       { name: 'testModel', source: require('./gltfs/test.glb').default },
       {
-        name: 'envTerrainModel',
-        source: require('./gltfs/env-terrain.glb').default
-      },
-      {
         name: 'boidFishModel',
         source: require('./gltfs/boid-fish.glb').default
+      },
+      {
+        name: 'buildingSnowfallSpaceModel',
+        source: require('./gltfs/building-snowfall-space.glb').default
       },
       {
         name: 'buildingSuneBearHomeModel',
