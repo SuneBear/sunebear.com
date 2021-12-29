@@ -40,7 +40,7 @@ export const generateStillLifeItemsMap = module => {
     const threeSpritesheets = parseSpritesheets({
       sheets: [
         assetItems.stillWaterItemsSpritesheet,
-        assetItems.stillGroundItemsSpritesheet
+        // assetItems.stillGroundItemsSpritesheet
       ],
       renderer
     })

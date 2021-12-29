@@ -82,12 +82,12 @@ export default [
         type: 'spritesheet',
         options: require('./spritesheets/butterfly.json')
       },
-      {
-        name: 'stillGroundItemsSpritesheet',
-        source: require('./spritesheets/still-ground-items.png'),
-        type: 'spritesheet',
-        options: require('./spritesheets/still-ground-items.json')
-      },
+      // {
+      //   name: 'stillGroundItemsSpritesheet',
+      //   source: require('./spritesheets/still-ground-items.png'),
+      //   type: 'spritesheet',
+      //   options: require('./spritesheets/still-ground-items.json')
+      // },
       {
         name: 'stillWaterItemsSpritesheet',
         source: require('./spritesheets/still-water-items.png'),
@@ -137,33 +137,33 @@ export default [
         type: 'texture',
         options: REPEAT_NO_MIPMAPS_TEXTURE_OPTIONS
       },
-      {
-        name: 'octopusBaseTexture',
-        source: require('./textures/octopus-base.png'),
-        type: 'texture'
-      },
+      // {
+      //   name: 'octopusBaseTexture',
+      //   source: require('./textures/octopus-base.png'),
+      //   type: 'texture'
+      // },
       {
         name: 'softCircleTexture',
         source: require('./textures/soft-circle.png'),
         type: 'texture'
       },
-      {
-        name: 'terrainHightmapTexture',
-        source: require('./textures/terrain-hightmap.png'),
-        type: 'texture'
-      },
-      {
-        name: 'floorTexture',
-        source: require('./textures/floor.jpg'),
-        type: 'texture',
-        options: REPEAT_TEXTURE_OPTIONS
-      },
-      {
-        name: 'floorPathTexture',
-        source: require('./textures/floor-path.jpg'),
-        type: 'texture',
-        options: REPEAT_TEXTURE_OPTIONS
-      },
+      // {
+      //   name: 'terrainHightmapTexture',
+      //   source: r equire('./textures/terrain-hightmap.png'),
+      //   type: 'texture'
+      // },
+      // {
+      //   name: 'floorTexture',
+      //   source: require('./textures/floor.jpg'),
+      //   type: 'texture',
+      //   options: REPEAT_TEXTURE_OPTIONS
+      // },
+      // {
+      //   name: 'floorPathTexture',
+      //   source: require('./textures/floor-path.jpg'),
+      //   type: 'texture',
+      //   options: REPEAT_TEXTURE_OPTIONS
+      // },
       {
         name: 'floorOverlayTexture',
         source: require('./textures/floor-overlay.jpg'),

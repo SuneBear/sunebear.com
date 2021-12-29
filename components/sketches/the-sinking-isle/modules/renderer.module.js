@@ -38,7 +38,7 @@ export default class Renderer extends Module {
     this.resize()
     if (!this.debug) {
       // @TODO: Optimize loading->scene transition
-      this.setFadeInTransition({ delay: 0.1 })
+      this.setFadeInTransition({ duration: 0.1, delay: 0 })
     }
   }
 

@@ -242,7 +242,7 @@ export default {
     &.fade-out
       will-change: transform, opacity
       opacity: 0
-      transform: scale(1.5)
+      transform: scale(1)
 
   .dom-wrapper
     z-index: $zIndexSketchUI

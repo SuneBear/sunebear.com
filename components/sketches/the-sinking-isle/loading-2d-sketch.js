@@ -157,7 +157,10 @@ class LoadingSketch {
     // context.arc(0, 0, maskRadius, 0, 2 * Math.PI)
     context.clip()
     context.beginPath()
-    context.fillStyle = '#808080'
+    const fillGradient = context.createLinearGradient(0, -maskRadius, maskRadius / 2, maskRadius)
+    fillGradient.addColorStop(0, '#3e61a2')
+    fillGradient.addColorStop(1, '#2c9cd6')
+    context.fillStyle = fillGradient
     context.arc(0, 0, maskRadius, 0, 2 * Math.PI)
     context.fill()
     context.restore()
@@ -241,7 +244,7 @@ class LoadingSketch {
   async fadeout() {
     await sleep(200)
     this.$canvas.classList.add('fade-out')
-    await sleep(1000)
+    await sleep(0)
   }
 
   async destory() {
@@ -250,7 +253,9 @@ class LoadingSketch {
     }
     this.stop()
     window.removeEventListener('resize', this.resize)
-    this.$container?.removeChild(this.$canvas)
+    setTimeout(() => {
+      this.$container?.removeChild(this.$canvas)
+    }, 1000)
   }
 
 }
