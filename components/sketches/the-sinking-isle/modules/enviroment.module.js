@@ -24,11 +24,12 @@ export default class Enviroment extends Module {
     super(sketch)
 
     this.setupScene()
-    this.setupInfo()
+    this.setupEnvState()
     this.setupGrid()
     this.setupLake()
     this.setupSamples()
     this.setupTerrain()
+    this.setupReceiveShadowPlane()
     this.setupNoiseMask()
     // this.setupOctopus()
     this.setupPostUnderWaterDistort()
@@ -43,15 +44,30 @@ export default class Enviroment extends Module {
     ambientLight.layers.enable(RENDER_LAYERS.OUTLINE)
     // ambientLight.layers.enable(RENDER_LAYERS.BLOOM)
     this.scene.add(ambientLight)
+    this.ambientLight = ambientLight
 
     const directionLight = new THREE.DirectionalLight(0xffffff)
-    directionLight.position.set(0.5, 0, 0.866) // ~60º
+    directionLight.castShadow = true
+    directionLight.shadow.mapSize.width = 512
+    directionLight.shadow.mapSize.height = 512
+    directionLight.shadow.camera.near = 1
+    directionLight.shadow.camera.far = 2500
+    directionLight.shadow.bias = 0.0001
+    const side = 15
+    directionLight.shadow.camera.top = side
+    directionLight.shadow.camera.bottom = -side
+    directionLight.shadow.camera.left = side
+    directionLight.shadow.camera.right = -side
+    directionLight.position.set(10, 1500, 1500)
     directionLight.layers.enable(RENDER_LAYERS.OUTLINE)
+    const helper = new THREE.CameraHelper(directionLight.shadow.camera)
+    // this.scene.add(helper)
     // directionLight.layers.enable(RENDER_LAYERS.BLOOM)
     this.scene.add(directionLight)
+    this.directionLight = directionLight
   }
 
-  setupInfo() {
+  setupEnvState() {
     const { worldSize } = this.config
     const width = worldSize
     const height = worldSize
@@ -222,6 +238,27 @@ export default class Enviroment extends Module {
     this.terrainDepth.position.y = -10
     this.terrainDepth.name = 'groundDepth'
     this.scene.add(this.terrainDepth)
+  }
+
+  setupReceiveShadowPlane() {
+    const size = this.config.worldSize * 2
+
+    const geometry = new THREE.PlaneGeometry(size, size, 1, 1)
+    geometry.rotateX(-Math.PI / 2)
+
+    const material = new THREE.ShadowMaterial({
+      opacity: 0.12
+    })
+
+    this.receiveShadowPlane = new THREE.Mesh(
+      geometry,
+      material
+    )
+    this.receiveShadowPlane.receiveShadow = true
+    this.receiveShadowPlane.name = 'receiveShadowPlane'
+    this.receiveShadowPlane.position.y = -2
+
+    this.scene.add(this.receiveShadowPlane)
   }
 
   setupNoiseMask() {

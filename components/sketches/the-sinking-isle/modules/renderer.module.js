@@ -83,7 +83,7 @@ export default class Renderer extends Module {
     this.instance.outputEncoding = THREE.sRGBEncoding
     this.instance.shadowMap.type = THREE.PCFSoftShadowMap
     this.instance.shadowMap.enabled = true
-    this.instance.shadowMap.autoUpdate = false
+    // this.instance.shadowMap.autoUpdate = false
     this.instance.shadowMap.needsUpdate = this.instance.shadowMap.enabled
     this.instance.toneMapping = THREE.ReinhardToneMapping // THREE.LinearToneMapping
     this.instance.toneMappingExposure = 4.5
@@ -172,7 +172,7 @@ export default class Renderer extends Module {
       ? THREE.WebGLMultisampleRenderTarget
       : THREE.WebGLRenderTarget
 
-    this.renderTarget = new RenderTargetClass(
+    this.spriteShadowRenderTarget = new RenderTargetClass(
       this.sizes.width,
       this.sizes.height,
       {
@@ -208,7 +208,7 @@ export default class Renderer extends Module {
         value: this.postProcess.bloomComposer.renderTarget2.texture
       },
       shadowMap: {
-        value: this.renderTarget.texture
+        value: this.spriteShadowRenderTarget.texture
       },
       outlineMap: {
         value: this.outlineRenderTarget.texture
@@ -383,7 +383,7 @@ export default class Renderer extends Module {
       }
     })
 
-    this.instance.setRenderTarget(this.renderTarget)
+    this.instance.setRenderTarget(this.spriteShadowRenderTarget)
     this.instance.render(this.scene, this.camera)
     this.instance.setRenderTarget(null)
 
@@ -468,7 +468,7 @@ export default class Renderer extends Module {
   destroy() {
     this.instance.renderLists.dispose()
     this.instance.dispose()
-    this.renderTarget.dispose()
+    this.spriteShadowRenderTarget.dispose()
     this.postProcess.composer.renderTarget1.dispose()
     this.postProcess.composer.renderTarget2.dispose()
   }

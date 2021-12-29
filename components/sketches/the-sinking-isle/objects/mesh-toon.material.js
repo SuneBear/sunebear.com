@@ -24,6 +24,10 @@ export function createCustomToonMaterial({ uniforms }) {
 
 export function convertToToonMaterial(obj, params = {}) {
   const originMaterial = obj.material
+  const defaultParams = {
+    castShadow: true
+  }
+  params = Object.assign({}, defaultParams, params)
 
   if (originMaterial instanceof THREE.MeshToonMaterial) {
     return originMaterial
@@ -41,6 +45,10 @@ export function convertToToonMaterial(obj, params = {}) {
   // const bumpMap = asset.items.grainNoiseTexture.clone()
   // bumpMap.needsUpdate = true
   const bumpMap = asset.items.grainNoiseTexture
+
+  if (params.castShadow) {
+    obj.castShadow = true
+  }
 
   obj.material = new THREE.MeshToonMaterial({
     displacementMap: asset.items.grainNoiseTexture,

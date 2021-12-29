@@ -37,6 +37,8 @@ export default class Player extends Module {
       object: this.instance
     })
 
+    this.enviroment.directionLight.target = this.instance
+
     this.scene.add(this.instance)
   }
 

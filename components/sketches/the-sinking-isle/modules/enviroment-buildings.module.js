@@ -50,6 +50,9 @@ export default class EnviromentBuildings extends Module {
         emissiveIntensity: 0
       },
       materialOptionsMap: {
+        'base': {
+          outlineThickness: 0.0001,
+        },
         'grass-left': {
           outlineThickness: 0.002,
           outlineColor: 0x101010
@@ -79,11 +82,19 @@ export default class EnviromentBuildings extends Module {
         if (obj.name.includes('Zai2_Details')) {
           obj.material.userData.outlineParameters.thickness = 0
         }
+
+        if (obj.name.includes('Base_0')) {
+          obj.castShadow = true
+        }
       },
       materialOptions: {
+        castShadow: false,
         emissiveIntensity: 0
       },
       materialOptionsMap: {
+        'Ground_L_Base_0': {
+          castShadow: true
+        }
       },
       portalPosition: new THREE.Vector3(),
       onPortalOpened: () => {}

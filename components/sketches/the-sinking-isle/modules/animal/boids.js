@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import * as SkeletonUtils from 'three/examples/jsm/utils/SkeletonUtils'
 import { math } from '../../engine/utils'
+import { ShadowSprite } from '../../objects/sprite.object'
 
 // @REF: https://github.com/dtcan/boids
 export const boidsParams = {
@@ -188,7 +189,16 @@ export class BoidsManager {
       }
       for (let i = 0; i < params.scale.spawn.count; i++) {
         const body = SkeletonUtils.clone(boidModel.scene)
+        const bodyRoot = body.getObjectByName('Root')
         const maneuverPercent = random.value()
+
+        // Set Shadow
+        // @TODO: Polish ShadowSprite or replace with castShadow: true
+        const shadow = new ShadowSprite()
+        shadow.scale.set(1, 1, 1).multiplyScalar(0.5)
+        shadow.position.x = 0.05
+        shadow.position.z = -0.3
+        // bodyRoot.add(shadow)
 
         // Animation
         const mixer = new THREE.AnimationMixer(body)
@@ -198,6 +208,7 @@ export class BoidsManager {
         mixers.push(mixer)
 
         let boid = {
+          shadow,
           body: body || new THREE.Mesh(
             geom,
             mat[0]
@@ -358,6 +369,10 @@ export class BoidsManager {
         boid.body.rotation.z = math.clamp(boid.body.rotation.z, -flipLimit, flipLimit)
         // Direction
         boid.body.rotation.y = Math.PI / 2 - Math.atan2(boid.velocity.z, boid.velocity.x)
+
+        boid.shadow.rotation.y = -boid.body.rotation.y
+        boid.shadow.rotation.x = -boid.body.rotation.x
+        boid.shadow.rotation.z = boid.body.rotation.z
 
         // Move
         boid.body.position.addScaledVector(boid.velocity, delta)

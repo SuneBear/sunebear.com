@@ -253,6 +253,7 @@ class LoadingSketch {
     }
     this.stop()
     window.removeEventListener('resize', this.resize)
+    // @TODO: Listen to transitonend event
     setTimeout(() => {
       this.$container?.removeChild(this.$canvas)
     }, 1000)

@@ -32,7 +32,7 @@ void main () {
   vec2 vDataUv = vDataScreen.xy * 0.5 + 0.5;
   vec3 dCol = texture2D(envTraceMap, vDataUv).rgb;
   // Mock Idle Effect
-  dCol += vec3(0.7);
+  dCol += vec3(0.6);
   vec3 offsetPos = position.xyz;
   vec3 vertexWorldPos = centerWorldPos
     + camRightWorld * offsetPos.x * scale.x
