@@ -153,8 +153,8 @@ export default class EnviromentStillLifes extends Module {
           const instance = d.instance
           // const t = Math.sin(instance.material.uniforms.time.value) * 0.5 + 0.5
           if (instance && instance.material) {
-            if (instance.material.uniforms.spin) {
-              instance.material.uniforms.spin.value = t
+            if (instance.material.uniforms.animateProgress) {
+              instance.material.uniforms.animateProgress.value = t
             }
             if (instance.material.uniforms.time) {
               instance.material.uniforms.time.value += dt
@@ -192,6 +192,7 @@ export default class EnviromentStillLifes extends Module {
       }
       instance.material.uniforms.useMapDiscard.value = useMapDiscard
       const aspect = instance.scale.x / instance.scale.y
+      instance.material.uniforms.enbleIdleEffect.value = true
       instance.material.uniforms.aspect.value = aspect
       instance.material.uniforms.spriteHeight.value = instance.scale.y
       instance.material.uniforms.time.value = 0

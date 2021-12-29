@@ -7,6 +7,7 @@ uniform sampler2D envTraceMap;
 uniform mat4 envTraceProjection;
 uniform mat4 envTraceView;
 uniform float spriteHeight;
+uniform bool enbleIdleEffect;
 uniform bool silhouette;
 varying vec2 vUv;
 varying vec3 vWorldPosition;
@@ -32,7 +33,9 @@ void main () {
   vec2 vDataUv = vDataScreen.xy * 0.5 + 0.5;
   vec3 dCol = texture2D(envTraceMap, vDataUv).rgb;
   // Mock Idle Effect
-  dCol += vec3(0.6);
+  if (enbleIdleEffect) {
+    dCol += vec3(0.6);
+  }
   vec3 offsetPos = position.xyz;
   vec3 vertexWorldPos = centerWorldPos
     + camRightWorld * offsetPos.x * scale.x

@@ -8,7 +8,7 @@ uniform bool useMapDiscard;
 uniform vec3 color;
 uniform float aspect;
 uniform float spriteHeight;
-uniform float spin;
+uniform float animateProgress;
 uniform bool silhouette;
 uniform vec3 tintColor;
 uniform vec3 shadowColor;
@@ -44,8 +44,8 @@ void main () {
   }
 
   // Mask Transition
-  if (spin < 1.0) {
-    float progress = spin / 1.25;
+  if (animateProgress < 1.0) {
+    float progress = animateProgress / 1.25;
     vec2 maskUVPos = vWorldPosition.xy;
     vec2 maskUV = maskUVPos * 1.25;
     maskUV.y += time * -0.1 * randomOffset;
