@@ -15,12 +15,12 @@ const generatePatchOptions = (options) => {
 
 const BUILDING_PATCH_MAP = {
   suneBearHome: generatePatchOptions({
-    position: [ -10, -0.5, -10 ],
+    position: [ -10, -0.3, -10 ],
     rotation: [ 0, Math.PI / 4, 0 ],
     scale: 0.5
   }),
   snowfallSpace: generatePatchOptions({
-    position: [ 11, -0.5, 11 ],
+    position: [ 11, -0.3, 11 ],
     // position: [ 0, -0.5, 0 ],
     rotation: [ 0, 0, 0 ],
     scale: 0.85
@@ -79,7 +79,11 @@ export default class EnviromentBuildings extends Module {
           obj.material.transparent = true
         }
 
-        if (obj.name.includes('Zai2_Details')) {
+        if (obj.name.includes('Snow_L')) {
+          obj.material.bumpScale = 0
+        }
+
+        if (obj.name.includes('face') || obj.name.includes('Zai')) {
           obj.material.userData.outlineParameters.thickness = 0
         }
 
@@ -105,6 +109,10 @@ export default class EnviromentBuildings extends Module {
   }
 
   setupBeacon() {
+
+  }
+
+  setupTheSinkingIsle() {
 
   }
 

@@ -209,6 +209,9 @@ export default {
   },
 
   deactivated() {
+    if (this.testNotifyTimer) {
+      clearTimeout(this.testNotifyTimer)
+    }
     this.$notify.closeAll()
     this.debug.dispose()
   },
@@ -244,15 +247,17 @@ export default {
     },
 
     initTestNotify() {
-      this.$notify({
-        title: 'Bonjo',
-        message: `Notification include HTML ${this.$refs.viewAllLink.$el.outerHTML}`,
-        duration: 0,
-        dangerouslyUseHTMLString: true
-      })
-      setTimeout(() => {
-        this.$notify({ message: 'Notification loo0o0o0o0o0o0ooo0oo00oo000oooo000ooo00oong text' })
-      })
+      this.testNotifyTimer = setTimeout(() => {
+        this.$notify({
+          title: 'Bonjo',
+          message: `Notification include HTML ${this.$refs.viewAllLink.$el.outerHTML}`,
+          duration: 0,
+          dangerouslyUseHTMLString: true
+        })
+        setTimeout(() => {
+          this.$notify({ message: 'Notification loo0o0o0o0o0o0ooo0oo00oo000oooo000ooo00oong text' })
+        }, 200)
+      }, 200)
     },
 
     refreshBlobSeed() {

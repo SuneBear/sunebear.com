@@ -256,7 +256,7 @@ export default class Enviroment extends Module {
     )
     this.receiveShadowPlane.receiveShadow = true
     this.receiveShadowPlane.name = 'receiveShadowPlane'
-    this.receiveShadowPlane.position.y = -2
+    this.receiveShadowPlane.position.y = -1
 
     this.scene.add(this.receiveShadowPlane)
   }
