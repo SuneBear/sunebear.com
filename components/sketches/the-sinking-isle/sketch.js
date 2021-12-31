@@ -47,6 +47,7 @@ class TheSinkingIsleSketch {
       height: 900,
       pixelRatio: Math.min(Math.max(window.devicePixelRatio, 1), 2),
       worldSize: 256,
+      lakeDepth: 100,
       fps: HIGH_FPS,
       brandHex: cssVar('--brand'),
       enablePlayground: false

@@ -229,13 +229,14 @@ export default class Enviroment extends Module {
         color: new THREE.Color(0x163d84)
       })
     )
+    const terrainDepthSize = this.config.worldSize * this.config.lakeDepth / 10
     this.terrainDepth.layers.set(RENDER_LAYERS.GROUND_DEPTH)
     this.terrainDepth.scale.set(
-      this.config.worldSize * 1.1,
+      terrainDepthSize,
       1,
-      this.config.worldSize * 1.1
+      terrainDepthSize
     )
-    this.terrainDepth.position.y = -10
+    this.terrainDepth.position.y = -this.config.lakeDepth
     this.terrainDepth.name = 'groundDepth'
     this.scene.add(this.terrainDepth)
   }
@@ -247,7 +248,8 @@ export default class Enviroment extends Module {
     geometry.rotateX(-Math.PI / 2)
 
     const material = new THREE.ShadowMaterial({
-      opacity: 0.12
+      opacity: 0.12,
+      depthTest: false
     })
 
     this.receiveShadowPlane = new THREE.Mesh(
@@ -296,6 +298,7 @@ export default class Enviroment extends Module {
 
   setupOctopus() {
     this.octopus = this.asset.items.octopusModel.children[0]
+    // @FIXME: MeshPhysicalMaterial looks wired
     this.octopus.material = new THREE.MeshPhysicalMaterial({
       map: this.asset.items.octopusBaseTexture,
       transmission: 1,
