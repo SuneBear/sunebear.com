@@ -269,7 +269,7 @@ export default {
     padding-top: var(--header-height)
 
     .cear-story .scrollable-y
-      null
+      padding-bottom: 80px
 
   .tab-main
     top: 50%

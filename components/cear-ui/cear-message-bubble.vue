@@ -24,7 +24,7 @@
         transition( name="el-fade-in" )
           readable-render(
             v-if="status !== 'typing'"
-            :content="message"
+            :content="finalMessage"
             :contentData="{ needAnimate }"
           )
 
@@ -37,6 +37,7 @@
           cear-button(
             size="small"
             type="brand"
+            icon="message-3-fill"
             @click="handleActionClick(action)"
           ) {{ action.text }}
 </template>
@@ -128,7 +129,7 @@ export default {
 
   computed: {
     finalMessage() {
-      return this.message
+      return this.processMessage(this.message)
     },
 
     rootClass() {
@@ -152,6 +153,13 @@ export default {
     handleActionClick(action) {
       this.$emit('actionPerformed', this, action)
       action.perform && action.perform(this)
+    },
+
+    processMessage(message) {
+      const regexBold = /\*\*(\S(.*?\S)?)\*\*/gm
+      const regexItalic = /\*(\S(.*?\S)?)\*/gm
+      message = message.replace(regexItalic, '<cear-notation isShow needSpacing :animate="false" :iterations="3">$1</cear-notation>')
+      return message
     }
   }
 
@@ -172,8 +180,12 @@ $userWidth = 68px
     justify-content center
     margin-left: $avatarSpacing
 
+    .bubble-body
+      // padding: 5px 15px
+      // font-size: 14px
+
     .bubble-bg
-      // background-color: primary(75)
+      background-color: primary(15)
 
   &.is-me
     justify-content flex-end

@@ -27,5 +27,8 @@ export default {
 
 <style lang="stylus">
 .page-index
-  null
+  defineColorVar(--brand, #4971ba)
+
+  .tsi-main-menu .tab-main
+    defineColorVar(--brand, #2c9cd6)
 </style>

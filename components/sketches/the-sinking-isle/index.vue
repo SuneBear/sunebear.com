@@ -28,6 +28,7 @@
 
 <script>
 import { __DEBUG__ } from '~/utils/dev'
+import { getFormattedData } from '~/utils/time'
 import { loadingSketch } from './loading-2d-sketch'
 
 const CONTEXT_CACHE_KEY = 'TSI/Context'
@@ -48,7 +49,7 @@ export default {
 
       // UI
       isShowMainMenu: !__DEBUG__,
-      isSwitchingScene: false,
+      isSwitchingChapter: false,
       isPlayingCutscene: false,
       panOffset: {
         x: 0,
@@ -66,7 +67,8 @@ export default {
         isMuteAudio: false,
 
         // Runtime
-        hasFinishedOnboard: false
+        hasFinishedOnboard: false,
+        hasShownBoundaryStory: false
       },
       storyRoles: [],
       storyMessages: []
@@ -81,7 +83,7 @@ export default {
     enableUserInput() {
       return (
         !this.isPlayingCutscene &&
-        !this.isSwitchingScene &&
+        !this.isSwitchingChapter &&
         !this.isShowMainMenu
       )
     },
@@ -119,7 +121,7 @@ export default {
     },
 
     isShowMainMenu() {
-      // this.startOnboard()
+      this.startOnboard()
       // console.log('isShowMainMenu', this.isShowMainMenu)
     }
   },
@@ -175,9 +177,10 @@ export default {
 
     async initContextData() {
       let storyMessages = [
-        { user: 'bear', message: '> Hello from SuneBear. \n\n Welcome to chat with me'  },
-        { user: 'user', message: 'You know who i am?'  },
-        { user: 'bear', message: 'I guess you are a kind people'  }
+        { user: 'system', message: this.$t('story.system.firstVisitDate', { date: getFormattedData(Date.now()) })  },
+        { user: 'bear', message: this.$t('story.system.onboardingWelcomeWord.main') },
+        { user: 'user', message: this.$t('story.system.onboardingWelcomeWord.replyWhoIam') },
+        { user: 'bear', message: this.$t('story.system.onboardingWelcomeWord.youAreCurious') }
       ]
 
       if (process.client && localStorage.getItem(CONTEXT_CACHE_KEY)) {
@@ -205,11 +208,11 @@ export default {
       }
 
       this.$story.add({
-        user: 'system', message: 'Onboard', autoSwitch: false,
-        actions: [ { type: 'reply', text: 'test', responsive: 'responsive' } ]
+        user: 'system',
+        message: this.$t('story.system.onboardingMoveTips.main')
       })
 
-      // this.cachedContext.hasFinishedOnboard = true
+      this.cachedContext.hasFinishedOnboard = true
     },
 
     async handleLoaded() {
@@ -275,6 +278,14 @@ export default {
 
       /[lang="zh-Hans"] &
         font-size: 24px
+
+    .cear-message-bubble
+      &.is-system .bubble-content,
+      &.is-me .bubble-content
+        color: secondary(90)
+
+        .typing-indicator
+          filter: invert(100)
 
   .canvas-wrapper
     canvas:first-child

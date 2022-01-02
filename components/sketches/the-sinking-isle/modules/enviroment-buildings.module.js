@@ -104,7 +104,7 @@ export default class EnviromentBuildings extends Module {
         }
       },
       portalPosition: new THREE.Vector3(),
-      onPortalOpened: () => {}
+      onPortalOpened: null
     })
 
     this.applyPatch(this.snowfallSpace)

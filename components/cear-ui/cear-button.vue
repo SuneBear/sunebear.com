@@ -234,6 +234,11 @@ export default {
       margin-right: 10px
       margin-left: 4px
 
+    .el-button--small
+      .cear-icon
+        margin-left: 0px
+        margin-right: 6px
+
     .back-layer
       > *,
       .d-flex

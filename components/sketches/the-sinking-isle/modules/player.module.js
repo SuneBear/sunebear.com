@@ -212,7 +212,11 @@ export default class Player extends Module {
       if (this.moveDirectionAngle === null)
         this.moveDirectionAngle = this.mouseDirectionAngle
     }
-    if (this.control.isPressed('tap') && this.moveDirectionAngle !== null && this.mouseDirectionAngle !== null) {
+    if (
+      this.control.isPressed('tap') &&
+      this.moveDirectionAngle !== null &&
+      this.mouseDirectionAngle !== null
+    ) {
       this.moveDirectionAngle = math.dampAngle(
         this.moveDirectionAngle,
         this.mouseDirectionAngle,
@@ -286,16 +290,17 @@ export default class Player extends Module {
     }
 
     // Set movement boundary
-    userTargetPos.x = math.clamp(
-      userTargetPos.x,
-      -this.maxWorldSize / 2,
-      this.maxWorldSize / 2
-    )
-    userTargetPos.z = math.clamp(
-      userTargetPos.z,
-      -this.maxWorldSize / 2,
-      this.maxWorldSize / 2
-    )
+    // @TEMP: Removed boundary limit
+    // userTargetPos.x = math.clamp(
+    //   userTargetPos.x,
+    //   -this.maxWorldSize / 2,
+    //   this.maxWorldSize / 2
+    // )
+    // userTargetPos.z = math.clamp(
+    //   userTargetPos.z,
+    //   -this.maxWorldSize / 2,
+    //   this.maxWorldSize / 2
+    // )
 
     // Update instance data
     this.instance.totalBoost = totalBoost
@@ -364,16 +369,16 @@ export default class Player extends Module {
         )
       }
       // Clamp Target
-      smoothTarget.x = math.clamp(
-        smoothTarget.x,
-        -this.maxWorldSize / 2,
-        this.maxWorldSize / 2
-      )
-      smoothTarget.z = math.clamp(
-        smoothTarget.z,
-        -this.maxWorldSize / 2,
-        this.maxWorldSize / 2
-      )
+      // smoothTarget.x = math.clamp(
+      //   smoothTarget.x,
+      //   -this.maxWorldSize / 2,
+      //   this.maxWorldSize / 2
+      // )
+      // smoothTarget.z = math.clamp(
+      //   smoothTarget.z,
+      //   -this.maxWorldSize / 2,
+      //   this.maxWorldSize / 2
+      // )
       spring.target.copy(smoothTarget).sub(this.targetPos)
       const distSq = spring.target.lengthSq()
       if (distSq >= this.maxRadialDistSq) {
@@ -413,21 +418,48 @@ export default class Player extends Module {
     spring.update(delta)
 
     // @TODO: Optimize lake boundary limit
+    // @TEMP: Removed boundary limit
     const positionOffset = 2.0
-    const springScale = 1.1
+    const springScale = 0.95
     if (
       !this.enviroment.isInsideLake([
         spring.position.x * springScale + positionOffset,
         spring.position.z * springScale + positionOffset
       ])
     ) {
-      smoothTarget.x *= 0.5
-      smoothTarget.z *= 0.5
-      spring.position.copy(playerMesh.position)
-      spring.velocity.set(0, 0, 0)
-      spring.moveToTarget = false
-      spring.update(delta)
-      return
+      // smoothTarget.x *= 0.5
+      // smoothTarget.z *= 0.5
+      // spring.position.copy(playerMesh.position)
+      // spring.velocity.set(0, 0, 0)
+      // spring.moveToTarget = false
+      // spring.update(delta)
+      // return
+
+      // Show boundary story
+      if (!this.$vm.cachedContext.hasShownBoundaryStory) {
+        this.$vm.$story.add({
+          message: this.$vm.$t('story.bear.firstReachTheLakeEdge.main'),
+          actions: [
+            {
+              type: 'reply',
+              text: this.$vm.$t('story.bear.firstReachTheLakeEdge.replyFly'),
+              responsive: this.$vm.$t(
+                'story.bear.firstReachTheLakeEdge.replyFlyRes'
+              )
+            },
+            {
+              type: 'reply',
+              text: this.$vm.$t(
+                'story.bear.firstReachTheLakeEdge.replyNothing'
+              ),
+              responsive: this.$vm.$t(
+                'story.bear.firstReachTheLakeEdge.replyNothingRes'
+              )
+            }
+          ]
+        })
+        this.$vm.cachedContext.hasShownBoundaryStory = true
+      }
     }
 
     playerMesh.position.copy(spring.position)

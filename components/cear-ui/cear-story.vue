@@ -379,6 +379,10 @@ export default {
       const name = typeof message.user === 'string' ? message.user : message.user?.name
       const role = this.getRoleByName(name)
 
+      if (message.actions && typeof message.autoSwitch === 'undefined') {
+        message.autoSwitch = false
+      }
+
       if (message.id && message.createdDate) {
         return message
       }

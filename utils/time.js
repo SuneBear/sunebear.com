@@ -9,7 +9,7 @@ export function getFormattedData(time) {
   }
 
   if (day < 10) {
-    month = '0' + day
+    day = '0' + day
   }
 
   return `${year}-${month}-${day}`
