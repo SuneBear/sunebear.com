@@ -10,6 +10,7 @@
       :storyRoles="storyRoles"
       :storyMessages="storyMessages"
     )
+    tsi-chapter-control
     cear-story.is-absolute-center(
       ref="story"
       enableActionBar
@@ -60,6 +61,7 @@ export default {
       isForcePushingPlayer: false,
       enablePlayerDrift: false,
       cameraTarget: 'player',
+      currentChapter: 'main',
 
       /*==== Persistent Context States & Data ====*/
       cachedContext: {

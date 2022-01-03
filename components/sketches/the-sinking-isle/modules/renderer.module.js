@@ -429,16 +429,19 @@ export default class Renderer extends Module {
     this.submitFrame.preRender()
 
     // Main renderer
-    this.instance.clear()
-    if (this.usePostprocess) {
-      // Render single layer
-      this.camera.layers.set(RENDER_LAYERS.BLOOM)
-      this.postProcess.bloomComposer.render()
-      this.instance.clearDepth()
-      // Render all layers
-      this.camera.layers.enableAll()
+    // Stop render when open chapter
+    if (this.$vm.currentChapter === 'main' || this.$vm.isSwitchingChapter) {
+      this.instance.clear()
+      if (this.usePostprocess) {
+        // Render single layer
+        this.camera.layers.set(RENDER_LAYERS.BLOOM)
+        this.postProcess.bloomComposer.render()
+        this.instance.clearDepth()
+        // Render all layers
+        this.camera.layers.enableAll()
+      }
+      this.render()
     }
-    this.render()
 
     // Let's assume frame tasks should always happen
     const task = this.submitFrame.nextFrameTask()

@@ -28,6 +28,7 @@ import AtmosphereGlowDotsModule from './modules/atmosphere-glow-dots.module'
 import AtmosphereRainModule from './modules/atmosphere-rain.module'
 import AtmosphereWindModule from './modules/atmosphere-wind.module'
 import TestModule from './modules/test.module'
+import ChapterModule from './modules/chapter.module'
 
 import assets from './assets'
 
@@ -235,6 +236,7 @@ class TheSinkingIsleSketch {
     this.module.add(AtmosphereGlowDotsModule)
     this.module.add(AtmosphereRainModule)
     this.module.add(AtmosphereWindModule)
+    this.module.add(ChapterModule)
     if (this.config.enablePlayground) {
       this.module.add(TestModule)
     }

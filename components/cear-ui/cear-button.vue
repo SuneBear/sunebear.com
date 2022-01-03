@@ -164,6 +164,9 @@ export default {
       margin-left: -1px
       padding-bottom: 4px !important
 
+      &[class*="-ghost"]
+        filter: drop-shadow(1px 1px 7px var(--shadow))
+
       &.el-button--small
         padding-bottom: 7px !important
 

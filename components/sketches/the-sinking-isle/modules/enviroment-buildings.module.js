@@ -71,7 +71,7 @@ export default class EnviromentBuildings extends Module {
         position: new THREE.Vector3(-4, 6, 4),
         needAnimateY: true,
         onOpened: () => {
-          console.log('onOpened')
+          this.$vm.currentChapter = 'suneBearHome'
         }
       },
     })

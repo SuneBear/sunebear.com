@@ -10,6 +10,7 @@ export default {
   'tsi.menu.setting': '设置',
   'tsi.menu.sound': '声音',
 
+  'action.exit': '离开',
   'action.skip': '跳过',
   'action.continue': '继续',
 

@@ -109,6 +109,11 @@ export default [
         options: REPEAT_TEXTURE_OPTIONS
       },
       {
+        name: 'dispChapterTexture',
+        source: require('./textures/disp1.jpg'),
+        type: 'texture'
+      },
+      {
         name: 'fiveToneTexture',
         source: require('./textures/five-tone.jpg'),
         type: 'texture',
