@@ -1,4 +1,4 @@
-import { random } from '../engine/utils'
+import { random, math } from '../engine/utils'
 
 // The object animations are different with Three.js AnimationMixer
 // They can integrare with engine control, dynamicly update animation params
@@ -22,7 +22,6 @@ export class WaterBuoyancyAnimation extends ObjectAnimation {
       intensity: 1,
       ...options
     }
-
   }
 
   update(delta) {
@@ -36,3 +35,34 @@ export class WaterBuoyancyAnimation extends ObjectAnimation {
   }
 
 }
+
+
+export class BloomPulseAnimation extends ObjectAnimation {
+
+  constructor(options) {
+    super()
+
+    this.options = {
+      object: null,
+      intensity: 1,
+      ...options
+    }
+  }
+
+  update(delta) {
+    this.elapsed += delta
+
+    const { intensity, object } = this.options
+
+    // @FIXME: Let shaderMaterial support emissiveIntensity param
+    if (object.userData.type === 'meshSprite') {
+      let value = object.material.uniforms.animateProgress.value
+      value += Math.sin(this.elapsed) * 0.01 * intensity
+      object.material.uniforms.animateProgress.value = math.clamp(value, 0.6, 0.9)
+    } else {
+      object.material.emissiveIntensity += Math.sin(this.elapsed) * 0.01 * intensity
+    }
+  }
+
+}
+

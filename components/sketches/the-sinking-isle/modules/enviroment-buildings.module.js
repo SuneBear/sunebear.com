@@ -43,6 +43,7 @@ export default class EnviromentBuildings extends Module {
     this.setupSuneBearHome()
     this.setupSnowfallSpace()
     // this.setupSunkBuildings()
+    this.setupTokens()
   }
 
   setupSuneBearHome() {
@@ -65,8 +66,14 @@ export default class EnviromentBuildings extends Module {
           outlineColor: 0x101010
         }
       },
-      portalPosition: new THREE.Vector3(),
-      onPortalOpened: () => {}
+      portal: {
+        name: 'sun',
+        position: new THREE.Vector3(-4, 6, 4),
+        needAnimateY: true,
+        onOpened: () => {
+          console.log('onOpened')
+        }
+      },
     })
 
     this.applyPatch(this.suneBearHome)
@@ -220,6 +227,15 @@ export default class EnviromentBuildings extends Module {
     this.group.add(mesh)
   }
 
+  setupTokens() {
+    this.tokens = []
+    this.scene.traverse(obj => {
+      if (obj.name === 'token') {
+        this.tokens.push(obj)
+      }
+    })
+  }
+
   applyPatch(object) {
     const patch = BUILDING_PATCH_MAP[object.name]
 
@@ -236,6 +252,22 @@ export default class EnviromentBuildings extends Module {
   update(delta) {
     this.group.children.map(obj => {
       obj.update && obj.update(delta)
+    })
+
+    this.updateToken()
+  }
+
+  updateToken() {
+    this.tokens.some(token => {
+      const isIntersect = token.isIntersect(this.player)
+
+      if (isIntersect) {
+        token.animateOut()
+      } else {
+        token.animateIn()
+      }
+
+      return isIntersect
     })
   }
 }

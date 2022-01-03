@@ -188,6 +188,16 @@ export default [
         type: 'texture',
         options: REPEAT_TEXTURE_OPTIONS
       },
+      {
+        name: 'sunTokenTexture',
+        source: require('./textures/tokens/sun.png'),
+        type: 'texture'
+      },
+      {
+        name: 'snowTokenTexture',
+        source: require('./textures/tokens/snow.png'),
+        type: 'texture'
+      },
 
       // Audios
       { name: 'testAudio', source: require('./audios/test.mp3').default },

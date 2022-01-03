@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import * as eases from 'eases'
 
 import { addSampleData } from './enviroment/still-life-types'
 import { generateStillLifeItemsMap } from './enviroment/still-life-items'
@@ -154,13 +155,13 @@ export default class EnviromentStillLifes extends Module {
           // const t = Math.sin(instance.material.uniforms.time.value) * 0.5 + 0.5
           if (instance && instance.material) {
             if (instance.material.uniforms.animateProgress) {
-              instance.material.uniforms.animateProgress.value = t
+              instance.material.uniforms.animateProgress.value = eases.sineIn(t)
             }
             if (instance.material.uniforms.time) {
               instance.material.uniforms.time.value += dt
             }
           }
-          instance.scale.copy(d.scale).multiplyScalar(t)
+          instance.scale.copy(d.scale).multiplyScalar(0.5 + t / 2)
         }
       })
     }

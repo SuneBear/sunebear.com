@@ -45,7 +45,7 @@ void main () {
 
   // Mask Transition
   if (animateProgress < 1.0) {
-    float progress = animateProgress / 1.25;
+    float progress = animateProgress;
     vec2 maskUVPos = vWorldPosition.xy;
     vec2 maskUV = maskUVPos * 1.25;
     maskUV.y += time * -0.1 * randomOffset;

@@ -2,6 +2,7 @@ import * as THREE from 'three'
 import { asset } from '../engine/asset'
 import { WaterBuoyancyAnimation } from './animations'
 import { convertToToonMaterial } from './mesh-toon.material'
+import { TokenObject } from './token.object'
 
 export class BuildingGroupObject extends THREE.Group {
 
@@ -22,6 +23,7 @@ export class BuildingGroupObject extends THREE.Group {
     })
 
     this.setupModel()
+    this.setupPortalToken()
   }
 
   setupModel() {
@@ -49,8 +51,34 @@ export class BuildingGroupObject extends THREE.Group {
     this.add(scene)
   }
 
+  setupPortalToken() {
+    const { portal } = this.options
+
+    if (!portal) {
+      return
+    }
+
+    const token = new TokenObject({
+      name: portal.name,
+      needAnimateY: portal.needAnimateY,
+      onAnimateOut: portal.onOpened
+    })
+    token.scale.setScalar(2)
+    token.position.copy(portal.position)
+
+    this.token = token
+    this.add(token)
+
+    setTimeout(() => {
+      token.updateWorldPosition()
+    })
+  }
+
   update(delta) {
     this.waterBuoyancyAnimation.update(delta)
+    if (this.token) {
+      this.token.update(delta)
+    }
   }
 
 }
