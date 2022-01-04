@@ -1,5 +1,5 @@
 <template lang="pug">
-.tsi-interaction
+.tsi-inventory
 </template>
 
 <script>
@@ -9,6 +9,6 @@ export default {
 </script>
 
 <style lang="stylus">
-.tsi-interaction
+.tsi-inventory
   null
 </style>

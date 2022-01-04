@@ -35,7 +35,7 @@
           .tab-title {{ currentTab.name }}
           .menu-items
             cear-button( isBlock type="secondary" shadow="rgba(var(--brand-rgb), 0.6)" @click="hide" size="big" )
-              | {{ $parent.cachedContext.hasFinishedOnboard ? $t('tsi.menu.continue') : $t('tsi.menu.start') }}
+              | {{ $tsi.cachedContext.hasFinishedOnboard ? $t('tsi.menu.continue') : $t('tsi.menu.start') }}
             //- cear-button( isBlock type="secondary-ghost" shadow="rgba(var(--brand-rgb), 0.6)" @click="showIntroModal" size="big" ) {{ $t('tsi.menu.intro') }}
             .setting-item.d-flex.justify-space-between.align-center(
               @click="handleToggleSoundClick"
@@ -45,19 +45,19 @@
                   fill="var(--secondary)"
                   :enableDistort="false"
                   :enableDistortTransform="false"
-                  :name="$parent.cachedContext.isMuteAudio ? 'volume-mute-fill' : 'volume-up-fill'"
+                  :name="$tsi.cachedContext.isMuteAudio ? 'volume-mute-fill' : 'volume-up-fill'"
                 )
                 //- | {{ $t('tsi.menu.sound') }}
 
               .control-part.d-flex.align-center.mr-3
                 //- el-switch(
-                //-   :value="!$parent.cachedContext.isMuteAudio"
+                //-   :value="!$tsi.cachedContext.isMuteAudio"
                 //- )
                 cear-sine-wave(
                   isLine :lineWidth="2"
                   needTransition
                   :needAnimate="false"
-                  :isFlat="$parent.cachedContext.isMuteAudio"
+                  :isFlat="$tsi.cachedContext.isMuteAudio"
                   color="rgba(var(--secondary-rgb), 0.0)"
                   colorB="rgba(var(--secondary-rgb), 0.7)"
                   amplitudeX="10%"
@@ -72,7 +72,7 @@
             :needAnimate="false"
             :roles="storyRoles"
             :initialMessages="storyMessages"
-            @messageUpdated="({ messages }) => $parent.storyMessages = messages"
+            @messageUpdated="({ messages }) => $tsi.storyMessages = messages"
             scrollHeight="75vh"
           )
 </template>
@@ -153,7 +153,7 @@ export default {
     },
 
     handleToggleSoundClick() {
-      this.$parent.cachedContext.isMuteAudio = !this.$parent.cachedContext.isMuteAudio
+      this.$tsi.cachedContext.isMuteAudio = !this.$tsi.cachedContext.isMuteAudio
     },
 
     showIntroModal() {
@@ -173,6 +173,10 @@ export default {
     },
 
     toggle(tabId = DEFAULT_TAB_ID) {
+      if (this.$tsi.isShowPopup) {
+        return
+      }
+
       if (this.value && tabId === this.currentTabId) {
         this.hide()
       } else {

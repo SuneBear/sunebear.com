@@ -1,15 +1,21 @@
 <template lang="pug">
 .tsi-chapter-control
   transition( name="el-fade-in" )
-    cear-button(
-      v-if="$parent.currentChapter !== 'main' && !$parent.isSwitchingChapter"
-      isBlock
-      type="secondary-ghost"
-      icon="arrow-go-back-fill"
-      shadow="black"
-      @click="$parent.currentChapter = 'main'"
-    ) {{ $t('action.exit') }}
+    .handler(
+      v-if="$tsi.currentChapter !== 'main' && !$tsi.isSwitchingChapter"
+    )
+      cear-button(
+        isBlock
+        type="secondary-ghost"
+        icon="arrow-go-back-fill"
+        shadow="black"
+        @click="$tsi.currentChapter = 'main'"
+      ) {{ $t('action.exit') }}
 </template>
+
+<script>
+export default {}
+</script>
 
 <style lang="stylus">
 .tsi-chapter-control
@@ -17,7 +23,7 @@
   left: 2rem
   top: 2rem
 
-  > *
+  .cear-button
     opacity: 0.8
     pointer-events: initial
 </style>

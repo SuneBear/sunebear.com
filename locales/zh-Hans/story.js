@@ -11,7 +11,8 @@ export default {
       youAreCurious: '我猜你同时是个善良的人 :)',
     },
     onboardingMoveTips: {
-      main: '<cear-icon size="1.5em" name="hand-gesture-finger" /> 动动手指，给船一个前行的方向'
+      main: '<cear-icon name="hand-gesture-finger" /> 动动手指，给船一个前行的方向',
+      closeToken: '<cear-icon name="sun-line" /> 靠近发光的元素可触发有趣的事情'
     }
   },
 

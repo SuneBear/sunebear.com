@@ -4,13 +4,15 @@
   .dom-wrapper(
     :class="{ 'is-inited': isInited, 'is-show-menu': isShowMainMenu }"
   )
-    tsi-menu(
+    template(
       v-if="isInited"
-      v-model="isShowMainMenu"
-      :storyRoles="storyRoles"
-      :storyMessages="storyMessages"
     )
-    tsi-chapter-control
+      tsi-menu(
+        v-model="isShowMainMenu"
+        :storyRoles="storyRoles"
+        :storyMessages="storyMessages"
+      )
+      tsi-chapter-control
     cear-story.is-absolute-center(
       ref="story"
       enableActionBar
@@ -28,12 +30,16 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import { __DEBUG__ } from '~/utils/dev'
 import { getFormattedData } from '~/utils/time'
 import { loadingSketch } from './loading-2d-sketch'
 
 const CONTEXT_CACHE_KEY = 'TSI/Context'
 const STORY_MESSAGES_CACHE_KEY = 'TSI/StoryMessages'
+
+// @Hack: Mount $tsi vm to global, treat as $root singleton
+Vue.prototype.$tsi = {}
 
 export default {
   data(){
@@ -50,6 +56,7 @@ export default {
 
       // UI
       isShowMainMenu: !__DEBUG__,
+      isShowNotebookPopup: false,
       isSwitchingChapter: false,
       isPlayingCutscene: false,
       panOffset: {
@@ -67,6 +74,9 @@ export default {
       cachedContext: {
         // Settings
         isMuteAudio: false,
+
+        // Stats
+        firstVisitTime: null,
 
         // Runtime
         hasFinishedOnboard: false,
@@ -95,6 +105,10 @@ export default {
         this.enableUserInput &&
         !this.isForcePushingPlayer
       )
+    },
+
+    isShowPopup() {
+      return this.isShowNotebookPopup
     },
 
     isShowPanel() {
@@ -126,6 +140,10 @@ export default {
       this.startOnboard()
       // console.log('isShowMainMenu', this.isShowMainMenu)
     }
+  },
+
+  beforeMount() {
+    Vue.prototype.$tsi = this
   },
 
   activated() {
@@ -178,8 +196,10 @@ export default {
     },
 
     async initContextData() {
+      this.cachedContext.firstVisitTime = Date.now()
+
       let storyMessages = [
-        { user: 'system', message: this.$t('story.system.firstVisitDate', { date: getFormattedData(Date.now()) })  },
+        { user: 'system', message: this.$t('story.system.firstVisitDate', { date: getFormattedData(this.cachedContext.firstVisitTime) })  },
         { user: 'bear', message: this.$t('story.system.onboardingWelcomeWord.main') },
         { user: 'user', message: this.$t('story.system.onboardingWelcomeWord.replyWhoIam') },
         { user: 'bear', message: this.$t('story.system.onboardingWelcomeWord.youAreCurious') }
@@ -209,10 +229,17 @@ export default {
         return
       }
 
-      this.$story.add({
-        user: 'system',
-        message: this.$t('story.system.onboardingMoveTips.main')
-      })
+      this.$story.add([
+        {
+          user: 'system',
+          message: this.$t('story.system.onboardingMoveTips.main'),
+          switchDelay: 5000
+        },
+        {
+          user: 'system',
+          message: this.$t('story.system.onboardingMoveTips.closeToken')
+        }
+      ])
 
       this.cachedContext.hasFinishedOnboard = true
     },
@@ -282,6 +309,10 @@ export default {
         font-size: 24px
 
     .cear-message-bubble
+      .cear-icon
+        font-size: 1.4em
+        vertical-align: sub
+
       &.is-system .bubble-content,
       &.is-me .bubble-content
         color: secondary(90)

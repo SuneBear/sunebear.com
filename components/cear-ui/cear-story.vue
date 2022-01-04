@@ -275,6 +275,7 @@ export default {
       }
     },
 
+    // when set duration: 0, the message will push to history directly
     add(messages, options) {
       if (!Array.isArray(messages)) {
         messages = [ messages ]
@@ -292,6 +293,11 @@ export default {
         message = {
           message,
           ...options
+        }
+      } else {
+        message = {
+          ...options,
+          ...message
         }
       }
 
