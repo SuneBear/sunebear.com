@@ -7,7 +7,7 @@ page-wrapper(
       cear-notation( isShow :color="brandColor" ) UI Playground
 
     .section-cear-photo-frame.mt-8
-      .text-h5.mb-4
+      .text-h5.mb-4.scratchy-text
         | cear-photo-frame
       .row.no-gutters
         cear-photo-frame

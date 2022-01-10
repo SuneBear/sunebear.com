@@ -1,6 +1,7 @@
 uniform sampler2D map;
 uniform sampler2D bloomMap;
 uniform sampler2D blueNoiseMap;
+uniform sampler2D grainNoiseMap;
 uniform sampler2D shadowMap;
 uniform sampler2D outlineMap;
 uniform sampler2D lutMap;
@@ -9,6 +10,7 @@ uniform vec2 resolution;
 uniform bool enableShadow;
 uniform bool enableBloom;
 uniform bool enableOutline;
+uniform bool enableGrainNoise;
 uniform bool enableVignette;
 uniform bool enableLut;
 uniform bool enableMono;
@@ -127,6 +129,12 @@ void main() {
   vec4 noise = texture2D(blueNoiseMap, nq);
   if (enableVignette) {
     blendColor.rgb = vignetteEffect(blendColor.rgb, noise, d);
+  }
+
+  // Effect: Grain Noise
+  if (enableGrainNoise) {
+    vec4 noise = texture2D(grainNoiseMap, vUv * 4.0);
+    blendColor.rgb = blendColor.rgb + noise.rgb * 0.1;
   }
 
   // Effect: Lut

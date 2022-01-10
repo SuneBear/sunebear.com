@@ -133,6 +133,7 @@ export default class ChapterModule extends Module {
 
   resize() {
     const { width, height } = this.sizes
+    this.renderer.setSize(width, height)
     this.chapters.map(el => el.resize && el.resize(width, height))
   }
 

@@ -46,7 +46,7 @@ class OrbitControls extends EventDispatcher {
     this.minDistance = 0
     this.maxDistance = Infinity
 
-    // How far you can zoom in and out ( OrthographicCamera only )
+    // How far you can zoom in and out
     this.minZoom = 0
     this.maxZoom = 7
 
@@ -95,9 +95,9 @@ class OrbitControls extends EventDispatcher {
 
     // Mouse buttons
     this.mouseButtons = {
-      LEFT: MOUSE.PAN,
+      LEFT: MOUSE.ROTATE,
       MIDDLE: MOUSE.DOLLY,
-      RIGHT: MOUSE.ROTATE
+      RIGHT: MOUSE.PAN
     }
 
     // Touch fingers

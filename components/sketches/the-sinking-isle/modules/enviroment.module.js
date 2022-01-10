@@ -298,12 +298,9 @@ export default class Enviroment extends Module {
 
   setupOctopus() {
     this.octopus = this.asset.items.octopusModel.children[0]
-    // @FIXME: MeshPhysicalMaterial looks wired
-    this.octopus.material = new THREE.MeshPhysicalMaterial({
+    this.octopus.material = new THREE.MeshStandardMaterial({
       map: this.asset.items.octopusBaseTexture,
-      transmission: 1,
-      roughness: 0.5,
-      metalness: 0.1,
+      opacity: 0.6,
       color: new THREE.Color(0xffffff),
       transparent: true
     })

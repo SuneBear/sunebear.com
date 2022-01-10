@@ -74,6 +74,10 @@ export default [
         name: 'playerIceBearModel',
         source: require('./gltfs/player-ice-bear.glb').default
       },
+      {
+        name: 'chapterSuneBearHomeModel',
+        source: require('./gltfs/chapter-sunebear-home.glb').default
+      },
 
       // Spritesheets
       {

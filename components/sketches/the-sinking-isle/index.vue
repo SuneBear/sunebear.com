@@ -68,6 +68,7 @@ export default {
       isForcePushingPlayer: false,
       enablePlayerDrift: false,
       cameraTarget: 'player',
+      // @values: main | suneBearHome
       currentChapter: 'main',
 
       /*==== Persistent Context States & Data ====*/
@@ -80,7 +81,8 @@ export default {
 
         // Runtime
         hasFinishedOnboard: false,
-        hasShownBoundaryStory: false
+        hasShownBoundaryStory: false,
+        hasVisitedSuneBearHome: false
       },
       storyRoles: [],
       storyMessages: []
@@ -103,6 +105,7 @@ export default {
     enableUserMoveInput() {
       return (
         this.enableUserInput &&
+        this.currentChapter === 'main' &&
         !this.isForcePushingPlayer
       )
     },

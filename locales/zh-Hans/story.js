@@ -17,12 +17,15 @@ export default {
   },
 
   bear: {
-    'firstReachTheLakeEdge': {
+    firstReachTheLakeEdge: {
       main: `湖水外看起来一片漆黑，需要找到*一盏灯*照亮。但我更想要*一双翅膀*，飞到银河上，换个角度看轻这世界`,
       replyFly: '一只会飞的白熊？',
       replyFlyRes: '我在梦里见过，你想象一下我和蝴蝶随风飘拂的浪漫场景',
       replyNothing: '外面也许什么都没有',
       replyNothingRes: '无可奈何，我的房子在湖中易沉没，需要找到新的住所',
+    },
+    suneBearHome: {
+      inProgress: '我家正在装修，等装好后送你一些礼物哦'
     }
   },
 

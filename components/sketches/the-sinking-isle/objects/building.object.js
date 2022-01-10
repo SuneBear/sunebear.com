@@ -18,6 +18,7 @@ export class BuildingGroupObject extends THREE.Group {
     this.name = this.options.name
     this.model = this.options.model
 
+    // @TODO: Support config animation
     this.waterBuoyancyAnimation = new WaterBuoyancyAnimation({
       object: this
     })

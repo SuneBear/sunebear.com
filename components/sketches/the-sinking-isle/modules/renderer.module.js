@@ -86,7 +86,7 @@ export default class Renderer extends Module {
     // this.instance.shadowMap.autoUpdate = false
     this.instance.shadowMap.needsUpdate = this.instance.shadowMap.enabled
     this.instance.toneMapping = THREE.ReinhardToneMapping // THREE.LinearToneMapping
-    this.instance.toneMappingExposure = 4.5
+    this.instance.toneMappingExposure = 5
 
     this.context = this.instance.getContext()
 
@@ -125,8 +125,8 @@ export default class Renderer extends Module {
     this.postProcess.renderPass = new RenderPass(this.scene, this.camera)
     this.postProcess.renderPass.clearColor = this.clearColor
 
-    const effectCopy = new ShaderPass(CopyShader)
-    effectCopy.renderToScreen = false
+    this.postProcess.effectCopy = new ShaderPass(CopyShader)
+    this.postProcess.effectCopy.renderToScreen = false
 
     // Bloom pass
     this.postProcess.unrealBloomPass = new UnrealBloomPass(
@@ -216,6 +216,9 @@ export default class Renderer extends Module {
       blueNoiseMap: {
         value: this.asset.items.blueNoiseTexture
       },
+      grainNoiseMap: {
+        value: this.asset.items.grainNoiseTexture
+      },
       lutMap: {
         value: this.asset.items.lutTexture
       },
@@ -235,6 +238,9 @@ export default class Renderer extends Module {
       },
       enableOutline: {
         value: true
+      },
+      enableGrainNoise: {
+        value: false
       },
       enableVignette: {
         value: true
@@ -261,7 +267,7 @@ export default class Renderer extends Module {
     this.postProcess.composer.addPass(this.postProcess.renderPass)
     this.postProcess.composer.addPass(this.postProcess.finalPass)
     this.postProcess.composer.addPass(this.postProcess.fxaaPass)
-    this.postProcess.composer.addPass(effectCopy)
+    this.postProcess.composer.addPass(this.postProcess.effectCopy)
 
     if (this.debug) {
       const debugFolder = this.debugFolder.addFolder({
@@ -406,7 +412,21 @@ export default class Renderer extends Module {
     this.camera.layers.enableAll()
   }
 
+  renderBloom() {
+    if (this.usePostprocess) {
+      // Render single layer
+      this.camera.layers.set(RENDER_LAYERS.BLOOM)
+      this.postProcess.bloomComposer.render()
+      this.instance.clearDepth()
+      // Render all layers
+      this.camera.layers.enableAll()
+    }
+  }
+
   render() {
+    this.instance.clear()
+
+    this.renderBloom()
     this.renderShadows()
     this.renderOutline()
 
@@ -431,15 +451,6 @@ export default class Renderer extends Module {
     // Main renderer
     // Stop render when open chapter
     if (this.$vm.currentChapter === 'main' || this.$vm.isSwitchingChapter) {
-      this.instance.clear()
-      if (this.usePostprocess) {
-        // Render single layer
-        this.camera.layers.set(RENDER_LAYERS.BLOOM)
-        this.postProcess.bloomComposer.render()
-        this.instance.clearDepth()
-        // Render all layers
-        this.camera.layers.enableAll()
-      }
       this.render()
     }
 

@@ -2,6 +2,7 @@ import * as THREE from 'three'
 import anime from 'animejs'
 import Module from '../engine/module'
 import { Color, lock, math, getEasePlayhead } from '../engine/utils'
+import { convertToToonMaterial } from '../objects/mesh-toon.material'
 
 export default class Test extends Module {
   constructor(sketch) {
@@ -38,8 +39,7 @@ export default class Test extends Module {
 
   setupInstance() {
     const geometry = new THREE.BoxGeometry(0.3, 0.3, 0.3)
-    const material = new THREE.MeshPhysicalMaterial({
-      transmission: 0.5,
+    const material = new THREE.MeshStandardMaterial({
       map: this.textures.color,
       side: THREE.DoubleSide,
       transparent: true
@@ -49,6 +49,17 @@ export default class Test extends Module {
       geometry,
       material
     )
+  }
+
+  addTestCube(container) {
+    const geometry = new THREE.BoxGeometry(4, 4)
+    const material = new THREE.MeshBasicMaterial({ color: 0xbb0000 })
+    const cube = new THREE.Mesh( geometry, material )
+    convertToToonMaterial(cube, {
+      outlineThickness: 0.01,
+      outlineColor: 0x000000
+    })
+    container.add(cube)
   }
 
   @lock

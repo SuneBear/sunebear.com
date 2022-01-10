@@ -54,6 +54,40 @@
   100%
     filter s('url(#filter-squiggly-4)')
 
+@keyframes anim-scratchy
+  0%
+    background-position: 0 0
+  25%
+    background-position: 0 0
+  26%
+    background-position: 20px -20px
+  50%
+    background-position: 20px -20px
+  51%
+    background-position: 40px -40px
+  75%
+    background-position: 40px -40px
+  76%
+    background-position: 60px -60px
+  99%
+    background-position: 60px -60px
+  100%
+    background-position: 0 0
+
+.anim-scratchy
+  animation: anim-scratchy 0.4s linear forwards infinite
+
+.scratchy-text
+  @extends .anim-scratchy
+  background: url(@/assets/cear-ui/patterns/scratchy-repeat-white.png)
+  background-size: 80px 60px
+  -webkit-background-clip: text
+  -webkit-text-fill-color: transparent
+  filter: invert(100%)
+
+  &.is-secondary
+    filter: inherit
+
 .anim-vert-shake,
 .anim-vert-shake-hover:hover
   animation-name anim-vert-shake

@@ -8,13 +8,13 @@ export class Chapter extends EventEmitter {
 
     this.sketch = sketch
     this.renderer = sketch.renderer
-    this.camera = sketch.camera
+    this.scene = new THREE.Scene()
+    this.camera = sketch.camera.clone()
 
     this.renderTarget = new THREE.WebGLMultisampleRenderTarget(
       this.sketch.sizes.width,
       this.sketch.sizes.height
     )
-    this.scene = new THREE.Scene()
   }
 
   // Transition Hook
@@ -36,7 +36,8 @@ export class Chapter extends EventEmitter {
 
   // Viewport
   resize() {
-
+    this.camera.aspect = this.sketch.sizes.width / this.sketch.sizes.height
+    this.camera.updateProjectionMatrix()
   }
 
   // Render Loop
