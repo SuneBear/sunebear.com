@@ -204,7 +204,7 @@ export default {
   },
 
   activated() {
-    this.initTestNotify()
+    // this.initTestNotify()
     this.setupDebug()
   },
 

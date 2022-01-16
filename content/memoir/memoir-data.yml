@@ -1,0 +1,9 @@
+timeline:
+
+  - date: '1994-11-10'
+    title: '你好，第一天在 1994'
+    tags: [ 'beginning' ]
+
+  - date: '2061-11-10'
+    title: '凡事都有结尾，但我不向死亡和解'
+    tags: [ 'ending' ]
