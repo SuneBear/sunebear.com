@@ -4,12 +4,12 @@
   .overflow-container
     position: relative
     left: 50%
-    max-width: 100vw
     transform: translateX(-50%)
+    max-width: 100vw
 
     &,
     &.size-medium
-      min-width: 140%
+      min-width: s('min(140%, 100vw)')
 
 .scrollable-y
   overflow-y: auto

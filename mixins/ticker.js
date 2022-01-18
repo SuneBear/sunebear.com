@@ -7,6 +7,8 @@ ticker.current = ticker.start
 ticker.elapsed = 0
 ticker.delta = 16
 
+let isPlaying = false
+
 /**
  * Callbacks
  */
@@ -17,6 +19,8 @@ const callbacks = []
  */
 const tickCallback = () => {
   window.requestAnimationFrame(tickCallback)
+
+  isPlaying = true
 
   // Update ticker
   const current = Date.now()
@@ -59,6 +63,14 @@ export default {
         this.stopTick()
       }
     }
+  },
+
+  mounted() {
+    // Enable for SSR component
+    if (!isPlaying) {
+      window.requestAnimationFrame(tickCallback)
+    }
+    this.startTick()
   },
 
   activated() {

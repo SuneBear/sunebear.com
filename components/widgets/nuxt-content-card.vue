@@ -5,7 +5,7 @@
       cear-notation( isShow isHalfHighlight ) {{ content.title }}
 
   .content-meta.mb-4.mb-md-8
-    | {{ $t('content.meta', { date: formattedData, author: this.author }) }}
+    | {{ $t('content.meta', { date: formattedDate, author: this.author }) }}
 
   readable-render(
     type="nuxtContent"
@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { getFormattedData } from '~/utils/time'
+import { getFormattedDate } from '~/utils/time'
 
 export default {
 
@@ -34,8 +34,8 @@ export default {
   },
 
   computed: {
-    formattedData() {
-      return getFormattedData(this.content.date || this.content.createdAt)
+    formattedDate() {
+      return getFormattedDate(this.content.date || this.content.createdAt)
     },
 
     author() {
@@ -53,8 +53,10 @@ export default {
 </script>
 
 <style lang="stylus">
-.nuxt-content-card
+.nuxt-content-card,
+.readable-content-card
   font-family: var(--fonts-blog)
+  font-size: 18px
 
   &.is-in-list
     .nuxt-content
@@ -84,6 +86,7 @@ export default {
   .nuxt-content
     font-size: 18px
 
+  &,
   .content-meta,
   .nuxt-content
 

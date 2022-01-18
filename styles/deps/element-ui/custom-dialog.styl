@@ -1,0 +1,60 @@
+.el-dialog__wrapper
+  .el-divider--horizontal
+    height: 2px
+    opacity: 0.5
+
+  .el-dialog
+    border-radius: 8px
+    width: 90%
+    max-width: 1000px
+    box-shadow: var(--shadow-3)
+
+    // Folded Corder
+    --cs: 40px
+    --br: 40%
+    clip-path: polygon(100% 0, 100% calc(100% - var(--cs)), calc(100% - var(--cs)) 100%, 0 100%, 0 0)
+
+    @media $mediaInMobile
+      --cs: 25px
+
+    &:after
+      content: ''
+      position: absolute
+      display: block
+      width: var(--cs)
+      height: var(--cs)
+      background-color: #f2f2f2
+      box-shadow: 0px 1px 4px primary(30)
+      bottom: 0
+      right: 0
+      border-top-left-radius: var(--br)
+
+    &__header
+      border-radius: 8px
+      padding-right: 70px
+
+    &__headerbtn
+      display: flex
+      align-items: center
+      justify-content: center
+      font-size: 18px
+      width: 26px
+      height: 26px
+      border-radius: 5px
+      text-align: center
+      line-height: 26px
+      top: 19px
+      right: 19px
+      z-index: 3
+      background: rgba(0, 0, 0, 0.05)
+      transition: 300ms
+
+      .el-dialog__close
+        font-weight: 500
+        transition: 300ms
+
+      &:hover
+        background: rgba(0, 0, 0, 0.1)
+
+      &:active
+        background: rgba(0, 0, 0, 0.2)

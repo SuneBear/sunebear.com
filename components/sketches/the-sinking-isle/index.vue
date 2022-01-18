@@ -32,7 +32,7 @@
 <script>
 import Vue from 'vue'
 import { __DEBUG__ } from '~/utils/dev'
-import { getFormattedData } from '~/utils/time'
+import { getFormattedDate } from '~/utils/time'
 import { loadingSketch } from './loading-2d-sketch'
 
 const CONTEXT_CACHE_KEY = 'TSI/Context'
@@ -202,7 +202,7 @@ export default {
       this.cachedContext.firstVisitTime = Date.now()
 
       let storyMessages = [
-        { user: 'system', message: this.$t('story.system.firstVisitDate', { date: getFormattedData(this.cachedContext.firstVisitTime) })  },
+        { user: 'system', message: this.$t('story.system.firstVisitDate', { date: getFormattedDate(this.cachedContext.firstVisitTime) })  },
         { user: 'bear', message: this.$t('story.system.onboardingWelcomeWord.main') },
         { user: 'user', message: this.$t('story.system.onboardingWelcomeWord.replyWhoIam') },
         { user: 'bear', message: this.$t('story.system.onboardingWelcomeWord.youAreCurious') }

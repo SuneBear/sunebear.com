@@ -315,6 +315,10 @@ export default {
     width: 100%
     height: 100%
 
+  &
+    display: flex
+    align-items: flex-end
+
   &.is-round
     svg
       border-radius: 10px

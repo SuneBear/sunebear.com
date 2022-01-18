@@ -1,9 +1,45 @@
 timeline:
 
   - date: '1994-11-10'
-    title: '你好，第一天在 1994'
+    title: '🐣 你好，20 世纪末'
     tags: [ 'beginning' ]
 
+  - date: '1999-01-01'
+    title: '👨‍👩‍👦‍👦 学龄前的记忆模糊，因贪玩走丢几次的蠢事就不展开了'
+    tags: [ 'infant' ]
+
+  - date: '2003-07-01'
+    title: '🍟 在成都上过几年小学，对狼牙土豆和黄豆粉糍粑念念不忘'
+    tags: [ 'childhood', 'food' ]
+
+  - date: '2004-07-01'
+    title: '👾 荷花池附近有个商场卖红白机存档游戏，我的 8-Bit 启蒙地'
+    tags: [ 'childhood', 'game', '8-bit' ]
+
+  - date: '2009-07-01'
+    title: '🌾 和小伙伴一起在暴雨后的田野玩耍，委托和我长得像的表哥代拿初中毕业证，差点没能毕业'
+    tags: [ 'school' ]
+
+  - date: '2011-02-01'
+    title: '🌐 通过 Flash 接触到编程，网上捡垃圾，停留在电脑前的时间开始超过户外'
+    tags: [ 'school', 'internet' ]
+
+  - date: '2016-11-01'
+    title: '😺 在微博上领养了一只四川简州猫，取名为 Cear'
+    tags: [ 'cear', 'cat' ]
+
+  - date: '2019-04-01'
+    title: '🏙 在曼谷和清迈流浪两周致肠胃炎，从此成了不能吃辣和豆腐的弱鸡'
+    tags: [ 'journey', 'thailand' ]
+
+  - date: '2020-01-23'
+    title: '🦠 武汉因新冠疫情封城，在老家避难 3 个月'
+    tags: [ 'covid-19' ]
+
+  - date: '2043-02-10'
+    title: '✨ 希望这时能有一些完整的交互作品，以及不要再见证历史了'
+    tags: [ 'wish' ]
+
   - date: '2061-11-10'
-    title: '凡事都有结尾，但我不向死亡和解'
+    title: '⚫️ 凡事都有结尾，但我不向死亡和解'
     tags: [ 'ending' ]

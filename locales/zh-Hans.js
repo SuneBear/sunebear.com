@@ -3,6 +3,12 @@ import story from './zh-Hans/story'
 export default {
   'sunebaer': '舒乐熊',
 
+  'time.in': '在',
+  'season.winter': '冬',
+  'season.spring': '春',
+  'season.summer': '夏',
+  'season.fall': '秋',
+
   'tsi.title': '暂未下沉的离岛',
   'tsi.menu.start': '开始探索',
   'tsi.menu.continue': '继续探索',
@@ -10,9 +16,13 @@ export default {
   'tsi.menu.setting': '设置',
   'tsi.menu.sound': '声音',
 
+  'action.readMore': '阅读更多',
   'action.exit': '离开',
   'action.skip': '跳过',
   'action.continue': '继续',
+
+  'memoir.cellTooltip': '{age} 岁，在 {year} 年{season}',
+  'memoir.cellMonthMeta': '第 {month} 个月',
 
   story,
   'story.history': '探索记录',

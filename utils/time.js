@@ -1,5 +1,5 @@
-export function getFormattedData(time) {
-  const date= new Date(time)
+export function getFormattedDate(time) {
+  const date = typeof time === 'object' ? time : new Date(time)
   const year = date.getFullYear()
   let month = date.getMonth() + 1
   let day = date.getDate()
