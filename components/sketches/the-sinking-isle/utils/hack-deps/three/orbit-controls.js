@@ -101,7 +101,10 @@ class OrbitControls extends EventDispatcher {
     }
 
     // Touch fingers
-    this.touches = { ONE: TOUCH.DOLLY_PAN, TWO: TOUCH.ROTATE }
+    this.touches = {
+      ONE: TOUCH.ROTATE,
+      TWO: TOUCH.DOLLY_PAN
+    }
 
     // for reset
     this.target0 = this.target.clone()
@@ -888,6 +891,8 @@ class OrbitControls extends EventDispatcher {
 
     function onTouchStart(event) {
       trackPointer(event)
+
+      console.log(111, pointers)
 
       switch (pointers.length) {
         case 1:

@@ -64,9 +64,11 @@ export default class Audio {
   }
 
   pause() {
+    this.lastSeconds = Tone.TransportTime().toSeconds()
     Tone.Transport.pause()
   }
 
+  // @FIXME: Seek player buffer to lastSeconds
   resume() {
     Tone.Transport.start()
   }

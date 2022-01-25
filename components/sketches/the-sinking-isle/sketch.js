@@ -208,6 +208,7 @@ class TheSinkingIsleSketch {
     this.module.set({ control: this.control })
   }
 
+  // @FIXME: Correct typo, enable spell checking
   setupEnviroment() {
     this.enviromentGround = this.module.add(EnviromentGround)
     this.enviromentTrace = this.module.add(EnviromentTraceDataTexutreModule)

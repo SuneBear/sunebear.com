@@ -78,6 +78,10 @@ export default class CameraModule extends Module {
       MIDDLE: THREE.MOUSE.DOLLY,
       RIGHT: THREE.MOUSE.ROTATE
     }
+    this.modes.debug.orbitControls.touches = {
+      ONE: THREE.TOUCH.DOLLY_PAN,
+      TWO: THREE.TOUCH.ROTATE
+    }
     this.modes.debug.orbitControls.enabled = this.modes.debug.active
     this.modes.debug.orbitControls.enableRotate = __DEBUG__
     this.modes.debug.orbitControls.enableZoom = __DEBUG__

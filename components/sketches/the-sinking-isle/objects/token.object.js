@@ -135,7 +135,7 @@ export class TokenObject extends THREE.Group {
     }
 
     await gsap.to(target, {
-      value: 0.37,
+      value: 0.35,
       duration: 2,
       ease: 'none'
     })

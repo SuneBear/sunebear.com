@@ -57,14 +57,14 @@ export default class AtmosphereRain extends Module {
           new THREE.MeshBasicMaterial({
             name: 'rain',
             transparent: true,
-            // opacity: 0.5,
+            opacity: random.range(0.4, 0.8)
           })
         )
         mesh.matrixAutoUpdate = false
         mesh.userData = {
           splat: false,
           time: 0,
-          speed: 5,
+          speed: 4,
           animateDuration: 0.25,
           splatterSpawnPosition: new THREE.Vector3(0, 0, 0)
         }
@@ -77,7 +77,7 @@ export default class AtmosphereRain extends Module {
 
     // const splatterGeometry = new THREE.CircleGeometry(radius * 4, 12);
     const splatRadius = 0.02
-    const thick = splatRadius * 2
+    const thick = splatRadius * 1
     const splatterGeometry = new THREE.RingGeometry(
       splatRadius * 4,
       splatRadius * 4 + thick,
@@ -137,6 +137,7 @@ export default class AtmosphereRain extends Module {
     const RAIN_COOLDOWN = 20
     let rainCooldown = 0
     let rainTime = 0
+    const splatPositionY = 1
     const newRainDuration = () => random.range(5, 10)
     let rainDuration = newRainDuration()
     let clearLake = false
@@ -215,7 +216,7 @@ export default class AtmosphereRain extends Module {
         tmpVec3.set(0, 0, 0)
         tmpVec3.applyMatrix4(mesh.matrixWorld)
 
-        if (tmpVec3.y <= 0 && !drop.splat) {
+        if (tmpVec3.y <= splatPositionY && !drop.splat) {
           drop.splat = true
           splatter(drop.splatterSpawnPosition, mesh.material.color)
         }
@@ -233,25 +234,26 @@ export default class AtmosphereRain extends Module {
 
         splatter.time += dt
 
-        let anim = 0
-        if (splatter.time <= splatter.animateDuration) {
-          anim = splatter.time / splatter.animateDuration
-        } else if (
-          splatter.time >=
-          splatter.duration - splatter.animateDuration
-        ) {
-          const el = Math.max(
-            0,
-            splatter.time - (splatter.duration - splatter.animateDuration)
-          )
-          const t = el / splatter.animateDuration
-          anim = 1 - t
-        } else {
-          anim = 1
-        }
+        let anim = splatter.time / splatter.duration
+        // if (splatter.time <= splatter.animateDuration) {
+        // //   anim = splatter.time / splatter.animateDuration
+        // // } else if (
+        // //   splatter.time >=
+        // //   splatter.duration - splatter.animateDuration
+        // // ) {
+        // //   const el = Math.max(
+        // //     0,
+        // //     splatter.time - (splatter.duration - splatter.animateDuration)
+        // //   )
+        // //   const t = el / splatter.animateDuration
+        // //   anim = 1 - t
+        // } else {
+        //   anim = 1
+        // }
         anim = eases.sineInOut(anim)
 
-        mesh.scale.setScalar(anim * rainSize)
+        mesh.scale.setScalar(anim * rainSize * 2)
+        mesh.material.opacity = (1 - anim) * 0.8
 
         if (splatter.time >= splatter.duration) {
           splatterPool.release()
@@ -265,12 +267,17 @@ export default class AtmosphereRain extends Module {
     function splatter(position, color) {
       const mesh = splatterPool.next()
       if (!mesh) return false
-
       splatterGroup.add(mesh)
       mesh.material.color.copy(color)
       mesh.position.copy(position)
       mesh.position.y = 0.1
       mesh.visible = false
+
+      const innerMesh = mesh.clone()
+      innerMesh.material = mesh.material.clone()
+      setTimeout(() => {
+        splatterGroup.add(innerMesh)
+      }, 600)
     }
 
     function spawn(origin) {
@@ -289,7 +296,7 @@ export default class AtmosphereRain extends Module {
       mesh.visible = false
       quaternionFromNormal(velocity, mesh.quaternion)
       const rain = mesh.userData
-      rain.speed = random.range(6, 8)
+      rain.speed = random.range(6, 12)
 
       mesh.updateMatrix()
       mesh.updateMatrixWorld()

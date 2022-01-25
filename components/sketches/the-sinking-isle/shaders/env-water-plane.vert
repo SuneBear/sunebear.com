@@ -31,7 +31,7 @@ uniform float time;
 void main () {
   vec4 worldPos = modelMatrix * vec4(position.xyz, 1.0);
   // Distort Wave, need increase geometry segments
-  // worldPos.z += cos(worldPos.x*5.0 + time) * vertWaveScale * sin(worldPos.y * 5.0 + time);
+  worldPos.z += cos(worldPos.x*5.0 + time) * vertWaveScale * sin(worldPos.y * 5.0 + time);
 
   #ifdef HAS_ANGLE
   vAngle = angle;

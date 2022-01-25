@@ -79,7 +79,8 @@ export default {
       { code: 'en-US', iso: 'en-US', file: 'en-US.js', dir: 'ltr' }
     ],
     vueI18n: {
-      fallbackLocale: 'zh-Hans'
+      fallbackLocale: 'zh-Hans',
+      silentFallbackWarn: true
     }
   },
 

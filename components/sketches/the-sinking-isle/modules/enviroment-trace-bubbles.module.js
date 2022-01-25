@@ -14,18 +14,18 @@ export default class EnviromentTraceBubbles extends Module {
     group.name = 'envTraceBubbles'
     this.scene.add(group)
 
-    const sphere0 = new THREE.SphereBufferGeometry(1, 8, 8)
-    const sphere1 = new THREE.SphereBufferGeometry(1, 8, 8)
+    const sphere0 = new THREE.SphereBufferGeometry(1, 2, 8)
+    const sphere1 = new THREE.SphereBufferGeometry(1, 4, 8)
     sphere1.scale(1, 0.75, 1)
 
     const baseColor = new THREE.Color('#3ea7e0')
     const material = new THREE.MeshBasicMaterial({
       transparent: true,
-      opacity: 0.3
+      opacity: 0.4
     })
     const waterMesh = new THREE.Mesh(sphere0, material)
     const pool = new ObjectPool({
-      maxCapacity: 100,
+      maxCapacity: 150,
       initialCapacity: 50,
       create() {
         const m = waterMesh.clone()
@@ -57,7 +57,7 @@ export default class EnviromentTraceBubbles extends Module {
       release(m) {}
     })
 
-    const newSpawnDelay = () => random.range(0.1, 0.2)
+    const newSpawnDelay = () => random.range(0.01)
     let spawnDelay = newSpawnDelay()
     let spawnTime = random.range(0, spawnDelay)
 
@@ -65,7 +65,7 @@ export default class EnviromentTraceBubbles extends Module {
     const tmpArr4D = [0, 0, 0, 0]
 
     const activeMeshes = group.children
-    const newCooldownDelay = () => random.range(1, 2)
+    const newCooldownDelay = () => random.range(0.01, 0.01)
     let hitCooldownDelay = newCooldownDelay()
     let hitCooldownTime = 0
     const activeEnv = this.enviroment
@@ -74,7 +74,7 @@ export default class EnviromentTraceBubbles extends Module {
     let lastAudioPlayer = null
 
     let lastPos = null
-    const distThreshold = 0.3
+    const distThreshold = 0.4
     const distThresholdSq = distThreshold * distThreshold
 
     this.processWaterBubbles = dt => {
@@ -132,8 +132,8 @@ export default class EnviromentTraceBubbles extends Module {
         const curAlpha = math.clamp01(curElapsed / m.userData.duration)
         const scl = Math.max(1e-5, Math.sin(curAlpha * Math.PI))
         m.scale.setScalar(m.userData.scale * scl)
-        m.position.addScaledVector(m.userData.velocity, m.userData.speed)
-        m.position.y += dt * 0.2
+        m.position.addScaledVector(m.userData.velocity, -m.userData.speed)
+        // m.position.y += dt * 10
         if (curElapsed >= m.userData.duration) {
           m.visible = false
           detachObject(m)
@@ -145,19 +145,21 @@ export default class EnviromentTraceBubbles extends Module {
     function spawnOne(userPos, userVelocity, big) {
       const m = pool.next()
       if (!m) return false
+      // const offset = new THREE.Vector3(0, 0, 0)
       m.userData.velocity.copy(userVelocity)
       m.quaternion.fromArray(random.quaternion(tmpArr4D))
       m.position.copy(userPos)
-      random.insideCircle(random.range(0.5, 1), tmpArr2D)
+      // m.position.add(offset)
+      random.insideCircle(random.range(0.05, 0.5), tmpArr2D)
       m.position.x += tmpArr2D[0]
       m.position.z += tmpArr2D[1]
-      m.position.y = random.range(0.05, 0.1)
+      m.position.y = 0.3
       m.visible = false
       m.userData.scale = (big ? 0.6 : 0.4) * random.gaussian(0.1, 0.1 / 3)
       m.userData.time = 0
-      m.userData.delay = random.range(0, 0.5)
-      m.userData.speed = random.range(0.05, 0.5)
-      m.userData.duration = random.range(1, 1.5)
+      m.userData.delay = random.range(0, 0.1)
+      m.userData.speed = random.range(0.05, 0.1)
+      m.userData.duration = random.range(0.5, 1)
       group.add(m)
       return m
     }

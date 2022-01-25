@@ -51,9 +51,11 @@ void main () {
   // dst = abs(fract((dst + 0.05 * time + off) * steps) - 0.5)*2.0;
   // dst *= smoothstep(0.1, 0.75, lake);
   vec2 uvDistort = vec2(0.0);
+
   float wakeStrength = wakeData.r / 4.0;
 
   #ifdef WATER
+
   vec2 wakeDirection = wakeData.gb * 0.2 * wakeStrength;
   uvDistort -= wakeDirection;
   float timeOff = time;
@@ -80,12 +82,15 @@ void main () {
   // float edgeFalloff = 1.0 - smoothstep(0.8, 0.0, lake);
   float edgeFalloff = smoothstep(ft0-ftf, ft0+ftf, lake + edgeOff2D.r * 0.05);
   #ifdef WATER
+
   col += foam * 0.1 * lakeBlurDepth + foam * 0.2 * (wakeStrength + centerStaticCausticsStrength);
   col = mix(col, groundColor, edgeFalloff);
   #else
+
   col += foam * mix(0.0, 0.1, lakeBlurDepth) + foam * 0.2 * wakeStrength;
   col = mix(col, groundColor, edgeFalloff);
   #endif
+
   col *= (1.0 - wakeStrength * 0.05);
   // col = mix(col, groundColor, strongEdge);
   // col = mix(col, col + 0.1, strongEdge);
@@ -136,6 +141,10 @@ void main () {
   #ifdef WATER
   ft0 = 0.5;
   ftf = 0.1;
+  // Player Trace
+  if (wakeData.r > 0.01) {
+    col -= max(0.01, wakeData.r - 0.8) * (wakeData.rgb * 0.05 + 0.5);
+  }
   float edgeAlpha = smoothstep(ft0+ftf, ft0-ftf, lake + edgeOff2D.r * 0.05);
   gl_FragColor = vec4(mix(groundColor, col, edgeAlpha), 1.0);
   if (edgeAlpha > 0.5) {

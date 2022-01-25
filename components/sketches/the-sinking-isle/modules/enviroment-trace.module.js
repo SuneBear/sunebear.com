@@ -11,9 +11,9 @@ export default class EnviromentTrace extends Module {
     super(sketch)
 
     const RTSIZE = 256
+    this.enableDrawingDebug = false
     this.softMap = this.asset.items.softCircleTexture
     this.renderTarget = new THREE.WebGLRenderTarget(RTSIZE, RTSIZE)
-    this.renderTarget.texture.generateMipmaps = false
     this.renderTarget.depthBuffer = false
     this.renderTarget.texture.minFilter = THREE.LinearFilter
     this.renderTarget.texture.magFilter = THREE.LinearFilter
@@ -55,12 +55,12 @@ export default class EnviromentTrace extends Module {
           // angle: Math.atan2(userChar.direction.z, userChar.direction.x),
           userSpeed: 0,
           strength: 1,
-          delay: this.random.range(0, 0.2),
-          duration: this.random.range(0, 4),
-          durationIn: this.random.range(1.25, 1.5),
-          durationOut: 1,
+          delay: this.random.range(0),
+          duration: this.random.range(0.4, 0.5),
+          durationIn: this.random.range(0.9, 1),
+          durationOut: 3,
           minSize: 2,
-          size: this.random.range(4, 9),
+          size: this.random.range(2, 5),
           // position: position.clone(),
           alpha: 0,
           opacity: 1,
@@ -82,7 +82,11 @@ export default class EnviromentTrace extends Module {
       }
     }
 
-    this.submitFrame.addPreRenderCallback(() => this.submitPreRender())
+    if (this.enableDrawingDebug) {
+      this.submitFrame.addPostRenderCallback(() => this.submitPreRender())
+    } else {
+      this.submitFrame.addPreRenderCallback(() => this.submitPreRender())
+    }
   }
 
   getTraceUniforms() {
@@ -91,7 +95,9 @@ export default class EnviromentTrace extends Module {
 
   submitPreRender() {
     this.renderer.getClearColor(this.tmpColor)
-    this.renderer.setRenderTarget(this.renderTarget)
+    if (!this.enableDrawingDebug) {
+      this.renderer.setRenderTarget(this.renderTarget)
+    }
     this.renderer.setClearColor(this.clearColor)
     this.renderer.clear()
     this.renderer.render(this.orthoScene, this.orthoCam)
@@ -107,7 +113,7 @@ export default class EnviromentTrace extends Module {
     const userChar = this.player
     const position = this.player.position
     const target = this.player.targetPos
-    const distThreshold = 0.5
+    const distThreshold = 0.3
     const distThresholdSq = distThreshold * distThreshold
 
     // @TODO: Support multiple particle types in different materials
@@ -144,8 +150,8 @@ export default class EnviromentTrace extends Module {
       const maxVel = 0.15
       const velx = math.clamp(p.velocity.x, -maxVel, maxVel)
       const velz = math.clamp(p.velocity.z, -maxVel, maxVel)
-      mesh.position.x += velx * 0.2
-      mesh.position.z += velz * 0.2
+      mesh.position.x += velx * 0.03
+      mesh.position.z += velz * 0.03
 
       const curTime = Math.max(0, p.time - p.delay)
       const totalDur = p.duration + p.durationIn + p.durationOut
@@ -160,14 +166,13 @@ export default class EnviromentTrace extends Module {
       if (curTime >= totalDur) {
         p.active = false
       }
-      const kt = 1
       mesh.material.uniforms.color.value.setRGB(
         1,
         p.directionX * 0.5 + 0.5,
         p.directionY * 0.5 + 0.5
       )
       mesh.material.uniforms.opacity.value =
-        p.alpha * p.opacity * kt * this.globalAlpha.value
+        p.alpha * p.opacity * this.globalAlpha.value
       mesh.scale.setScalar(math.lerp(p.minSize, p.size, Math.pow(p.alpha, 1)))
     })
 
