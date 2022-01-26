@@ -12,6 +12,14 @@ import marked from 'marked'
 import Markdown from '@nuxt/content/parsers/markdown'
 import { getDefaults, processMarkdownOptions } from '@nuxt/content/lib/utils'
 
+const renderer = new marked.Renderer()
+const linkRenderer = renderer.link;
+renderer.link = (href, title, text) => {
+  const localLink = location && href.startsWith(`${location.protocol}//${location.hostname}`)
+  const html = linkRenderer.call(renderer, href, title, text)
+  return localLink ? html : html.replace(/^<a /, '<a target="_blank" rel="nofollow" ')
+}
+
 // Notice: Therea are so many limits in Nuxt Content Vue Component,
 //         such as not support: camelCase, self-closing tag, slot, contextData
 // @TODO: Write a marked plugin to pass contentData to Vue component
@@ -67,7 +75,7 @@ export default {
     },
 
     parseMarkdownToHtml(md) {
-      const res = md && marked(md)
+      const res = md && marked(md, { renderer })
       this.parsedContent = res
       return res
     }
