@@ -4,7 +4,7 @@
   .dom-wrapper(
     :class="{ 'is-inited': isInited, 'is-show-menu': isShowMainMenu }"
   )
-    template(
+    client-only(
       v-if="isInited"
     )
       tsi-menu(
@@ -12,6 +12,7 @@
         :storyRoles="storyRoles"
         :storyMessages="storyMessages"
       )
+      tsi-interaction
       tsi-chapter-control
     cear-story.is-absolute-center(
       ref="story"
@@ -59,6 +60,11 @@ export default {
       isShowNotebookPopup: false,
       isSwitchingChapter: false,
       isPlayingCutscene: false,
+      isPressed: false,
+      cursor: {
+        x: 0,
+        y: 0
+      },
       panOffset: {
         x: 0,
         y: 0

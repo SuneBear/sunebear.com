@@ -196,6 +196,10 @@ export default class Player extends Module {
       this.mousePlaneTarget
     )
 
+    this.$vm.cursor.x = this.control.cursor.x
+    this.$vm.cursor.y = this.control.cursor.y
+    this.$vm.isPressed = this.control.isPressed('tap')
+
     // @TODO: Support movement when mousemove
     // Compute speedMultiplier & moveDirection
     if (hit) {
