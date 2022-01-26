@@ -37,7 +37,7 @@
             cear-button( isBlock type="secondary" shadow="rgba(var(--brand-rgb), 0.6)" @click="hide" size="big" )
               | {{ $tsi.cachedContext.hasFinishedOnboard ? $t('tsi.menu.continue') : $t('tsi.menu.start') }}
             //- cear-button( isBlock type="secondary-ghost" shadow="rgba(var(--brand-rgb), 0.6)" @click="showIntroModal" size="big" ) {{ $t('tsi.menu.intro') }}
-            .setting-item.d-flex.justify-space-between.align-center(
+            .setting-item.handler.d-flex.justify-space-between.align-center(
               @click="handleToggleSoundClick"
             )
               .left-part.d-flex.align-center.flex-shrink-0.ml-1
@@ -238,7 +238,6 @@ export default {
       margin-left: -8px
 
     .setting-item
-      cursor: pointer
       padding-top: 4px
       font-size: 20px
       font-weight: 500

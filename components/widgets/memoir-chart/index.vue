@@ -14,7 +14,7 @@
         | {{ $t('memoir.cellTooltip', { age: cell.age, year: cell.year, season: cell.season }) }}
 
       .base-cell.month-cell(
-        :class="[ 'period-' + cell.period, { 'has-detail': cell.detail, 'is-empty': !cell.title } ]"
+        :class="[ 'period-' + cell.period, { 'handler': cell.detail, 'is-empty': !cell.title } ]"
         @click="() => handleCellClick(cell, index)"
       )
         cear-sine-wave(
