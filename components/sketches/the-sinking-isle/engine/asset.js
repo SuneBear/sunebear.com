@@ -12,7 +12,9 @@ export default class Assets extends EventEmitter {
 
     // Loader
     this.loader = new Loader()
-    this.loadAssets(_assets)
+    if (_assets) {
+      this.loadAssets(_assets)
+    }
 
     // Loader file end event
     this.loader.on('fileEnd', (_resource, _data) => {
@@ -94,8 +96,8 @@ export default class Assets extends EventEmitter {
     }
 
     return new Promise((resolve, reject) => {
-      this.on('groupEnd', () => {
-        resolve()
+      this.on('groupEnd', (group) => {
+        resolve(group)
       })
       this.on('error', error => {
         reject(error)

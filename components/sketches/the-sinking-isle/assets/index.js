@@ -46,11 +46,6 @@ export default [
     items: [
       // Models
       {
-        name: 'octopusModel',
-        source: require('./objs/octopus.obj').default
-      },
-      { name: 'testModel', source: require('./gltfs/test.glb').default },
-      {
         name: 'boidFishModel',
         source: require('./gltfs/boid-fish.glb').default
       },
@@ -70,14 +65,10 @@ export default [
         name: 'playerBoatModel',
         source: require('./gltfs/player-boat.glb').default
       },
-      {
-        name: 'playerIceBearModel',
-        source: require('./gltfs/player-ice-bear.glb').default
-      },
-      {
-        name: 'chapterSuneBearHomeModel',
-        source: require('./gltfs/chapter-sunebear-home.glb').default
-      },
+      // {
+      //   name: 'playerIceBearModel',
+      //   source: require('./gltfs/player-ice-bear.glb').default
+      // },
 
       // Spritesheets
       {
@@ -136,11 +127,6 @@ export default [
         options: LINEAR_TEXTURE_OPTIONS
       },
       {
-        name: 'testTexture',
-        source: require('./textures/test.png'),
-        type: 'texture'
-      },
-      {
         name: 'spriteMaskTexture',
         source: require('./textures/masks/f.png'),
         type: 'texture',
@@ -186,12 +172,6 @@ export default [
         options: REPEAT_TEXTURE_OPTIONS
       },
       {
-        name: 'iceCausticsTexture',
-        source: require('./textures/ice-caustics.jpg'),
-        type: 'texture',
-        options: REPEAT_TEXTURE_OPTIONS
-      },
-      {
         name: 'waterDistortTexture',
         source: require('./textures/water-distort.png'),
         type: 'texture',
@@ -209,7 +189,6 @@ export default [
       },
 
       // Audios
-      { name: 'testAudio', source: require('./audios/test.mp3').default },
       {
         name: 'atmoRain',
         source: require('./audios/atmo-rain.mp3').default,
@@ -217,14 +196,41 @@ export default [
       },
       { name: 'waterTrace1', source: require('./audios/water-01.mp3').default, options: TRACE_AUDIO_OPTIONS },
       { name: 'waterTrace2', source: require('./audios/water-02.mp3').default, options: TRACE_AUDIO_OPTIONS },
-      { name: 'iceTrace1', source: require('./audios/ice-01.mp3').default, options: TRACE_AUDIO_OPTIONS },
-      { name: 'iceTrace2', source: require('./audios/ice-02.mp3').default, options: TRACE_AUDIO_OPTIONS },
-      { name: 'iceTrace3', source: require('./audios/ice-03.mp3').default, options: TRACE_AUDIO_OPTIONS },
-      { name: 'pin', source: require('./audios/pin.mp3').default }
+      // { name: 'iceTrace1', source: require('./audios/ice-01.mp3').default, options: TRACE_AUDIO_OPTIONS },
+      // { name: 'iceTrace2', source: require('./audios/ice-02.mp3').default, options: TRACE_AUDIO_OPTIONS },
+      // { name: 'iceTrace3', source: require('./audios/ice-03.mp3').default, options: TRACE_AUDIO_OPTIONS },
     ]
   },
   {
     name: 'postload',
-    items: []
+    items: [
+      // Models
+      { name: 'testModel', source: require('./gltfs/test.glb').default },
+      {
+        name: 'octopusModel',
+        source: require('./objs/octopus.obj').default
+      },
+      {
+        name: 'chapterSuneBearHomeModel',
+        source: require('./gltfs/chapter-sunebear-home.glb').default
+      },
+
+      // Textures
+      {
+        name: 'testTexture',
+        source: require('./textures/test.png'),
+        type: 'texture'
+      },
+      {
+        name: 'iceCausticsTexture',
+        source: require('./textures/ice-caustics.jpg'),
+        type: 'texture',
+        options: REPEAT_TEXTURE_OPTIONS
+      },
+
+      // audios
+      { name: 'testAudio', source: require('./audios/test.mp3').default },
+      { name: 'pin', source: require('./audios/pin.mp3').default }
+    ]
   }
 ]

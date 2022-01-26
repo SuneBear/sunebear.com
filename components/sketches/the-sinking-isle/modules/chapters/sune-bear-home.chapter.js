@@ -55,6 +55,7 @@ export class SuneBearHomeChapter extends Chapter {
     this.scene.add(directionLight)
   }
 
+  // @FIXME: Remove outline aliasing
   setupModel() {
     this.model = new BuildingGroupObject({
       model: this.sketch.asset.items.chapterSuneBearHomeModel,
@@ -66,6 +67,7 @@ export class SuneBearHomeChapter extends Chapter {
       },
       materialOptions: {
         castShadow: false,
+        outlineThickness: 0.005,
         emissiveIntensity: 0.05
       }
     })

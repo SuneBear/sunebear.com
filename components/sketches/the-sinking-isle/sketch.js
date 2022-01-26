@@ -38,6 +38,8 @@ import { rafps } from './utils/fps'
 const LOWEST_FPS = 2 // enable low FPS when dev UI
 const HIGH_FPS = 60
 
+const DEBUG_CHAPTER = null // 'suneBearHome'
+
 class TheSinkingIsleSketch {
   constructor() {
     // Dev, Config
@@ -233,14 +235,25 @@ class TheSinkingIsleSketch {
     this.module.set({ player: this.player })
   }
 
-  setupOtherModules() {
+  async setupOtherModules() {
     this.module.add(AtmosphereGlowDotsModule)
     this.module.add(AtmosphereRainModule)
     this.module.add(AtmosphereWindModule)
-    this.module.add(ChapterModule)
-    if (this.config.enablePlayground) {
-      this.module.add(TestModule)
-    }
+
+    // Postload module
+    this.asset.on('groupEnd', group => {
+      if (group.name !== 'postload') {
+        return
+      }
+      this.audio.setupPlayers(this.asset.getAudioItems())
+      this.module.add(ChapterModule)
+      if (this.config.enablePlayground) {
+        this.module.add(TestModule)
+      }
+      if (DEBUG_CHAPTER) {
+        this.$vm.currentChapter = DEBUG_CHAPTER
+      }
+    })
   }
 
   @autobind
