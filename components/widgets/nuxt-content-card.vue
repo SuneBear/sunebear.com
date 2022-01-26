@@ -44,8 +44,8 @@ export default {
   },
 
   methods: {
-    handleTitleClick () {
-      this.onTitleClick && this.onTitleClick()
+    handleTitleClick (event) {
+      this.onTitleClick && this.onTitleClick(event)
     }
   },
 

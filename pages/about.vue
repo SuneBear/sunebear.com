@@ -5,11 +5,16 @@ page-wrapper(
   .section
     .container
       nuxt-content-card(
+        :onTitleClick="handleTitleClick"
         :content="nuxtContent"
       )
 </template>
 
 <script>
+import { emitClickEffect } from '~/components/uxs/click-effect'
+
+let messageInstance = null
+
 export default {
 
   head() {
@@ -24,6 +29,28 @@ export default {
     return {
       nuxtContent
     }
+  },
+
+  methods: {
+    handleTitleClick(event) {
+      const isFirstClick = true || !localStorage.getItem('about/lastClickTitleTime')
+
+      if (isFirstClick) {
+        if (messageInstance && !messageInstance.closed) {
+          messageInstance.clearTimer()
+          messageInstance.startTimer()
+        } else {
+          messageInstance = this.$message.success({ message: this.$t('about.firstClickTitleTips'), customClass: 'single-line' })
+        }
+      }
+
+      emitClickEffect({
+        x: event.pageX,
+        y: event.pageY
+      })
+
+      localStorage.setItem('about/lastClickTitleTime', Date.now())
+    }
   }
 
 }
@@ -34,5 +61,6 @@ export default {
   .nuxt-content-card
     .content-title
       font-weight: bold
+      user-select: none
 
 </style>

@@ -4,7 +4,7 @@
     :style="customCursorWrapperStyle"
   )
     .move-cursor.d-flex.align-center.justify-center(
-      :class="{ 'is-enabled': $tsi.isPressed && $tsi.enableUserMoveInput }"
+      :class="{ 'is-enabled': !isPressOnClickable && $tsi.isPressed && $tsi.enableUserMoveInput }"
     )
       .center-dot
       .move-ripple
@@ -13,6 +13,12 @@
 <script>
 export default {
 
+  data() {
+    return {
+
+    }
+  },
+
   computed: {
     customCursorWrapperStyle () {
       const { x, y } = this.$tsi.cursor
@@ -20,6 +26,10 @@ export default {
       return {
         transform: `translate3d(-29.1px, -28px, 0) translate3d(${x}px, ${y}px, 0)`
       }
+    },
+
+    isPressOnClickable () {
+      return false
     }
   }
 

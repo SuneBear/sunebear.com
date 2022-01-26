@@ -36,5 +36,7 @@ export default {
   'nav.about': '关于',
   'nav.playground': '实验场',
 
+  'about.firstClickTitleTips': '给发现彩蛋的你 +1s',
+
   'placeholder': '填充'
 }

@@ -1,6 +1,6 @@
 .el-message
-  max-width: 90vw
-  min-width: 300px
+  max-width: min(768px, 90vw)
+  min-width: 100px
   border: none
   border-radius: 10px
   padding: 16px 24px
@@ -9,12 +9,16 @@
 
   @include box-bop-shadow
 
+  &.single-line
+    white-space: nowrap
+
   &__icon
     position: relative
     z-index: 2
     background-size: cover
     width: 18px
     height: 18px
+    flex-shrink: 0
 
     &:before
       display: none
@@ -48,7 +52,7 @@
 
   &--success
     &:after
-      background-color: #e3f2db
+      background-color: #eefae7
     box-shadow: inset 0px -6px 0px #cbe2bf
 
   &--warning
