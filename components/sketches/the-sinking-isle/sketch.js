@@ -14,6 +14,7 @@ import CameraModule from './modules/camera.module'
 import TweenModule from './modules/tween.module'
 import SubmitFrameModule from './modules/submit-frame.module'
 import RendererModule from './modules/renderer.module'
+import DOMRendererModule from './modules/dom-renderer.module'
 import EnviromentGround from './modules/enviroment-ground.module'
 import EnviromentTraceDataTexutreModule from './modules/enviroment-trace.module'
 import EnviromentTraceBubblesModule from './modules/enviroment-trace-bubbles.module'
@@ -27,8 +28,8 @@ import PlayerModule from './modules/player.module'
 import AtmosphereGlowDotsModule from './modules/atmosphere-glow-dots.module'
 import AtmosphereRainModule from './modules/atmosphere-rain.module'
 import AtmosphereWindModule from './modules/atmosphere-wind.module'
-import TestModule from './modules/test.module'
 import ChapterModule from './modules/chapter.module'
+import TestModule from './modules/test.module'
 
 import assets from './assets'
 
@@ -208,6 +209,8 @@ class TheSinkingIsleSketch {
     this.container.appendChild(this.renderer.domElement)
 
     this.module.set({ control: this.control })
+
+    this.module.add(DOMRendererModule)
   }
 
   // @FIXME: Correct typo, enable spell checking

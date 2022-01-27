@@ -158,7 +158,13 @@ export default {
     processMessage(message) {
       const regexBold = /\*\*(\S(.*?\S)?)\*\*/gm
       const regexItalic = /\*(\S(.*?\S)?)\*/gm
-      message = message.replace(regexItalic, '<cear-notation isShow needSpacing :animate="false" :iterations="3">$1</cear-notation>')
+
+      const notationReplace = '<cear-notation isShow needSpacing :animate="false" :iterations="3">$1</cear-notation>'
+
+      message = message
+        .replace(regexBold, notationReplace)
+        .replace(regexItalic, notationReplace)
+
       return message
     }
   }

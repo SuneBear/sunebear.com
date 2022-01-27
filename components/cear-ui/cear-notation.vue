@@ -151,6 +151,13 @@ export default {
     this.$watch('padding', value => {
       this.annotation.padding = value
     })
+
+    // @hack: show for non-keep-alive case
+    setTimeout(() => {
+      if (this.isShow) {
+        this.show()
+      }
+    })
   },
 
   activated() {

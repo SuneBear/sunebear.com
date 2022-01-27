@@ -42,7 +42,7 @@
     "stackblur": "^1.0.0",
     "stats.js": "^0.17.0",
     "svg-path-contours": "^2.0.0",
-    "three": "^0.133.0",
+    "three": "^0.136.0",
     "tone": "^14.7.77",
     "tweakpane": "^3.0.5",
     "viewport-units-buggyfill": "^0.6.2",

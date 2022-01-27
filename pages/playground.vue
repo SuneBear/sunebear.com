@@ -26,8 +26,13 @@ page-wrapper(
         cear-sticker.anim-squiggly.delay-medium( name="stillGroundItems" )
         cear-sticker.anim-squiggly.delay-large( name="stillGroundItems" )
         cear-sticker.anim-squiggly.delay-second( isFlipX name="stillGroundItems" )
-        cear-sticker.anim-squiggly.delay-large( isFlipX collection="absurd" )
         cear-sprite.anim-squiggly.delay-medium( name="stillGroundItems" )
+      .row.no-gutters
+        message-bubble-popover(
+          message="Hello"
+          :duration="1000000"
+        )
+          cear-sticker.anim-squiggly.delay-large( isFlipX collection="absurd" )
 
     .section-cear-notation.mt-8
       .text-h5.mb-4 cear-notation
@@ -66,12 +71,16 @@ page-wrapper(
         cear-button( round shadow="var(--brand)" border="var(--primary)" icon="apps-fill")
         cear-button( type="brand-light" size="big" icon="bear-smile-fill") Brand Light
         cear-button( type="brand-light" round iconShadow="var(--mark)" icon="footprint-line")
+        attention-indicator(
+          :onClick="() => {}"
+        )
         //- cear-button( type="gray" size="big" icon="leaf-fill") Gray
         cear-button( isBlock type="brand" size="big" icon="moon-fill") Brand - isBlock
       .row.no-gutters
         cear-button( type="primary" size="small") Primary small
         cear-button( type="primary-ghost") Primary Ghost
         cear-button( type="primary-ghost" isSquare :enableMask="false" :shadow="null") Primary Ghost - isSquare, noMask
+
     .section-cear-story.mt-8
       .text-h5.mb-4 cear-story
       .row.no-gutters

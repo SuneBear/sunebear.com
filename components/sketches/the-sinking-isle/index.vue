@@ -14,6 +14,7 @@
       )
       tsi-interaction
       tsi-chapter-control
+    .dom-renderer( ref="domRenderer" )
     cear-story.is-absolute-center(
       ref="story"
       enableActionBar
@@ -316,6 +317,19 @@ export default {
 
       /[lang="zh-Hans"] &
         font-size: 24px
+
+    .dom-renderer
+      .attention-indicator
+        opacity: 0.8
+
+      .cear-message-bubble
+        // opacity: 0.95
+
+      .message-bubble-popover
+        transform: translate(-50%, -100%) translate(0, -40px)
+
+      > *
+        pointer-events: auto
 
     .cear-message-bubble
       .cear-icon

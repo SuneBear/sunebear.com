@@ -208,9 +208,10 @@ export default {
       transform: translateY(0%) scale(1)
 
 .tsi-main-menu
+  $z-index = 10
   .menu-navbar
     position: absolute
-    z-index: 2
+    z-index: ($z-index + 1)
     top: 2rem
     right: 2rem
     font-size: s('min(6vw, 45px)')
@@ -344,6 +345,7 @@ export default {
 
   &.is-show
     .menu-modal
+      z-index: $z-index
       pointer-events: initial
       background-color: primary(30)
 </style>

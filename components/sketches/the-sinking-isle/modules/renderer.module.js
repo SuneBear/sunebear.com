@@ -13,6 +13,7 @@ import fragmentShader from '../shaders/post-processing.frag'
 import { OutlineEffect } from '../utils/hack-deps/three/outline-effect'
 import { RENDER_LAYERS } from '../utils/constants'
 
+// @FIXME: Update three.js to r137 with correct color
 export default class Renderer extends Module {
   constructor(sketch) {
     super(sketch)

@@ -15,6 +15,7 @@ export default {
   'tsi.menu.intro': '介绍',
   'tsi.menu.setting': '设置',
   'tsi.menu.sound': '声音',
+  'tsi.snowfallSpace.intro': '雪花如叶子一般独特，却同柳絮一样转瞬即逝 \n 来*❄️雪花落语*倾听它的声音',
 
   'action.readMore': '阅读更多',
   'action.exit': '离开',

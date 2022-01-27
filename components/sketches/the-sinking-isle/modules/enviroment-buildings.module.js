@@ -2,6 +2,7 @@ import * as THREE from 'three'
 import Module from '../engine/module'
 import { Random } from '../engine/utils'
 import { BuildingGroupObject } from '../objects/building.object'
+import { AttentionIndicatorObject, BubbleMessageObject } from '../objects/vue-2d.object'
 import { createDepthFadeMaterial } from '../objects/depth-fade.object'
 import { RENDER_LAYERS } from '../utils/constants'
 
@@ -113,6 +114,18 @@ export default class EnviromentBuildings extends Module {
       portalPosition: new THREE.Vector3(),
       onPortalOpened: null
     })
+
+    // Setup Indicator
+    const introIndicatorTarget = this.snowfallSpace.getObjectByName('Snegir_Details_0')
+    const indicator =  new AttentionIndicatorObject({
+      onClick: () => {
+        new BubbleMessageObject({ message: this.$vm.$t('tsi.snowfallSpace.intro') }, introIndicatorTarget)
+      }
+    })
+    indicator.position.y = 20
+    if (introIndicatorTarget) {
+      introIndicatorTarget.add(indicator)
+    }
 
     this.applyPatch(this.snowfallSpace)
     this.group.add(this.snowfallSpace)

@@ -15,8 +15,24 @@ export class MainChapter extends Chapter {
     this.controls.enabled = __DEBUG__
   }
 
-  beforeLeave() {
-    this.controls.enabled = false
+  afterEntered() {
+    // Re-display dom renderer
+    this.sketch.scene.traverse((object) => {
+      if (object.isCSS2DObject) {
+        object.visible = object.userData.lastVisible
+      }
+    })
   }
 
+  beforeLeave() {
+    this.controls.enabled = false
+
+    // @hack: hide dom renderer
+    this.sketch.scene.traverse((object) => {
+      if (object.isCSS2DObject) {
+        object.userData.lastVisible = object.visible
+        object.visible = false
+      }
+    })
+  }
 }
