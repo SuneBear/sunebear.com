@@ -1,12 +1,15 @@
 <template lang="pug">
 el-popover(
   v-model="visible"
+  ref="elPopover"
   :trigger="trigger"
   :width="width"
   :placement="placement"
   @mouseenter.native="clearTimer"
   @mouseleave.native="startTimer"
+  @show="handleShow"
   @after-leave="handleAfterLeave"
+  :popper-options="popperOptions"
   popper-class="message-bubble-popover"
 )
   cear-message-bubble(
@@ -19,8 +22,13 @@ el-popover(
 
 <script>
 import CearMessageBubble from '../cear-ui/cear-message-bubble'
+import ticker from '~/mixins/ticker'
 
 export default {
+  mixins: [
+    ticker
+  ],
+
   props: {
     ...CearMessageBubble.props,
 
@@ -39,9 +47,14 @@ export default {
       default: true
     },
 
+    needScheduleUpdate: {
+      type: Boolean,
+      default: false
+    },
+
     width: {
       type: Number,
-      default: 100
+      default: 200
     },
 
     trigger: {
@@ -51,11 +64,36 @@ export default {
 
     onAfterLeave: {
       type: Function
+    },
+
+    // @REF: https://github.com/ElemeFE/element/blob/dev/src/utils/popper.js#L50
+    // @docs: https://popper.js.org/docs/v1/
+    popperOptions: {
+      type: Object,
+      default: () => ({
+        modifiersIgnored: [ 'preventOverflow', 'flip' ]
+      })
     }
   },
 
   model: {
     prop: 'visible'
+  },
+
+  data() {
+    return {
+      enableTicker: this.needScheduleUpdate
+    }
+  },
+
+  watch: {
+    message() {
+      if (this.message) {
+        this.show()
+      } else {
+        this.close()
+      }
+    }
   },
 
   mounted() {
@@ -94,10 +132,28 @@ export default {
       }
     },
 
+    onTick() {
+      const { elPopover } = this.$refs
+      if (this.needScheduleUpdate && elPopover && elPopover.popperJS) {
+        elPopover.popperJS.update()
+      }
+    },
+
+    handleShow() {
+      this.startTick()
+    },
+
     handleAfterLeave() {
+      this.stopTick()
       if (typeof this.onAfterLeave === 'function') {
         this.onAfterLeave(this)
       }
+    },
+
+    show() {
+      this.clearTimer()
+      this.visible = true
+      this.startTimer()
     },
 
     clearTimer() {

@@ -34,6 +34,11 @@ export const mod = (a, b) => {
   return ((a % b) + b) % b
 }
 
+export const pingPong = (t, length) => {
+  t = mod(t, length * 2)
+  return length - Math.abs(t - length)
+}
+
 export const sign = n => {
   if (n > 0) return 1
   else if (n < 0) return -1

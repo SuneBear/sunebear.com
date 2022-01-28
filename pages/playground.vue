@@ -29,10 +29,14 @@ page-wrapper(
         cear-sprite.anim-squiggly.delay-medium( name="stillGroundItems" )
       .row.no-gutters
         message-bubble-popover(
-          message="Hello"
-          :duration="1000000"
+          needScheduleUpdate
+          :message="bubbleMessage"
+          :duration="-1"
         )
-          cear-sticker.anim-squiggly.delay-large( isFlipX collection="absurd" )
+          cear-sticker.anim-squiggly.delay-large(
+            isFlipX collection="absurd"
+            :style="{ transform: `translate3d(${stickerMarginLeft}%, 0, 0)` }"
+          )
 
     .section-cear-notation.mt-8
       .text-h5.mb-4 cear-notation
@@ -156,7 +160,9 @@ page-wrapper(
 <script>
 import { Pane } from 'tweakpane'
 import { cssVar } from '~/utils/color'
-import { Random } from '~/utils/random'
+import { Random, random } from '~/utils/random'
+import { math } from '~/utils/math'
+import ticker from '~/mixins/ticker'
 
 let storyMessages = [
   { user: 'system', message: `First visit is on ${new Date().toLocaleDateString()}`  },
@@ -171,6 +177,10 @@ if (process.client && localStorage.getItem('playgroundStoryMessages')) {
 }
 
 export default {
+
+  mixins: [
+    ticker
+  ],
 
   head() {
     return {
@@ -195,6 +205,8 @@ export default {
       enableStoryAnimte: false,
       isShowNotationGroup: true,
       storyInputMessage: null,
+      bubbleMessage: 'Hello',
+      stickerMarginLeft: 10,
       testMarkdownTemplate: "### Render type: markdown (marked) \n Support markdown syntax and <cear-notation isShow>Vue Component such as `cear-notation`, support variable: this is `{{ testVar }}`</cear-notation>",
       testMarkdownTemplateData: {
         testVar: 'testVarValue'
@@ -267,6 +279,12 @@ export default {
           this.$notify({ message: 'Notification loo0o0o0o0o0o0ooo0oo00oo000oooo000ooo00oong text' })
         }, 200)
       }, 200)
+    },
+
+    onTick() {
+      // this.stickerMarginLeft = math.pingPong(this.ticker.elapsed/10, 100)
+      // @FIXME: Dynamic message is high cost
+      // this.bubbleMessage = `Left: ${Math.floor(this.stickerMarginLeft)}`
     },
 
     refreshBlobSeed() {

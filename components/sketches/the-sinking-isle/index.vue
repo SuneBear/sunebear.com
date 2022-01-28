@@ -12,7 +12,9 @@
         :storyRoles="storyRoles"
         :storyMessages="storyMessages"
       )
-      tsi-interaction
+      tsi-interaction(
+        v-if="$tsi.cursor"
+      )
       tsi-chapter-control
     .dom-renderer( ref="domRenderer" )
     cear-story.is-absolute-center(
@@ -174,6 +176,13 @@ export default {
 
   methods: {
     async initSketch () {
+      if (module && module.hot) {
+        // @FIXME: Support HMR for three.js
+        module.hot.dispose(() => {
+          location.reload()
+        })
+      }
+
       if (this.isInited && !this.enableDebug) {
         return
       }
@@ -325,7 +334,7 @@ export default {
       .cear-message-bubble
         // opacity: 0.95
 
-      .message-bubble-popover
+      .el-popover.message-bubble-popover
         transform: translate(-50%, -100%) translate(0, -40px)
 
       > *

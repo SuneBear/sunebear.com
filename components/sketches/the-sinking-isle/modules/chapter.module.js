@@ -125,7 +125,7 @@ export default class ChapterModule extends Module {
         this.postUniforms.texture1.value = this.$currentChapter.renderTarget
         this.postUniforms.progress.value = 0
         this.$vm.isSwitchingChapter = false
-        this.$lastChapter.afterLeaved()
+        this.$lastChapter.afterLeft()
         this.$currentChapter.afterEntered()
       }
     })

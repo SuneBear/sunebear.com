@@ -30,7 +30,7 @@ export class Chapter extends EventEmitter {
 
   }
 
-  async afterLeaved() {
+  async afterLeft() {
 
   }
 
