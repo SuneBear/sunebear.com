@@ -3,7 +3,7 @@
   nuxt-link( to="/?section=top")
     //- @TODO: Click logo to start a story
     cear-sticker.anim-squiggly.mb-4(
-      name="logoBear"
+      name="logo-bear"
     )
   .nav-list
     nuxt-link.nav-item( to="/?section=top" exact-path )
@@ -49,7 +49,7 @@ export default {
     top: 1rem
     --text-opacity: 0
 
-  .illustration-logoBear
+  .illustration-logo-bear
     // border-radius: 50%
     // border: 3px solid $secondary
 

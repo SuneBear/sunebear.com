@@ -98,6 +98,7 @@ export default {
 
   mounted() {
     if (this.autoPlay) {
+      this.$emit('input', true)
       this.visible = true
     }
     this.startTimer()
@@ -152,6 +153,7 @@ export default {
 
     show() {
       this.clearTimer()
+      this.$emit('input', true)
       this.visible = true
       this.startTimer()
     },

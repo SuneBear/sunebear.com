@@ -6,6 +6,9 @@ page-wrapper(
     .text-h4.pb-2.anim-squiggly
       cear-notation( isShow :color="brandColor" ) UI Playground
 
+    .mt-8
+      cear-label( name="laurel-wreath" ) Test
+
     .section-cear-photo-frame.mt-8
       .text-h5.mb-4.scratchy-text
         | cear-photo-frame
@@ -21,13 +24,13 @@ page-wrapper(
       .text-h5.mb-4 cear-sticker
       .row.no-gutters
         cear-sticker( name="frogJump" )
-        cear-sticker( name="butterflyFly" label="Butterfly" )
+        cear-sticker.anim-suspend( name="butterflyFly" label="Butterfly" )
         cear-sticker.anim-squiggly.delay-small( width="10%" name="stillGroundItems" )
         cear-sticker.anim-squiggly.delay-medium( name="stillGroundItems" )
         cear-sticker.anim-squiggly.delay-large( name="stillGroundItems" )
         cear-sticker.anim-squiggly.delay-second( isFlipX name="stillGroundItems" )
-        cear-sprite.anim-squiggly.delay-medium( name="stillGroundItems" )
-      .row.no-gutters
+        cear-sprite.anim-glimmer( name="stillGroundItems"  style="--glimmer-opacity: 0.5")
+      .row.no-gutters.mt-6
         message-bubble-popover(
           needScheduleUpdate
           :message="bubbleMessage"
@@ -38,6 +41,21 @@ page-wrapper(
             :style="{ transform: `translate3d(${stickerMarginLeft}%, 0, 0)` }"
           )
 
+    .section-cear-label.mt-8
+      .text-h5.mb-4 cear-label
+      .row.no-gutters
+        cear-label( name="laurel-wreath" :onClick="() => $message('Congratulate')" ) Wreath Label
+      div
+        cear-label( name="divider-line-dashed" )
+          cear-label( name="washi-tape-zigzag" theme="polka-dark-dotted") Washi Tape
+      .row.no-gutters
+        cear-label.ma-1( name="washi-tape-zigzag" theme="polka-dotted")
+        cear-label.ma-1( name="washi-tape-sheer" theme="skew-bars")
+        cear-label.ma-1( name="washi-tape-diamond" theme="polka-dark-dotted")
+        cear-label.ma-1( name="washi-tape-sheer" theme="cross-dot")
+        cear-label.ma-1( name="washi-tape-zigzag" theme="leaf")
+      .row.no-gutters
+        cear-label( name="divider-line-solid" align="center" )
     .section-cear-notation.mt-8
       .text-h5.mb-4 cear-notation
       .row.no-gutters

@@ -16,18 +16,8 @@
       :class="[ 'illustration-' + sticker.name ]"
       :style="entityStyle"
     )
-    .sticker-entity.sticker-label(
-      v-else-if="sticker.type === 'label'"
-      :class="[ 'label-' + sticker.name ]"
-      :style="entityStyle"
-    )
-      .label-content.is-inner(
-        v-if="label"
-        :style="innerLabelStyle"
-      ) {{ label }}
-
     .label-content.is-bottom(
-      v-if="label && sticker.type !== 'label'"
+      v-if="label"
     ) {{ label }}
 </template>
 
@@ -86,7 +76,7 @@ const CEAR_STICKER_OPTIONS_LIST = [
     height: 50
   },
   {
-    name: 'logoBear',
+    name: 'logo-bear',
     src: require('@/assets/stickers/logo-bear.png'),
     scale: 0.1,
     width: 980,
@@ -108,10 +98,11 @@ export default {
     },
     collection: {
       type: String
+      // @values: default | animal | plant | absurd
     },
     type: {
       type: String
-      // @values: illustration | label | sprite
+      // @values: illustration | sprite
     },
 
     // Content

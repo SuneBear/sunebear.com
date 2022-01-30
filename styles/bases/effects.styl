@@ -88,6 +88,21 @@
   &.is-secondary
     filter: inherit
 
+.anim-glimmer
+  animation: anim-glimmer var(--duration, 2s) ease-in-out infinite
+  animation-delay: var(--delay, 1s)
+
+  @keyframes anim-glimmer
+    50%
+      opacity: var(--glimmer-opacity, 0)
+
+.anim-suspend
+  animation: anim-suspend var(--duration, 3s) ease-in-out infinite
+
+  @keyframes anim-suspend
+    50%
+      transform: translateY(var(--suspend-y, 20%))
+
 .anim-vert-shake,
 .anim-vert-shake-hover:hover
   animation-name anim-vert-shake

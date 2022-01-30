@@ -123,8 +123,9 @@ const getSeason = (month, $t) => {
   return season
 }
 
+const ENABLE_DETAIL_DEBUG = false
+
 // @TOOD: Add primeYear view, support annual ring effect
-// @TODO: Add noise to grid
 // @TODO: Support multiple cells in one month
 export default {
   props: {
@@ -186,6 +187,12 @@ export default {
 
     monthCells() {
       return this.generateMonthCells(this.startDate, this.endDate)
+    }
+  },
+
+  mounted() {
+    if (ENABLE_DETAIL_DEBUG) {
+      this.handleCellClick(this.monthCells[0])
     }
   },
 

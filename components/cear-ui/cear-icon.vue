@@ -1,7 +1,7 @@
 <template lang="pug">
 cear-mask.cear-icon(
   v-bind="maskProps"
-  :class="{ 'has-shadow': shadow }"
+  :class="{ 'has-shadow': shadow, 'is-flip-x': isFlipX }"
 )
   svg-icon(
     :name="name"
@@ -31,6 +31,9 @@ export default {
     'isLine': {
       type: Boolean,
       default: false
+    },
+    'isFlipX': {
+      type: Boolean
     },
     // CSS Variables
     'fill': String, 'stroke': String, 'shadow': String, 'circle': String
@@ -79,6 +82,10 @@ export default {
   &.has-shadow
     .svg-symbol
       filter: drop-shadow(3px 3px 0 var(--shadow))
+
+  &.is-flip-x
+    .svg-symbol
+      transform: scaleX(-1)
 
 .svg-symbol
   color: currentColor
