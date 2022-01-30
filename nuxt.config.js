@@ -56,6 +56,8 @@ export default {
 
   buildModules: ['@nuxtjs/svg-sprite'],
   svgSprite: {
+    input: '~/assets/icons',
+    output: '~/assets/svg-symbols',
     elementClass: 'svg-symbol',
     spriteClassPrefix: 'symbol-',
     publicPath: '/_nuxt/'
