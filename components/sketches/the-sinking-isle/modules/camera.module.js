@@ -30,7 +30,8 @@ export default class CameraModule extends Module {
     this.instance = new THREE.PerspectiveCamera(
       30,
       this.sizes.width / this.sizes.height,
-      0.1,
+      // @REF: https://en.wikipedia.org/wiki/Z-fighting
+      1,
       1000
     )
     this.instance.rotation.reorder('YXZ')

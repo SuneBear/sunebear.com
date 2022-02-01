@@ -6,6 +6,7 @@ export const RENDER_LAYERS = {
   GROUND: 100,
   GROUND_STILL_LIFE: 101,
   GROUND_DEPTH: 102,
+  PLAYER: 110,
   BUILDING: 150,
   NOISE_MASK: 200,
   // Effects, layers.enable

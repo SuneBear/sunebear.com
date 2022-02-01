@@ -25,14 +25,15 @@ page-wrapper(
       .row.no-gutters
         cear-sticker( name="frogJump" )
         cear-sticker.anim-suspend( name="butterflyFly" label="Butterfly" )
-        cear-sticker.anim-squiggly.delay-small( width="10%" name="stillGroundItems" )
-        cear-sticker.anim-squiggly.delay-medium( name="stillGroundItems" )
-        cear-sticker.anim-squiggly.delay-large( name="stillGroundItems" )
-        cear-sticker.anim-squiggly.delay-second( isFlipX name="stillGroundItems" )
+        cear-sticker( width="10%" name="stillGroundItems" )
+        cear-sticker( name="stillGroundItems" )
+        cear-sticker( name="stillGroundItems" )
+        cear-sticker( isFlipX name="stillGroundItems" )
         cear-sprite.anim-glimmer( name="stillGroundItems"  style="--glimmer-opacity: 0.5")
       .row.no-gutters.mt-6
         message-bubble-popover(
-          needScheduleUpdate
+          v-model="isShowMessagePopover"
+          :needScheduleUpdate="false"
           :message="bubbleMessage"
           :duration="-1"
         )
@@ -88,7 +89,6 @@ page-wrapper(
       .row.no-gutters
         cear-button( icon="leaf-fill") Default
         cear-button( vertShakeHover squigglyHover size="medium" circle icon="leaf-fill" shadow="var(--primary)")
-        cear-button( size="medium" circle icon="settings-2-fill" shadow="var(--primary)")
         cear-button( squiggly vertShake size="big" round iconShadow="var(--mark)" icon="rainy-fill")
         cear-button( round shadow="var(--brand)" border="var(--primary)" icon="apps-fill")
         cear-button( type="brand-light" size="big" icon="bear-smile-fill") Brand Light
@@ -219,6 +219,7 @@ export default {
       paperName: 'brand-dotted',
       brandColor: null,
       blobSeed: Random.getRandomSeed(),
+      isShowMessagePopover: false,
       enableIconMask: true,
       enableStoryAnimte: false,
       isShowNotationGroup: true,

@@ -58,9 +58,10 @@ export default {
   },
 
   head() {
+    const isSafari = this.isSafari
     return {
       bodyAttrs: {
-        class: 'v-application theme-' + this.theme
+        class: `v-application theme-${this.theme} ${isSafari && 'is-in-safari'}`
       }
     }
   },

@@ -29,7 +29,7 @@ export default class Player extends Module {
     this.instance.name = 'player'
     this.instance.module = this
 
-    this.instance.renderOrder = -10
+    this.instance.renderOrder = RENDER_LAYERS.PLAYER
     this.instance.position.set(0, 0, 0)
     this.instance.rotation.y = Math.PI * 1.25
 
@@ -56,6 +56,7 @@ export default class Player extends Module {
 
     scene.traverse(obj => {
       if (obj.material) {
+        obj.renderOrder = RENDER_LAYERS.PLAYER + 1
         convertToToonMaterial(obj, {
           emissive: 0x404040,
           emissiveIntensity: 0.1,

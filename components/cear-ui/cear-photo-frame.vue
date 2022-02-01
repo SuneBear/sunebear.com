@@ -3,7 +3,7 @@
   :class="rootClass"
 )
   //- @FIXME: Improve Safari perf
-  svg.svg-defs-wrapper
+  svg.svg-defs-wrapper( v-if="!isSafari" )
     defs
       filter(
         :id="filterId"

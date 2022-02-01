@@ -27,6 +27,18 @@
 <script>
 export default {
 
+  props: {
+    scrollTop: {
+      type: Number
+    },
+    scrollLeft: {
+      type: [Number, String]
+    },
+    isScrolling: {
+      type: Boolean
+    }
+  }
+
 }
 </script>
 

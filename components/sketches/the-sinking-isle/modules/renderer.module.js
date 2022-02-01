@@ -65,6 +65,7 @@ export default class Renderer extends Module {
     this.instance = new THREE.WebGLRenderer({
       alpha: false,
       antialias: false,
+      // logarithmicDepthBuffer: true,
       stencil: false
     })
     this.instance.module = this
@@ -429,7 +430,9 @@ export default class Renderer extends Module {
 
     this.renderBloom()
     this.renderShadows()
-    this.renderOutline()
+    if (!this.$vm.isSafari) {
+      this.renderOutline()
+    }
 
     if (this.usePostprocess) {
       this.postProcess.composer.render()

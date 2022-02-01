@@ -16,12 +16,13 @@
       )
 
   //- Global Defs
-  cear-svg-filters
+  cear-svg-filters( v-if="!isSafari" )
 </template>
 
 <script>
 import { debugCreator } from '@/utils/dev'
 import { math } from '@/utils/math'
+
 const layoutDebug = debugCreator('Layout')
 
 export default {
@@ -68,9 +69,11 @@ export default {
   max-width: 100%
   height: 100vh
   max-height: 100%
+
   // @HACK: keep fullscreen with zoom
   @media $mediaInMiddleScrren
     position fixed
+    transform: translate3d(0,0,0)
 
   .container
     max-width: clamp(375px, 50vw, 700px)
@@ -90,6 +93,7 @@ export default {
     .page-wrapper
       width: 100%
       height: 100%
+      overflow-x: hidden
 
   .distort-filter-def
     height: 0

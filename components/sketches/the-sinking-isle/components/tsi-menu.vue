@@ -14,7 +14,7 @@
       //- @FIXME: dynamic disabled will position a wrong place
       el-tooltip(
         :content="tab.tooltip || tab.name"
-        :disabled="false"
+        :disabled="!$tsi.isPlaying"
         :manual="tab.id === currentTabId"
         :value="tab.id !== currentTabId ? undefined : false"
       )
@@ -219,6 +219,7 @@ export default {
 
     .shadow-handler
       margin-left: 1rem
+      transform: translate3d(0,0,0)
 
   .menu-modal
     transition: 1000ms

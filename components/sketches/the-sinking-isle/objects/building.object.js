@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import { asset } from '../engine/asset'
+import { RENDER_LAYERS } from '../utils/constants'
 import { WaterBuoyancyAnimation } from './animations'
 import { convertToToonMaterial } from './mesh-toon.material'
 import { TokenObject } from './token.object'
@@ -33,6 +34,7 @@ export class BuildingGroupObject extends THREE.Group {
 
     scene.traverse(obj => {
       if (obj.material) {
+        obj.renderOrder = RENDER_LAYERS.BUILDING
         const materialOptions = materialOptionsMap[obj.name]
         convertToToonMaterial(obj, {
           outlineThickness: 0.005,

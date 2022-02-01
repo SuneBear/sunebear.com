@@ -37,7 +37,7 @@ export default {
       default: 'top'
     },
 
-    visible: {
+    visibleProp: {
       type: Boolean,
       default: false
     },
@@ -77,11 +77,12 @@ export default {
   },
 
   model: {
-    prop: 'visible'
+    prop: 'visibleProp'
   },
 
   data() {
     return {
+      visible: this.visibleProp,
       enableTicker: this.needScheduleUpdate
     }
   },
@@ -107,12 +108,14 @@ export default {
   activated() {
     this.startTimer()
     if (typeof this.lastVisible !== 'undefined') {
+      this.$emit('input', this.lastVisible)
       this.visible = this.lastVisible
     }
   },
 
   deactivated() {
     this.lastVisible = this.visible
+    this.$emit('input', false)
     this.visible = false
     this.clearTimer()
   },
