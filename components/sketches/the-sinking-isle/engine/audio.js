@@ -9,6 +9,18 @@ export default class Audio {
 
     Tone.context.lookAhead = 0
     Tone.Transport.start()
+
+    this.setupEvents()
+  }
+
+  setupEvents() {
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'hidden') {
+        this.pause()
+      } else {
+        this.resume()
+      }
+    })
   }
 
   setupPlayers(items) {
@@ -18,12 +30,28 @@ export default class Audio {
     }
   }
 
+  get(name) {
+    const player = this.players[name]
+
+    if (!player) {
+      return new Tone.Player()
+    }
+
+    return player
+  }
+
+  set(name, player) {
+    this.players[name] = player
+
+    return player
+  }
+
   // @TODO:
   // - Support lock option, ignore duplicate play
   // - Support play post-loaded audio resource
   // - Support deck play an audio series?
   play(name, options = {}) {
-    const player = this.players[name]
+    let player = this.players[name]
 
     if (!player) {
       console.warn(`Invaid player name: ${name}`)
@@ -33,10 +61,12 @@ export default class Audio {
     let start = Tone.Transport.seconds || player.now()
 
     options = {
-      ...player.defaultOptions,
+      delay: 0,
+      startAt: 0,
+      ...player.assetOptions,
       ...options
     }
-    const { delay, fadeIn, lock, loop } = options
+    const { delay, startAt, fadeIn, lock, loop, onPlay, chains } = options
 
     if (typeof loop !== 'undefined') {
       player.loop = loop
@@ -55,10 +85,19 @@ export default class Audio {
     }
 
     if (player.lock && player.state !== 'stopped') {
-      return
+      return player
     }
 
-    player.start(start, delay)
+    if (chains && Array.isArray(chains)) {
+      player.disconnect()
+      player.chain(...chains, Tone.Destination)
+    }
+
+    if (onPlay) {
+      onPlay(player)
+    }
+
+    player.start(start + delay, startAt)
 
     return player
   }

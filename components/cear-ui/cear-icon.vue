@@ -74,6 +74,7 @@ export default {
 .cear-icon
   display: inline-flex
   fill: currentColor
+  line-height: 1
 
   .svg-symbol
     width: 1em

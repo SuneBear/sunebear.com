@@ -49,11 +49,14 @@ export default class Loader extends EventEmitter {
       action: async _resource => {
         const player = new Tone.Player
         let buff = await player.load(_resource.source)
-        // buff.toDestination()
-        // @FIXME: sync will cause odd effect
-        buff.toDestination().sync()
+        buff.toDestination()
         if (_resource.options) {
+          // @FIXME: sync will cause odd effect
+          if (_resource.options.loop) {
+            buff.sync()
+          }
           Object.assign(buff, _resource.options)
+          buff.assetOptions = _resource.options
           if (_resource.options.volumeDelta) {
             buff.volume.value = _resource.options.volumeDelta
           }

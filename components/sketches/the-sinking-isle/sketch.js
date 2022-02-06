@@ -15,6 +15,7 @@ import TweenModule from './modules/tween.module'
 import SubmitFrameModule from './modules/submit-frame.module'
 import RendererModule from './modules/renderer.module'
 import DOMRendererModule from './modules/dom-renderer.module'
+import DOMSoundModule from './modules/dom-sound.module'
 import EnviromentGround from './modules/enviroment-ground.module'
 import EnviromentTraceDataTexutreModule from './modules/enviroment-trace.module'
 import EnviromentTraceBubblesModule from './modules/enviroment-trace-bubbles.module'
@@ -150,6 +151,8 @@ class TheSinkingIsleSketch {
     }
 
     this.audio.unmute()
+
+    this.module.add(DOMSoundModule)
   }
 
   setupTween() {

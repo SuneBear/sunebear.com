@@ -3,6 +3,7 @@
 )
   .dom-wrapper(
     :class="{ 'is-inited': isInited, 'is-show-menu': isShowMainMenu }"
+    ref="domWrapper"
   )
     client-only(
       v-if="isInited"

@@ -28,7 +28,7 @@ const NEAREST_TEXTURE_OPTIONS = {
 
 const TRACE_AUDIO_OPTIONS = {
   lock: true,
-  fadeIn: 1,
+  fadeIn: 0.5,
   fadeOut: 1,
   volumeDelta: -5,
   envelope: {
@@ -192,7 +192,7 @@ export default [
       {
         name: 'atmoRain',
         source: require('./audios/atmo-rain.mp3').default,
-        options: { loop: true, lock: true, volumeDelta: -15, fadeIn: 1, fadeOut: 1 }
+        options: { loop: true, lock: true, volumeDelta: -20, fadeIn: 1, fadeOut: 1 }
       },
       { name: 'waterTrace1', source: require('./audios/water-01.mp3').default, options: TRACE_AUDIO_OPTIONS },
       { name: 'waterTrace2', source: require('./audios/water-02.mp3').default, options: TRACE_AUDIO_OPTIONS },
@@ -230,7 +230,22 @@ export default [
 
       // audios
       { name: 'testAudio', source: require('./audios/test.mp3').default },
-      { name: 'pin', source: require('./audios/pin.mp3').default }
+      {
+        name: 'pin', source: require('./audios/pin.mp3').default,
+        options: { volumeDelta: -20 }
+      },
+      {
+        name: 'uiPaperTurn', source: require('./audios/ui-paper-turn.mp3').default,
+        options: { volumeDelta: -10, delay: 0.5 }
+      },
+      {
+        name: 'uiPop', source: require('./audios/ui-pop.mp3').default,
+        options: { volumeDelta: -25 }
+      },
+      {
+        name: 'uiHoverWave', source: require('./audios/ui-hover-wave.mp3').default,
+        options: { volumeDelta: -25 }
+      }
     ]
   }
 ]

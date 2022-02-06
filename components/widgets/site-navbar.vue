@@ -1,24 +1,24 @@
 <template lang="pug">
 .site-navbar.d-flex.flex-row.flex-md-column
-  nuxt-link( to="/?section=top")
+  nuxt-link.handler( to="/?section=top")
     //- @TODO: Click logo to start a story
     cear-sticker.anim-squiggly.mb-4(
       name="logo-bear"
     )
   .nav-list
-    nuxt-link.nav-item( to="/?section=top" exact-path )
+    nuxt-link.nav-item.handler( to="/?section=top" exact-path )
       .item-dot
         cear-blob( )
       .el-link.item-text {{ $t('nav.home') }}
-    nuxt-link.nav-item( to="/blog?section=top" exact-path )
+    nuxt-link.nav-item.handler( to="/blog?section=top" exact-path )
       .item-dot
         cear-blob( )
       .el-link.item-text {{ $t('nav.blog') }}
-    nuxt-link.nav-item( to="/playground?section=top" exact-path )
+    nuxt-link.nav-item.handler( to="/playground?section=top" exact-path )
       .item-dot
         cear-blob( )
       .el-link.item-text {{ $t('nav.playground') }}
-    nuxt-link.nav-item( to="/about?section=top" exact-path )
+    nuxt-link.nav-item.handler( to="/about?section=top" exact-path )
       .item-dot
         cear-blob( )
       .el-link.item-text {{ $t('nav.about') }}

@@ -41,12 +41,18 @@
               @click="handleToggleSoundClick"
             )
               .left-part.d-flex.align-center.flex-shrink-0.ml-1
-                cear-icon(
-                  fill="var(--secondary)"
-                  :enableDistort="false"
-                  :enableDistortTransform="false"
-                  :name="$tsi.cachedContext.isMuteAudio ? 'volume-mute-fill' : 'volume-up-fill'"
+                .volume-icon-wrapper(
+                  :class="{ 'is-muted': $tsi.cachedContext.isMuteAudio }"
                 )
+                  cear-icon(
+                    fill="var(--secondary)"
+                    size="2em"
+                    :enableDistort="false"
+                    :enableDistortTransform="false"
+                    :name="'volume-mute'"
+                  )
+                  .sound-wave.wave-one
+                  .sound-wave.wave-two
                 //- | {{ $t('tsi.menu.sound') }}
 
               .control-part.d-flex.align-center.mr-3
@@ -236,8 +242,8 @@ export default {
       width: 100%
 
     .cear-sine-wave
-      width: 170px
-      margin-left: -8px
+      width: 168px
+      margin-left: -12px
 
     .setting-item
       padding-top: 4px
@@ -255,6 +261,45 @@ export default {
     .setting-item
       min-width: 200px
       margin-bottom: 12px
+
+    .volume-icon-wrapper
+      position relative
+      line-height: 1
+      padding-right: 10px
+
+      $border = 2px
+      $color = $secondary
+
+      .sound-wave
+        position: absolute
+        border: $border solid transparent
+        border-right: $border solid $color
+        border-radius: 50%
+        transition: all 260ms
+        margin: auto
+        top: -2px
+        bottom: 0
+        left: 0
+        right: 0
+        opacity: 0.5
+
+      .wave-one
+        width: 50%
+        height: 50%
+
+      .wave-two
+        width: 75%
+        height: 75%
+        transition-delay: 150ms
+
+      &.is-muted
+        .wave-one,
+        .wave-two
+          opacity: 0
+          transition-delay: 0ms
+
+        .wave-one
+          transition-delay: 150ms
 
   .menu-tab
     position absolute
