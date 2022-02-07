@@ -25,6 +25,7 @@
 import { CEAR_SPRITES } from './cear-sprite'
 import { random } from '~/utils/random'
 import { importContext } from '~/utils/require'
+import { CEAR_STICKER_OPTIONS_LIST } from '~/assets/stickers'
 
 export const CEAR_STICKERS = []
 
@@ -67,22 +68,7 @@ absurdDesignList.map(el => {
   addSticker(options)
 })
 
-const CEAR_STICKER_OPTIONS_LIST = [
-  {
-    name: 'logo',
-    src: require('@/assets/stickers/logo.png'),
-    scale: 1,
-    width: 50,
-    height: 50
-  },
-  {
-    name: 'logo-bear',
-    src: require('@/assets/stickers/logo-bear.png'),
-    scale: 0.1,
-    width: 980,
-    height: 732
-  }
-]
+
 CEAR_STICKER_OPTIONS_LIST.map(addSticker)
 
 CEAR_SPRITES.map(sprite => {

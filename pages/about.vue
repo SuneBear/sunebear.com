@@ -36,6 +36,7 @@ export default {
       const isFirstClick = true || !localStorage.getItem('about/lastClickTitleTime')
 
       if (isFirstClick) {
+        // @hack: Mock message singleton
         if (messageInstance && !messageInstance.closed) {
           messageInstance.clearTimer()
           messageInstance.startTimer()

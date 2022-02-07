@@ -4,10 +4,10 @@ page-wrapper(
 )
   .container
     .text-h4.pb-2.anim-squiggly
-      cear-notation( isShow :color="brandColor" ) UI Playground
+      cear-notation( isShow isHalfHighlight :color="brandColor" ) Cear Playground
 
     .mt-8
-      cear-label( name="laurel-wreath" ) Test
+      cear-label.ml-n3( name="laurel-wreath" ) An exp hand-crafted UI kit
 
     .section-cear-photo-frame.mt-8
       .text-h5.mb-4.scratchy-text
@@ -20,7 +20,7 @@ page-wrapper(
             :src="mockLongRectImage"
           )
 
-    .section-cear-sitcker.mt-8
+    .section-cear-sticker.mt-8
       .text-h5.mb-4 cear-sticker
       .row.no-gutters
         cear-sticker( name="frogJump" )
@@ -45,7 +45,11 @@ page-wrapper(
     .section-cear-label.mt-8
       .text-h5.mb-4 cear-label
       .row.no-gutters
-        cear-label( name="laurel-wreath" :onClick="() => $message('Congratulate')" ) Wreath Label
+        cear-label.mr-6.mb-2( name="branch-wreath" :onClick="() => $message('Congratulate')" ) Plant Label
+        cear-label.mr-2.mb-2( name="banner-double-layer" style="--banner-vert-padding: 0" )
+          .d-flex.align-center
+            cear-icon.mr-4( name="glasses-tones" size="1.3em" )
+            | Duo Layer
       div
         cear-label( name="divider-line-dashed" )
           cear-label( name="washi-tape-zigzag" theme="polka-dark-dotted") Washi Tape
@@ -55,8 +59,20 @@ page-wrapper(
         cear-label.ma-1( name="washi-tape-diamond" theme="polka-dark-dotted")
         cear-label.ma-1( name="washi-tape-sheer" theme="cross-dot")
         cear-label.ma-1( name="washi-tape-zigzag" theme="leaf")
-      .row.no-gutters
+      div
         cear-label( name="divider-line-solid" align="center" )
+      div
+        cear-label( name="divider-line-dotted" )
+          cear-label( name="double-color" unitSize="6px" ) Divider Sticker
+      .row.no-gutters
+        cear-label( name="divider-sticker" :stickerOptions="{ name: 'divider-anchor-and-vessel' }" align="center" ) Test Label
+        cear-label( name="divider-sticker" :stickerOptions="{ name: 'divider-cloud-and-sun' }" align="center"  )
+        cear-label( name="divider-sticker" :stickerOptions="{ name: 'divider-colorful-leaves' }" align="center" )
+        cear-label( name="divider-sticker" :stickerOptions="{ name: 'divider-vertical-line' }" align="center" )
+        cear-label( name="divider-sticker" :stickerOptions="{ name: 'divider-scribble-line' }" align="center" )
+        cear-label( name="divider-sticker" :stickerOptions="{ name: 'divider-hearts' }" align="center" )
+      .row.no-gutters
+        cear-label( name="divider-sticker" :stickerOptions="{ name: 'divider-dots' }" align="center" )
     .section-cear-notation.mt-8
       .text-h5.mb-4 cear-notation
       .row.no-gutters
@@ -71,12 +87,12 @@ page-wrapper(
       .text-h5.mb-4 cear-icon
       .row.no-gutters
         cear-icon( :enableMask="enableIconMask" name="check-stroke" )
-        cear-icon( :enableMask="enableIconMask" name="ancient-gate-fill" )
+        cear-icon( :enableMask="enableIconMask" name="galaxy-spark-tones" )
         cear-icon( :enableMask="enableIconMask" name="cactus-fill" )
         cear-icon( :enableMask="enableIconMask" name="leaf-fill" shadow="green")
         cear-icon( :enableMask="enableIconMask" name="leaf-fill" isLine shadow="green")
         cear-icon( :enableMask="enableIconMask" name="rainy-fill" )
-        cear-icon( :enableMask="enableIconMask" name="train-fill" )
+        cear-icon( :enableMask="enableIconMask" name="star-with-dots-tones" )
         cear-icon( :enableMask="enableIconMask" name="close-circle-fill" fill="red")
 
       .d-flex
@@ -94,7 +110,7 @@ page-wrapper(
         cear-button( type="brand-light" size="big" icon="bear-smile-fill") Brand Light
         cear-button( type="brand-light" round iconShadow="var(--mark)" icon="footprint-line")
         attention-indicator(
-          :onClick="() => {}"
+          :onClick="() => { $message('Hi-Five') }"
         )
         //- cear-button( type="gray" size="big" icon="leaf-fill") Gray
         cear-button( isBlock type="brand" size="big" icon="moon-fill") Brand - isBlock
@@ -132,7 +148,7 @@ page-wrapper(
         //- cear-sine-wave.mb-6( isLine :lineWidth="2" amplitudeX="10%" :amplitudeY="70")
         //- cear-sine-wave.mb-6( isLine :randomness="2" :lineWidth="2" amplitudeX="2%" :amplitudeY="100")
 
-    .section.mt-8
+    .section.section-blob.mt-8
       .text-h5.mb-4 cear-blob
       .row.no-gutters.mb-2
         p Organic shape container
@@ -343,13 +359,19 @@ export default {
   .text-h5
       font-family: monospace, serif !important
 
+      .is-half-highlight
+        opacity: 0.5
+
   .cear-icon
     font-size: 36px
 
-  .cear-blob,
-  .cear-sticker
-    margin-right: 24px
-    margin-bottom: 24px
+  .section-cear-sticker,
+  .section-cear-button,
+  .section-blob
+    .cear-blob,
+    .cear-sticker
+      margin-right: 24px
+      margin-bottom: 24px
 
   .section-cear-icon .cear-icon,
   .cear-button

@@ -57,7 +57,7 @@
       .readable-content-card
         h1.content-title.mb-6.mb-sm-6 {{ detailCardModal.currentCell.title }}
 
-        el-divider
+        cear-label.mt-0( name="divider-sticker" :stickerOptions="{ name: 'divider-scribble-line' }" )
 
         readable-render(
           :content="detailCardModal.currentCell.detail"
@@ -356,16 +356,44 @@ export default {
     .cear-icon
       margin-right: 4px
 
-.detail-card-dialog
+.el-dialog.detail-card-dialog
   max-width: calc(var(--container-width) + 100px)
 
   .el-dialog__header
-    background-color: #f6f6f6
+    background-color: primary(10)
 
   .el-dialog__body
     padding: 30px 60px 80px
 
     @media $mediaInMobile
       padding: 20px 30px 60px
+
+  // Stylize
+  // @TODO: Add drop-shadow(border) to dialog-wrapper
+  // @TODO: Add fragmentary mask image
+  &
+    $borderColor = #f4442e
+    $backgroundColor = #f9f8ec
+    $backgroundDotColor = #d0d0d0
+    border-radius: 16px !important
+    // border-style: solid
+    // border-color: $borderColor
+    // border-width: 3px 4px 2.5px
+
+    &,
+    &:after
+      background: linear-gradient(90deg, $backgroundColor 15px, transparent 1%) center, linear-gradient($backgroundColor 15px, transparent 1%) center, $backgroundDotColor;
+      background-size: 16px 16px // Dot spacing
+
+    .el-dialog__header
+      border-radius: 14px
+      background: transparent
+      padding-bottom: 0
+      margin-bottom: -8px
+      // background-color: alpha(darken($backgroundColor, 20%), 30%)
+      // border-bottom: 2px dashed darken($backgroundColor, 5%)
+
+      .el-tag--plain.el-tag--info
+        background-color: alpha(lighten($backgroundColor, 20%), 30%)
 
 </style>
