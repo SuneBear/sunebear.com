@@ -5,6 +5,10 @@
   .sprite-entity(
     :style="spriteEntityStyle"
   )
+  //- Currently only for debug
+  .frame-name(
+    v-if="isShowFrameName"
+  ) {{ formattedFrameName }}
 </template>
 
 <script>
@@ -14,27 +18,43 @@ import { random } from '~/utils/random'
 export const CEAR_SPRITES = [
 
   {
-    name: 'stillGroundItems',
+    name: 'still-ground-items',
     src: require('../sketches/the-sinking-isle/assets/spritesheets/still-ground-items.png'),
     spritesheet: require('../sketches/the-sinking-isle/assets/spritesheets/still-ground-items.json'),
-    collection: 'plant',
+    collection: 'still-lifes',
     isPlayable: false
   },
 
   {
-    name: 'frogJump',
+    name: 'still-ground-flowers',
+    src: require('../sketches/the-sinking-isle/assets/spritesheets/ground-flowers.png'),
+    spritesheet: require('../sketches/the-sinking-isle/assets/spritesheets/ground-flowers.json'),
+    collection: 'still-lifes',
+    isPlayable: false
+  },
+
+  {
+    name: 'still-water-items',
+    src: require('../sketches/the-sinking-isle/assets/spritesheets/still-water-items.png'),
+    spritesheet: require('../sketches/the-sinking-isle/assets/spritesheets/still-water-items.json'),
+    collection: 'still-lifes',
+    isPlayable: false
+  },
+
+  {
+    name: 'frog-jump',
     src: require('@/assets/spritesheets/frog-jump.png'),
     spritesheet: require('@/assets/spritesheets/frog-jump.json'),
-    collection: 'animal',
+    collection: 'animals',
     fps: 6,
     isPlayable: true
   },
 
   {
-    name: 'butterflyFly',
+    name: 'butterfly-fly',
     src: require('../sketches/the-sinking-isle/assets/spritesheets/butterfly.png'),
     spritesheet: require('../sketches/the-sinking-isle/assets/spritesheets/butterfly.json'),
-    collection: 'animal',
+    collection: 'animals',
     isPlayable: true
   }
 
@@ -75,7 +95,7 @@ export default {
       type: String
     },
 
-    customOptions: {
+    initData: {
       type: Object,
       default: () => ({})
     }
@@ -90,6 +110,7 @@ export default {
       // Procedural
       defaultFrameIndex: undefined,
       isFlipX: undefined,
+      isShowFrameName: false,
 
       // Dynamic status
       time: 0,
@@ -108,7 +129,7 @@ export default {
       if (typeof this.frameIndex !== 'undefined') {
         return this.frameIndex
       } else if (typeof this.frameName !== 'undefined') {
-        const index = this.frames.findIndex(frame => frame.filename.includes(this.frameName))
+        const index = this.frames.findIndex(frame => frame.filename.startsWith(this.frameName))
         if (index !== -1) {
           return index
         }
@@ -121,6 +142,10 @@ export default {
 
     currentFrame() {
       return this.frames[this.currentIndex] || { frame: {} }
+    },
+
+    formattedFrameName() {
+      return this.currentFrame.filename.replace(/\.[^/.]+$/, '')
     },
 
     spriteEntityStyle() {
@@ -171,7 +196,7 @@ export default {
       delete spriteInfo.name
 
       // Overide default data
-      Object.assign(this, spriteInfo, this.customOptions)
+      Object.assign(this, spriteInfo, this.initData)
       this.frames = this.spritesheet.frames
       this.size = this.spritesheet.meta.size
 

@@ -12,10 +12,10 @@
     cear-icon( name="laurel-wreath-left" isFlipX )
 
   template( v-if="name === 'branch-wreath'" )
-    cear-sticker( width="4em" name="spring-branch" isFlipX)
+    cear-sticker( width="4em" name="branch" )
     .label-text
       slot
-    cear-sticker( width="4em" name="spring-branch" )
+    cear-sticker( width="4em" name="branch" isFlipX)
 
   template( v-else-if="name === 'divider-sticker'" )
     cear-sticker( v-bind="stickerOptions" :label="finalText" )
@@ -299,7 +299,7 @@ export default {
 
     .label-text
       font-size: 2em
-      font-weight: 500
+      font-weight: bold
 
   &.name-double-color
     .label-text
@@ -313,10 +313,10 @@ export default {
       white-space: break-spaces
 
       &:nth-child(odd)
-        color: var(--color-odd, rgba(253, 200, 48, 0.5))
+        color: var(--color-odd, rgba(253, 200, 48, 0.6))
 
       &:nth-child(even)
-        color: var(--color-even, rgba(205, 220, 57, 0.6))
+        color: var(--color-even, rgba(205, 220, 57, 0.7))
 
       &:nth-child(2n)
         transform: rotate(4deg)

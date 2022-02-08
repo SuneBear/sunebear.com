@@ -76,10 +76,12 @@ export default {
     transform: translate3d(0,0,0)
 
   .container
-    max-width: clamp(375px, 50vw, 700px)
 
-    @media $mediaInMiddleScrren
-      padding-left: 2vw
+    &:not(.is-responsive)
+      max-width: clamp(375px, 50vw, var(--container-width))
+
+      @media $mediaInMiddleScrren
+        padding-left: 2vw
 
   .global-frame
     .mask-wrapper

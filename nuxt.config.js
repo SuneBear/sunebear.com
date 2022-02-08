@@ -26,7 +26,14 @@ export default {
       },
       { hid: 'description', name: 'description', content: '' }
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.png' }]
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' },
+      {
+        rel: 'apple-touch-icon',
+        type: 'image/png',
+        href: '/apple-touch-icon.png'
+      }
+    ]
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css

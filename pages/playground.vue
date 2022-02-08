@@ -23,13 +23,12 @@ page-wrapper(
     .section-cear-sticker.mt-8
       .text-h5.mb-4 cear-sticker
       .row.no-gutters
-        cear-sticker( name="frogJump" )
-        cear-sticker.anim-suspend( name="butterflyFly" label="Butterfly" )
-        cear-sticker( width="10%" name="stillGroundItems" )
-        cear-sticker( name="stillGroundItems" )
-        cear-sticker( name="stillGroundItems" )
-        cear-sticker( isFlipX name="stillGroundItems" )
-        cear-sprite.anim-glimmer( name="stillGroundItems"  style="--glimmer-opacity: 0.5")
+        cear-sticker( name="frog-jump" )
+        cear-sticker.anim-suspend( name="butterfly-fly" label="Butterfly" )
+        cear-sticker( width="10%" name="still-ground-items" )
+        cear-sticker( name="still-ground-items" )
+        cear-sticker( isFlipX name="still-ground-items" )
+        cear-sprite.anim-glimmer( name="still-ground-items"  style="--glimmer-opacity: 0.5")
       .row.no-gutters.mt-6
         message-bubble-popover(
           v-model="isShowMessagePopover"
@@ -41,6 +40,27 @@ page-wrapper(
             isFlipX collection="absurd"
             :style="{ transform: `translate3d(${stickerMarginLeft}%, 0, 0)` }"
           )
+      .d-flex
+        cear-notation( isShow type="underline" :iterations="1" color="var(--brand)" )
+          el-link( :underline="false" href="/stickers")
+            | View full stickers
+
+    .section-cear-icon.mt-8
+      .text-h5.mb-4 cear-icon
+      .row.no-gutters
+        cear-icon( :enableMask="enableIconMask" name="check-stroke" )
+        cear-icon( :enableMask="enableIconMask" name="galaxy-spark-tones" )
+        cear-icon( :enableMask="enableIconMask" name="cactus-fill" )
+        cear-icon( :enableMask="enableIconMask" name="leaf-fill" shadow="green")
+        cear-icon( :enableMask="enableIconMask" name="leaf-fill" isLine shadow="green")
+        cear-icon( :enableMask="enableIconMask" name="rainy-fill" )
+        cear-icon( :enableMask="enableIconMask" name="star-with-dots-tones" )
+        cear-icon( :enableMask="enableIconMask" name="close-circle-fill" fill="red")
+
+      .d-flex
+        cear-notation( isShow type="underline" :iterations="1" color="var(--brand)" )
+          el-link( :underline="false" href="/icons" ref="viewAllLink")
+            | View full icons
 
     .section-cear-label.mt-8
       .text-h5.mb-4 cear-label
@@ -57,7 +77,7 @@ page-wrapper(
         cear-label.ma-1( name="washi-tape-zigzag" theme="polka-dotted")
         cear-label.ma-1( name="washi-tape-sheer" theme="skew-bars")
         cear-label.ma-1( name="washi-tape-diamond" theme="polka-dark-dotted")
-        cear-label.ma-1( name="washi-tape-sheer" theme="cross-dot")
+        cear-label.ma-1( name="washi-tape-sheer" theme="cross-and-dot")
         cear-label.ma-1( name="washi-tape-zigzag" theme="leaf")
       div
         cear-label( name="divider-line-solid" align="center" )
@@ -82,23 +102,6 @@ page-wrapper(
           | normal text
           cear-notation( type="box" :order="2" ) boxed text
           cear-notation( :iterations="1" :order="3" ) Donec laoreet ligula nisl, placerat molestie mauris luctus id. Fusce dapibus non libero nec lobortis. Nullam iaculis nisl ac eros consequat, sit amet placerat massa vulputate. Maecenas euismod volutpat ultrices. Pellentesque felis ex, ullamcorper in felis finibus, feugiat dignissim augue.
-
-    .section-cear-icon.mt-8
-      .text-h5.mb-4 cear-icon
-      .row.no-gutters
-        cear-icon( :enableMask="enableIconMask" name="check-stroke" )
-        cear-icon( :enableMask="enableIconMask" name="galaxy-spark-tones" )
-        cear-icon( :enableMask="enableIconMask" name="cactus-fill" )
-        cear-icon( :enableMask="enableIconMask" name="leaf-fill" shadow="green")
-        cear-icon( :enableMask="enableIconMask" name="leaf-fill" isLine shadow="green")
-        cear-icon( :enableMask="enableIconMask" name="rainy-fill" )
-        cear-icon( :enableMask="enableIconMask" name="star-with-dots-tones" )
-        cear-icon( :enableMask="enableIconMask" name="close-circle-fill" fill="red")
-
-      .d-flex
-        cear-notation( isShow type="underline" :iterations="1" color="var(--brand)" )
-          el-link( :underline="false" href="/icons" ref="viewAllLink")
-            | View full icons
 
     .section-cear-button.mt-8
       .text-h5.mb-4 cear-button

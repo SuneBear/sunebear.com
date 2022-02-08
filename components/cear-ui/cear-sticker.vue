@@ -9,7 +9,8 @@
     cear-sprite.sticker-entity.sticker-sprite(
       v-if="sticker.type === 'sprite'"
       :name="sticker.name"
-      :customOptions="{ ...spriteOptions, isFlipX }"
+      :frameName="frameName"
+      :initData="{ ...spriteInitData, isFlipX }"
     )
     .sticker-entity.sticker-illustration(
       v-else-if="sticker.type === 'illustration'"
@@ -24,7 +25,6 @@
 <script>
 import { CEAR_SPRITES } from './cear-sprite'
 import { random } from '~/utils/random'
-import { importContext } from '~/utils/require'
 import { CEAR_STICKER_OPTIONS_LIST } from '~/assets/stickers'
 
 export const CEAR_STICKERS = []
@@ -58,17 +58,6 @@ function addSticker(stickerOptions = {}) {
 }
 
 // Fill CEAR_SPRITES
-const absurdDesignList = importContext(require.context('@/assets/stickers/absurd', true, /\.png$/))
-absurdDesignList.map(el => {
-  const options = {
-    name: `absurd${el.name}`,
-    collection: 'absurd',
-    src: el.src
-  }
-  addSticker(options)
-})
-
-
 CEAR_STICKER_OPTIONS_LIST.map(addSticker)
 
 CEAR_SPRITES.map(sprite => {
@@ -89,6 +78,10 @@ export default {
     type: {
       type: String
       // @values: illustration | sprite
+    },
+    // @shortcut: Spec frame for spritesheet
+    frameName: {
+      type: String
     },
 
     // Content
@@ -123,7 +116,7 @@ export default {
     },
 
     // Sub com
-    spriteOptions: {
+    spriteInitData: {
       type: Object,
       default: () => ({})
     }
@@ -206,6 +199,9 @@ export default {
     background-repeat: no-repeat
     background-size: contain
     background-position: center center
+
+  .sticker-illustration
+    width: 100%
 
   .label-content
     null

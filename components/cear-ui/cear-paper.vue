@@ -19,7 +19,11 @@ export default {
           'solar-dotted',
           'polka-dotted',
           'polka-dark-dotted',
-          'cross-dot',
+          'cross-and-dot',
+          'moleskine-dot',
+          'grid-dashed-lines',
+          'grid-lines',
+          'grid-tablecloth',
           'skew-bars',
           'leaf',
           'line',
@@ -38,6 +42,7 @@ export default {
 </script>
 
 <style lang="stylus">
+// @TODO: Add background textures from https://www.transparenttextures.com
 .cear-paper
   width: 100%
   min-height: 100%
@@ -82,11 +87,47 @@ export default {
     --background: #965784
     --dot-color: white
 
-  &.background-cross-dot
+  &.background-cross-and-dot
     background-color: var(--background, #f5eed7)
     background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='47.5' height='47.5' viewBox='0 0 100 100'><path d='M 25 10 L 25 17 M 25 33 L 25 40 M 10 25 L 17 25 M 33 25 L 40 25' stroke='%23CD803D' stroke-width='6' stroke-linecap='round' /><circle cx='75' cy='75' r='4' fill='%23CD803D'/></svg>")
     background-size: 20px 20px
     background-position: 5px 10px
+
+  &.background-moleskine-dot
+    background: linear-gradient(90deg, var(--background, #f9f8ec) 15px, transparent 1%) center, linear-gradient(var(--background, #f9f8ec) 15px, transparent 1%) center, #ccc;
+    background-size: 16px 16px // Dot spacing
+
+  &.background-grid-dashed-lines
+    $dashLength = var(--dash-length, 3px)
+    $dashWidth = var(--dash-width, 1px)
+    $gridSize = var(--grid-size, 18px)
+    $dashColor = var(--dash, #eccfaa)
+    $background = var(--background, #faebd9)
+
+    background-color: $background
+    background-size:
+      s('calc(%s * 2)', $dashLength) s('calc(%s * 2)', $dashLength),
+      $gridSize $gridSize
+    background-image:
+      linear-gradient(to bottom, transparent $dashLength, $background $dashLength),
+      linear-gradient(to right, $dashColor $dashWidth, transparent $dashWidth),
+      linear-gradient(to right, transparent $dashLength, $background $dashLength),
+      linear-gradient(to bottom, $dashColor $dashWidth, transparent $dashWidth)
+
+  &.background-grid-lines
+    $lineColor = var(--line, #f7cbc8)
+    $lineStroke = var(--line-stroke, 2px)
+    $cellSize = var(--cell-size, 24px)
+    background-image: linear-gradient($lineColor $lineStroke, transparent 1px), linear-gradient(to right, $lineColor $lineStroke, transparent 1px)
+    background-size: $cellSize $cellSize
+    background-color: var(--background, #f7e4df)
+
+  &.background-grid-tablecloth
+    $stripeColor = var(--stripe, rgba(200,0,0,.3))
+    $stripeStroke = var(--stripe-stroke, 20px)
+    background-image: linear-gradient($stripeColor $stripeStroke, transparent 1px),linear-gradient(to right, $stripeColor $stripeStroke, transparent 1px)
+    background-size: s('calc(%s * 2)', $stripeStroke) s('calc(%s * 2)', $stripeStroke)
+    background-color: var(--background, secondary(50))
 
   &.background-skew-bars
     --bar-size: 8px

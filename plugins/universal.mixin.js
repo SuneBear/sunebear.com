@@ -62,7 +62,7 @@ const componentMixin = {
       }
 
       if (sectionName !== 'top') {
-        analytics.screen(sectionName)
+        // analytics.screen(sectionName)
       }
 
       delete nextQuery.section

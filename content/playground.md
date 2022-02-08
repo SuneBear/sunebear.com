@@ -12,4 +12,4 @@ Parsed in server, support vue component with a lot limits, should replace with `
 
 -------
 
-<cear-sticker collection="plant"></cear-sticker>
+<cear-sticker collection="still-lifes" />
