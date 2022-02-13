@@ -31,7 +31,7 @@ export default class CameraModule extends Module {
       30,
       this.sizes.width / this.sizes.height,
       // @REF: https://en.wikipedia.org/wiki/Z-fighting
-      1,
+      10,
       1000
     )
     this.instance.rotation.reorder('YXZ')

@@ -9,7 +9,7 @@ export class Chapter extends EventEmitter {
     this.sketch = sketch
     this.renderer = sketch.renderer
     this.scene = new THREE.Scene()
-    this.camera = new THREE.PerspectiveCamera(30, sketch.sizes.width / sketch.sizes.height, 1)
+    this.camera = new THREE.PerspectiveCamera(30, sketch.sizes.width / sketch.sizes.height, 10)
 
     this.renderTarget = new THREE.WebGLMultisampleRenderTarget(
       sketch.sizes.width,
