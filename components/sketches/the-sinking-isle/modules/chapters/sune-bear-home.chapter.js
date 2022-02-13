@@ -57,11 +57,19 @@ export class SuneBearHomeChapter extends Chapter {
 
   // @FIXME: Remove outline aliasing
   setupModel() {
+    let i = 0
     this.model = new BuildingGroupObject({
       model: this.sketch.asset.items.chapterSuneBearHomeModel,
       name: 'suneBearHome',
       onModelSetup: (obj) => {
+        // @FIXME: Resolve z-fighting in safari
+        if (this.sketch.$vm.isSafari) {
+          obj.material.depthTest = false
+          obj.renderOrder = i
+        }
         if (obj.name === 'floor') {
+          obj.renderOrder = -100
+          obj.material.depthTest = false
           obj.material.emissiveIntensity = 0.10
         }
       },
