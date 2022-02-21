@@ -83,7 +83,10 @@ export default {
       @media $mediaInMiddleScrren
         padding-left: 2vw
 
-  .global-frame
+  .global-frame.cear-photo-frame
+    .distort-inner-border
+      --distort-border-width: 10px
+
     .mask-wrapper
       background-color: brand(5)
 

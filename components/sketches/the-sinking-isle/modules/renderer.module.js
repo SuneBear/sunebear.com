@@ -248,7 +248,7 @@ export default class Renderer extends Module {
         value: true
       },
       enableLut: {
-        value: false
+        value: true
       },
       enableMono: {
         value: false
