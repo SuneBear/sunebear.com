@@ -21,25 +21,29 @@
           .typing-dot
           .typing-dot
           .typing-dot
-        transition( name="el-fade-in" )
-          readable-render(
-            v-if="status !== 'typing'"
-            :content="finalMessage"
-            :contentData="{ needAnimate }"
+        //- @FIXME: duration param is invalid, support dynamic duration based on message height
+        transition( name="cear-fade" )
+          .content-wrapper(
+            :style="{ transitionDuration: `${isShowActionBar ? 1600 : 800}ms` }"
+            v-show="status !== 'typing'"
           )
+            readable-render(
+              :content="finalMessage"
+              :contentData="{ needAnimate }"
+            )
 
-      .action-bar.mt-3.d-flex.flex-column(
-        v-if="isShowActionBar"
-      )
-        .action-item(
-          v-for="action in actions"
-        )
-          cear-button(
-            size="small"
-            type="brand"
-            icon="message-3-fill"
-            @click="handleActionClick(action)"
-          ) {{ action.text }}
+            .action-bar.mt-3.d-flex.flex-column(
+              v-if="isShowActionBar"
+            )
+              .action-item(
+                v-for="action in actions"
+              )
+                cear-button(
+                  size="small"
+                  type="brand"
+                  icon="message-3-fill"
+                  @click="handleActionClick(action)"
+                ) {{ action.text }}
 </template>
 
 <script>

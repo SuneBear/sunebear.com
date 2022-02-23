@@ -53,7 +53,7 @@ export default class Loader extends EventEmitter {
         if (_resource.options) {
           // @FIXME: sync will cause odd effect
           if (_resource.options.loop) {
-            buff.sync()
+            // buff.sync()
           }
           Object.assign(buff, _resource.options)
           buff.assetOptions = _resource.options

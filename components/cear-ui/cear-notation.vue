@@ -157,7 +157,7 @@ export default {
       if (this.isShow) {
         this.show()
       }
-    })
+    }, 16)
   },
 
   activated() {

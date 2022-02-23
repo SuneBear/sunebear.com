@@ -237,7 +237,7 @@ export default {
         return
       }
 
-      playAnimer = this.playAnimerMap[message.id]= anime.timeline()
+      playAnimer = this.playAnimerMap[message.id] = anime.timeline()
 
       playAnimer
         .add({
@@ -256,11 +256,13 @@ export default {
           })
 
         await playAnimer.finished
+
+        // Stuff After switch delay
         this.playAnimerMap[message.id] = null
 
         if (message.duration !== -1) {
           anime({
-            duraton: message.duration,
+            duration: message.duration,
             complete: () => {
               // @Hack: Avoid transition flash bug when list change
               this.$set(this.playedMap, message.id, true)
@@ -303,15 +305,17 @@ export default {
 
       message = this.formatMessageData(message)
 
-      if (this.needAnimate) {
+      if (this.needAnimate && !message.silent) {
         this.$set(this.playedMap, message.id, false)
         // @FIXME: keep messages order when unshift
         this.nextMessages[ unshift ? 'unshift' : 'push'](message)
         this.switchNext(force)
       } else {
         this.historyMessages.push(message)
-        this.currentMessages.push(message)
-        this.playCurrent()
+        if (!message.silent) {
+          this.currentMessages.push(message)
+          this.playCurrent()
+        }
       }
     },
 
@@ -394,23 +398,24 @@ export default {
       }
 
       function getDuration() {
-        let duration = 10000
+        let duration = 8000
         if (typeof message.autoSwitch !== 'undefined' && !message.autoSwitch) {
           duration = -1
         }
         return duration
       }
 
-      function getSwitchDelay () {
+      const getSwitchDelay = () => {
         let delay = message.switchDelay
         if (!message.switchDelay) {
-          delay = role.isMe ? MIN_DELAY : 2300
+          delay = role.isMe ? MIN_DELAY : 2700
         }
-        return Math.max(MIN_DELAY,  delay)
+        return Math.max(MIN_DELAY, delay)
       }
 
       return {
         autoSwitch: true,
+        silent: false,
         duration: getDuration(),
         switchDelay: getSwitchDelay(),
         id: this.genId(),
