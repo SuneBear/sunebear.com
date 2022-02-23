@@ -37,7 +37,7 @@ export class EnvWaterPlaneObject extends THREE.Mesh {
       waterOpacity: { value: 0.7 },
       centroidPosition: { value: new THREE.Vector3(0, 0, 0) },
       lakeSize: { value: width / 2 },
-      colorA: { value: new THREE.Color(options.hasIce ? "#698193" : "#163d84") },
+      colorA: { value: new THREE.Color(options.hasIce ? "#698193" : "#12316a") },
       colorB: { value: new THREE.Color(options.hasIce ? "#a8bec4" : "#49c2ff") },
       environmentSize: {
         value: new THREE.Vector2(width, height)

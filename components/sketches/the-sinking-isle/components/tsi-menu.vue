@@ -196,6 +196,8 @@ export default {
 <style lang="stylus">
 // Set navbar transitoion
 .is-tsi-wrapper.is-inited-sketch
+  overflow-y: hidden
+
   .site-navbar
     transition: 500ms
     pointer-events: none

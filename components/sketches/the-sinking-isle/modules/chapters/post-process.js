@@ -84,6 +84,9 @@ export const setupPostProcess = ({
         },
         enableGrainNoise: {
           value: true
+        },
+        enableLut: {
+          value: false
         }
       },
       vertexShader,

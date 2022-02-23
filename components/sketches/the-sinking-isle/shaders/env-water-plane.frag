@@ -25,6 +25,7 @@ varying vec2 vGroundUv;
 #define distortionScale 3.0
 #define centerStaticCausticsStrength 0.04
 #define causticsScale 4.0
+#define traceBorderLight 0.0
 // #define WATER 1
 void main2 () {
     float lake = 1.0-texture2D(lakeDataMap, vUv).r;
@@ -143,7 +144,7 @@ void main () {
   ftf = 0.1;
   // Player Trace
   if (wakeData.r > 0.01) {
-    col -= max(0.01, wakeData.r - 0.8) * (wakeData.rgb * 0.05 + 0.5);
+    col -= max(traceBorderLight, wakeData.r - 0.8) * (wakeData.rgb * 0.05 + 0.5);
   }
   float edgeAlpha = smoothstep(ft0+ftf, ft0-ftf, lake + edgeOff2D.r * 0.05);
   gl_FragColor = vec4(mix(groundColor, col, edgeAlpha), 1.0);
