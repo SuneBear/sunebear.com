@@ -7,7 +7,10 @@ page-wrapper(
       cear-notation( isShow isHalfHighlight :color="brandColor" ) Cear Playground
 
     .mt-8
-      cear-label.ml-n3( name="laurel-wreath" ) An exp hand-crafted UI kit
+      cear-label.ml-n3( name="laurel-wreath" )
+        .d-flex.flex-column.align-center
+          | An hand-crafted UI kit
+          .font-weight-bold.mt-1 Stage - Prototype
 
     .section-cear-photo-frame.mt-8
       .text-h5.mb-4.scratchy-text
