@@ -2,6 +2,7 @@ import * as THREE from 'three'
 import gsap from 'gsap'
 import { Chapter } from './base'
 import { setupPostProcess } from './post-process'
+import { math } from '../../engine/utils'
 import { BuildingGroupObject } from '../../objects/building.object'
 import { OrbitControls } from '../../utils/hack-deps/three/orbit-controls'
 
@@ -81,6 +82,7 @@ export class SuneBearHomeChapter extends Chapter {
     })
 
     this.model.position.z = 0.1
+    this.model.position.x = -0.1
 
     this.scene.add(this.model)
   }
@@ -156,6 +158,8 @@ export class SuneBearHomeChapter extends Chapter {
   }
 
   resize() {
+    const zoom = this.sketch.sizes.viewport.width / (this.sketch.config.width * 0.4)
+    this.camera.zoom = math.clamp(zoom, 0.5, 1.5)
     super.resize()
     this.postProcess.resize()
   }

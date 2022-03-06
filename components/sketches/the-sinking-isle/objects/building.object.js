@@ -26,6 +26,7 @@ export class BuildingGroupObject extends THREE.Group {
 
     this.setupModel()
     this.setupPortalToken()
+    this.setupAnimationMixer()
   }
 
   setupModel() {
@@ -77,7 +78,20 @@ export class BuildingGroupObject extends THREE.Group {
     })
   }
 
+  setupAnimationMixer() {
+    const { scene, animations } = this.model
+
+    this.clips = animations || []
+    if (!this.clips.length) return
+
+    this.mixer = new THREE.AnimationMixer(scene)
+    this.clips.map((clip) => {
+      this.mixer.clipAction(clip).reset().play()
+    })
+  }
+
   update(delta) {
+    this.mixer && this.mixer.update(delta)
     this.waterBuoyancyAnimation.update(delta)
     if (this.token) {
       this.token.update(delta)

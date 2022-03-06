@@ -120,7 +120,8 @@ void main() {
   // blendColor.rgb = linearToneMapping(blendColor.rgb, 1.0);
 
   // Color: Luma
-  blendColor.rgb += exposure / 45.0;
+  // blendColor.rgb += exposure / 45.0;
+  blendColor.rgb += toneMappingExposure / 45.0;
 
   // Effect: Vignitte
   vec2 nq = vUv / (20.0 / resolution.xy);

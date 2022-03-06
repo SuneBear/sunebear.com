@@ -892,8 +892,6 @@ class OrbitControls extends EventDispatcher {
     function onTouchStart(event) {
       trackPointer(event)
 
-      console.log(111, pointers)
-
       switch (pointers.length) {
         case 1:
           switch (scope.touches.ONE) {

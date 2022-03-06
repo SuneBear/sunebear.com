@@ -222,7 +222,7 @@ export default {
     z-index: ($z-index + 1)
     top: 2rem
     right: 2rem
-    font-size: s('min(6vw, 45px)')
+    font-size: s('min(8vw, 45px)')
     pointer-events: initial
 
     .shadow-handler

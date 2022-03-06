@@ -192,6 +192,10 @@ export default {
     margin 0
     padding 0
 
+  text-meta
+    font-size: 0.7em
+    opacity: 0.7
+
   pre
     margin 1.64em 0
     padding 7px

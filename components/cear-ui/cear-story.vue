@@ -30,8 +30,8 @@
     template(
       v-if="needAnimate"
     )
-      transition( name="el-fade-in" :duration="1000")
-        cear-button.mr-4( v-if="currentMessageRaw && !currentMessageRaw.autoSwitch" size="small" @click="switchNext(true)") {{ $t('action.continue') }}
+      transition( name="el-fade-in" )
+        cear-button.mr-4( v-if="currentMessageRaw && (!currentMessageRaw.autoSwitch || nextMessages.length)" size="small" @click="switchNext(true)") {{ $t('action.continue') }}
         cear-button.mr-4( v-else-if="!hasFinished" size="small" @click="clearPlayQueue") {{ $t('action.skip') }}
     cear-button.ml-4( v-else="needAnimate" size="small" @click="clearAll" ) {{ $t('story.clear') }}
 </template>
@@ -505,5 +505,13 @@ export default {
 
   .story-action-bar
     position: absolute
-    right: 0
+    right: 6px
+
+    .el-fade-in-enter-active
+      transition-duration: 500ms
+      transition-delay: 900ms
+
+    .el-fade-in-leave-active
+      transition-duration: 400ms
+      transform: translateY(-30%)
 </style>

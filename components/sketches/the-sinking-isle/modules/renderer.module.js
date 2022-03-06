@@ -88,7 +88,7 @@ export default class Renderer extends Module {
     // this.instance.shadowMap.autoUpdate = false
     this.instance.shadowMap.needsUpdate = this.instance.shadowMap.enabled
     this.instance.toneMapping = THREE.ReinhardToneMapping // THREE.LinearToneMapping
-    this.instance.toneMappingExposure = 4 // 5
+    this.instance.toneMappingExposure = 4.5 // 5
 
     this.context = this.instance.getContext()
 

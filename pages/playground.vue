@@ -12,6 +12,9 @@ page-wrapper(
           | An hand-crafted UI kit
           .font-weight-bold.mt-1 Stage - Prototype
 
+    //- .mt-8
+    //-   tsi-wish-input
+
     .section-cear-photo-frame.mt-8
       .text-h5.mb-4.scratchy-text
         | cear-photo-frame

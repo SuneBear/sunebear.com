@@ -6,6 +6,7 @@ import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js'
 import { BasisTextureLoader } from 'three/examples/jsm/loaders/BasisTextureLoader.js'
 import * as Tone from 'tone'
+import { Midi } from '@tonejs/midi'
 import EventEmitter from './event-emitter'
 
 const getPreloadWrapper = () => {
@@ -66,6 +67,15 @@ export default class Loader extends EventEmitter {
           }
         }
         this.fileLoadEnd(_resource, buff)
+      }
+    })
+
+    // Midis
+    this.loaders.push({
+      extensions: ['mid'],
+      action: async _resource => {
+        const midi = await Midi.fromUrl(_resource.source)
+        this.fileLoadEnd(_resource, midi)
       }
     })
 

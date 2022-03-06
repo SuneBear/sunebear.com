@@ -67,7 +67,7 @@ export default {
 .default-layout
   width: 100vw
   max-width: 100%
-  height: 100vh
+  height: calc(100vh - var(--vh-offset, 0px))
   max-height: 100%
 
   // @HACK: keep fullscreen with zoom
@@ -120,6 +120,8 @@ export default {
   left: 2rem
   bottom: 2rem
   z-index: 23333
+  // Hide tweak pane
+  display: none
 
 // Print scrollable content
 @media print

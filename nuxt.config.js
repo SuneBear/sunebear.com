@@ -97,6 +97,7 @@ export default {
   build: {
     publicPath: '/_nuxt/',
     standalone: true,
+    extractCSS: { ignoreOrder: true },
     optimization: {
       splitChunks: {
         cacheGroups: {
@@ -114,7 +115,7 @@ export default {
       let stylus = config.module.rules.find(rule => {
         return rule.test.test('.styl')
       })
-      stylus = stylus.oneOf[0].use[3]
+      stylus = stylus.oneOf[0].use[3] || stylus.oneOf[0].use[2]
 
       Object.assign(stylus.options, {
         'resolve url': true,
@@ -125,7 +126,7 @@ export default {
       config.resolve.alias['vue'] = 'vue/dist/vue.esm.js'
 
       config.module.rules.push({
-        test: /\.(ogg|mp3|wav|glb|hdr|obj)$/i,
+        test: /\.(ogg|mp3|wav|glb|hdr|obj|mid)$/i,
         loader: 'file-loader'
       })
 

@@ -1,7 +1,21 @@
 <template lang="pug">
-.tsi-chapter-control
+.tsi-chapter-control(
+  :class="{ 'is-show': !$tsi.isShowMainMenu }"
+)
   transition( name="el-fade-in" )
-    .handler(
+    .handler-wrapper(
+      v-if="$tsi.currentChapter === 'main' && $tsi.currentActionMode === 'viewSpark'"
+    )
+      cear-button(
+        isBlock
+        type="secondary-ghost"
+        icon="arrow-go-back-fill"
+        shadow="black"
+        @click="$tsi.currentActionMode = 'swim'"
+      ) {{ $t('action.exit') }}
+
+  transition( name="el-fade-in" )
+    .handler-wrapper(
       v-if="$tsi.currentChapter !== 'main' && !$tsi.isSwitchingChapter"
     )
       cear-button(
@@ -22,6 +36,13 @@ export default {}
   position absolute
   left: 2rem
   top: 2rem
+  transform: scale(0.8)
+  opacity: 0
+  transition: 418ms
+
+  &.is-show
+    transform: scale(1)
+    opacity: 1
 
   .cear-button
     opacity: 0.8

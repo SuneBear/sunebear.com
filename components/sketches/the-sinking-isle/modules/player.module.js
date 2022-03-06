@@ -181,6 +181,13 @@ export default class Player extends Module {
     this.spring.position.copy(this.instance.position)
   }
 
+  setPlayerPositon(x, z, offset = 0) {
+    const { spring, targetPos } = this
+    spring.position.x = x + offset
+    spring.position.z = z + offset
+    targetPos.copy(spring.position)
+  }
+
   update(delta, elapsed) {
     this.updateMoveTargetSystem(delta)
     this.instanceWaterBuoyancyAnimation.update(delta)

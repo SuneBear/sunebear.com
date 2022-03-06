@@ -5,6 +5,7 @@ export default {
   // Spec types
   system: {
     firstVisitDate: '{date} 初相遇',
+    sparkWishBeaconVisitTime: '{date} 登上花火灯塔',
     onboardingWelcomeWord: {
       main: '> 来自舒乐熊的问候 \n\n 热烈欢迎充满好奇心的你',
       replyWhoIam: '你知道我是谁吗？',
@@ -23,6 +24,9 @@ export default {
       replyFlyRes: '我在梦里见过，你想象一下我和蝴蝶随风飘拂的浪漫场景',
       replyNothing: '外面也许什么都没有',
       replyNothingRes: '无可奈何，我的房子在湖中易沉没，需要找到新的住所',
+    },
+    sparkWishBeacon: {
+      intro: '在花火灯塔可以赏烟火，写下对未来的祝福'
     },
     suneBearHome: {
       inProgress: '我家正在装修，等装好后送你一些礼物哦'

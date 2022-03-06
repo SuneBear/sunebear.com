@@ -233,19 +233,17 @@ export default class CameraModule extends Module {
   }
 
   updateFocusTargetSystem(delta) {
-    if (!this.$vm.cameraTarget instanceof THREE.Vector3) {
-      return
+    const target = this.$vm.cameraTarget
+    if (target instanceof THREE.Vector3) {
+      this.currentTarget.copy(target)
+    } else if (target === 'player') {
+      this.currentTarget.copy(this.player.targetPos)
     }
   }
 
   updatePlayerFollowSystem(delta) {
-    if (this.$vm.cameraTarget !== 'player') {
-      return
-    }
-
     const camera = this.instance
     const controlCamera = this.modes[this.mode].instance
-    this.currentTarget.copy(this.player.targetPos)
 
     this.playerFollow.shakeTime += delta * this.playerFollow.shakeSpeed
 
@@ -314,7 +312,7 @@ export default class CameraModule extends Module {
 
     // Camera zoom
     let cameraZoom = controlCamera.zoom
-    const minZoom = 0.85
+    const minZoom = 0.3
     const maxZoom = 1.5
     const constantZoomFactor = 0.9
     const targetZoomAtAspect = 0.9

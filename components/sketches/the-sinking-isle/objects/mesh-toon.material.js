@@ -27,6 +27,9 @@ export function convertToToonMaterial(obj, params = {}) {
   const defaultParams = {
     castShadow: true
   }
+  if (obj.side) {
+    defaultParams.side = obj.side
+  }
   params = Object.assign({}, defaultParams, params)
 
   if (originMaterial instanceof THREE.MeshToonMaterial) {

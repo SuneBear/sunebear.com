@@ -19,6 +19,8 @@ export default class ChapterModule extends Module {
     this.setupChapters()
     this.setupRender()
     this.listenEvents()
+
+    this.resize()
   }
 
   get $lastChapter() {

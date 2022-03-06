@@ -2,7 +2,7 @@
 .sketch.sketch-the-sinking-isle(
 )
   .dom-wrapper(
-    :class="{ 'is-inited': isInited, 'is-show-menu': isShowMainMenu }"
+    :class="domWrapperClass"
     ref="domWrapper"
   )
     client-only(
@@ -17,8 +17,10 @@
         v-if="$tsi.cursor"
       )
       tsi-chapter-control
+      tsi-inventory
     .dom-renderer( ref="domRenderer" )
     cear-story.is-absolute-center(
+      :class="{ 'is-show': !isShowMainMenu }"
       ref="story"
       enableActionBar
       :needAnimate="true"
@@ -53,7 +55,7 @@ export default {
 
       /*==== Context States & Data ====*/
       // System States
-      isLoading: true,
+      isLoading: false,
       loadProgress: 0,
       isInited: __DEBUG__,
       isError: false,
@@ -75,11 +77,16 @@ export default {
       },
 
       // Runtime
-      isForcePushingPlayer: false,
-      enablePlayerDrift: false,
-      cameraTarget: 'player',
       // @values: main | suneBearHome
       currentChapter: 'main',
+      // This will do a batch updates for runtime states, listen this in spec modules
+      // @values: swim | viewSpark
+      currentActionMode: 'swim',
+
+      isForcePushingPlayer: false,
+      enablePlayerDrift: false,
+      // @values: player | Vector3
+      cameraTarget: 'player',
 
       /*==== Persistent Context States & Data ====*/
       cachedContext: {
@@ -88,6 +95,8 @@ export default {
 
         // Stats
         firstVisitTime: null,
+        sparkWishBeaconVisitTime: null,
+        tourDistance: 0,
 
         // Runtime
         hasFinishedOnboard: false,
@@ -100,6 +109,14 @@ export default {
   },
 
   computed: {
+    domWrapperClass() {
+      return {
+        'is-inited': this.isInited,
+        'is-show-menu': this.isShowMainMenu,
+        'has-inventory-toolbar': this.hasInventoryToolbar
+      }
+    },
+
     enableDebug() {
       return __DEBUG__ || this.$route.query.debug
     },
@@ -116,8 +133,13 @@ export default {
       return (
         this.enableUserInput &&
         this.currentChapter === 'main' &&
+        this.currentActionMode === 'swim' &&
         !this.isForcePushingPlayer
       )
+    },
+
+    hasInventoryToolbar() {
+      return this.currentActionMode === 'viewSpark'
     },
 
     isShowPopup() {
@@ -151,12 +173,15 @@ export default {
 
     isShowMainMenu() {
       this.startOnboard()
-      // console.log('isShowMainMenu', this.isShowMainMenu)
     }
   },
 
   beforeMount() {
     Vue.prototype.$tsi = this
+
+    if (this.$route.query.island) {
+      this.isShowMainMenu = false
+    }
   },
 
   activated() {
@@ -184,7 +209,7 @@ export default {
         })
       }
 
-      if (this.isInited && !this.enableDebug) {
+      if (this.isLoading || (this.isInited && !this.enableDebug)) {
         return
       }
 
@@ -245,7 +270,7 @@ export default {
     },
 
     startOnboard() {
-      if (this.isShowMainMenu || this.cachedContext.hasFinishedOnboard || !this.isInited) {
+      if (this.isShowMainMenu || this.cachedContext.hasFinishedOnboard || !this.isInited || this.$route.query.island) {
         return
       }
 
@@ -274,6 +299,9 @@ export default {
 </script>
 
 <style lang="stylus">
+$inventoryToolbarHeight = 86px
+$secondaryBgOpacity = 0.8
+
 .sketch-the-sinking-isle
   position absolute
   width: 100%
@@ -312,12 +340,31 @@ export default {
       transform: translate3d(-50%, 50%, 0)
 
     > .cear-story
-      position: fixed
+      position: absolute
+      top: auto
       padding: 0 24px
       max-width: 800px
       transform: translate3d(-50%, 0, 0)
       left: 50%
-      bottom: 0
+      bottom: 24px
+      transition: 418ms
+      opacity: 0
+
+      &.is-show
+        opacity: 1
+
+      .story-action-bar
+        // right: 50%
+        // transform: translateX(50%)
+        bottom: 0
+        opacity: $secondaryBgOpacity
+        transform: scale(0.8)
+
+        > *
+          pointer-events: auto
+
+    &.has-inventory-toolbar > .cear-story
+      bottom: $inventoryToolbarHeight
 
     .sketch-title
       display: none
@@ -330,7 +377,7 @@ export default {
 
     .dom-renderer
       .attention-indicator
-        opacity: 0.8
+        opacity: $secondaryBgOpacity
 
       .cear-message-bubble
         // opacity: 0.95

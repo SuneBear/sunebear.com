@@ -22,7 +22,7 @@ export default class DOMSound extends Module {
     const gainNode = new Tone.Gain(0).toDestination()
 
     const playHoverSoundEffect = () => {
-      shiftFilter.pitch = this.random.rangeFloor(-12, 12)
+      // shiftFilter.pitch = this.random.rangeFloor(-12, 12)
       gainNode.gain.value = this.random.range(1, 1.3)
       this.audio.play('uiHoverWave', {
         chains: [ gainNode ]

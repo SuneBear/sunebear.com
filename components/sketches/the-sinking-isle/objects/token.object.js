@@ -54,7 +54,10 @@ export class TokenObject extends THREE.Group {
 
     const normalTokenMesh = new THREE.Mesh()
     normalTokenMesh.material.map = getTokenMapByName(this.options.name)
-    this.tokenBody = convertToMeshSprite({ object: normalTokenMesh })
+    this.tokenBody = convertToMeshSprite({ object: normalTokenMesh, uniforms: {
+      // @Hack: emissiveIntensity is invalid, use tintColor to mock that reducing brightness/exposure
+      tintColor: { value: new THREE.Color(0xbbbbbb) }
+    } })
     this.tokenBody.name = this.options.name
     this.tokenBody.material.depthTest = false
     // this.tokenBody.material.emissive = new THREE.Color(0xffffff)

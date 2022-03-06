@@ -10,7 +10,7 @@ const generatePatchOptions = options => {
   return {
     position: [0, 0, 0],
     rotation: [0, 0, 0],
-    scale: 1,
+    scale: 0.5,
     radius: 1,
     ...options
   }
@@ -19,14 +19,17 @@ const generatePatchOptions = options => {
 const BUILDING_PATCH_MAP = {
   suneBearHome: generatePatchOptions({
     position: [-10, -0.3, -10],
-    rotation: [0, Math.PI / 4, 0],
-    scale: 0.5
+    rotation: [0, Math.PI / 4, 0]
   }),
   snowfallSpace: generatePatchOptions({
     position: [11, -0.3, 11],
     // position: [ 0, -0.5, 0 ],
     rotation: [0, 0, 0],
     scale: 0.85
+  }),
+  sparkWishBeacon: generatePatchOptions({
+    position: [-5, 1, -50],
+    rotation: [0, -Math.PI / 4, 0]
   })
 }
 
@@ -43,6 +46,7 @@ export default class EnviromentBuildings extends Module {
 
     this.setupSuneBearHome()
     this.setupSnowfallSpace()
+    this.setupSparkWishBeacon()
     // this.setupSunkBuildings()
     this.setupTokens()
   }
@@ -131,7 +135,37 @@ export default class EnviromentBuildings extends Module {
     this.group.add(this.snowfallSpace)
   }
 
-  setupBeacon() {}
+  setupSparkWishBeacon() {
+    this.sparkWishBeacon = new BuildingGroupObject({
+      model: this.asset.items.buildingSparkWishBeaconModel,
+      name: 'sparkWishBeacon',
+      materialOptions: {
+        // emissiveIntensity: 0.4
+      },
+      materialOptionsMap: {
+        Stone: {
+          bumpScale: 0
+        },
+        lightray: {
+          outlineThickness: 0,
+          castShadow: false,
+          transparent: true,
+          opacity: 0.8
+        }
+      },
+      portal: {
+        name: 'stars',
+        position: new THREE.Vector3(3, 4.2, 4),
+        needAnimateY: true,
+        onOpened: () => {
+          this.$vm.currentActionMode = 'viewSpark'
+        }
+      },
+    })
+
+    this.applyPatch(this.sparkWishBeacon)
+    this.group.add(this.sparkWishBeacon)
+  }
 
   setupTheSinkingIsle() {}
 

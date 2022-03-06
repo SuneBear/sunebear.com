@@ -8,7 +8,7 @@ import ControlManager from './engine/control'
 import AudioManager from './engine/audio'
 import StatsManager from './engine/stats'
 import { asset } from './engine/asset'
-import { Random, autobind, math } from './engine/utils'
+import { Random, autobind, math, sleep } from './engine/utils'
 
 import CameraModule from './modules/camera.module'
 import TweenModule from './modules/tween.module'
@@ -29,7 +29,6 @@ import PlayerModule from './modules/player.module'
 import AtmosphereGlowDotsModule from './modules/atmosphere-glow-dots.module'
 import AtmosphereRainModule from './modules/atmosphere-rain.module'
 import AtmosphereWindModule from './modules/atmosphere-wind.module'
-import ChapterModule from './modules/chapter.module'
 import TestModule from './modules/test.module'
 
 import assets from './assets'
@@ -150,8 +149,6 @@ class TheSinkingIsleSketch {
       this.audio.mute()
     }
 
-    this.audio.unmute()
-
     this.module.add(DOMSoundModule)
   }
 
@@ -159,7 +156,7 @@ class TheSinkingIsleSketch {
     this.tween = this.module.add(TweenModule)
   }
 
-  setupDebug() {
+  async setupDebug() {
     this.config.debug = this.$vm.enableDebug
 
     if (this.config.debug) {
@@ -231,15 +228,15 @@ class TheSinkingIsleSketch {
     this.module.set({ enviroment: this.enviroment })
   }
 
-  setupAnimal() {
-    this.module.add(AnimalFishShoalModule)
-    this.module.add(AnimalMiscModule)
-  }
-
   setupPlayer() {
     const playerModule = this.module.add(PlayerModule)
     this.player = playerModule.instance
     this.module.set({ player: this.player })
+  }
+
+  setupAnimal() {
+    this.module.add(AnimalFishShoalModule)
+    this.module.add(AnimalMiscModule)
   }
 
   async setupOtherModules() {
@@ -248,12 +245,19 @@ class TheSinkingIsleSketch {
     this.module.add(AtmosphereWindModule)
 
     // Postload module
-    this.asset.on('groupEnd', group => {
+    this.asset.on('groupEnd', async group => {
       if (group.name !== 'postload') {
         return
       }
+
       this.audio.setupPlayers(this.asset.getAudioItems())
-      this.module.add(ChapterModule)
+
+      const modules = await Promise.all([
+        import('./modules/building-spark-wish-beacon.module'),
+        import('./modules/chapter.module')
+      ])
+      modules.map(el => this.module.add(el.default))
+
       if (this.config.enablePlayground) {
         this.module.add(TestModule)
       }

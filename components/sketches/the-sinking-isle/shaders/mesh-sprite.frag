@@ -9,6 +9,7 @@ uniform vec3 color;
 uniform float aspect;
 uniform float spriteHeight;
 uniform float animateProgress;
+// uniform float brightness;
 uniform bool silhouette;
 uniform vec3 tintColor;
 uniform vec3 shadowColor;

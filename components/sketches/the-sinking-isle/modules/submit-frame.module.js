@@ -10,6 +10,7 @@ export default class SubmitFrameModule extends Module {
     this.preRenderCallbacks = []
   }
 
+  // like $vm.$nextTick
   addFrameTask(cb) {
     this.frameTasks.push(cb)
   }

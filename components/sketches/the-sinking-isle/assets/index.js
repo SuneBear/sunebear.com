@@ -58,6 +58,10 @@ export default [
         source: require('./gltfs/building-sunebear-home.glb').default
       },
       {
+        name: 'buildingSparkWishBeaconModel',
+        source: require('./gltfs/building-spark-wish-beacon.glb').default
+      },
+      {
         name: 'playerCharacterModel',
         source: require('./gltfs/player-character.glb').default
       },
@@ -178,6 +182,11 @@ export default [
         options: REPEAT_TEXTURE_OPTIONS
       },
       {
+        name: 'fwSparkTexture',
+        source: require('./textures/fireworks/spark1.png'),
+        type: 'texture'
+      },
+      {
         name: 'sunTokenTexture',
         source: require('./textures/tokens/sun.png'),
         type: 'texture'
@@ -187,15 +196,13 @@ export default [
         source: require('./textures/tokens/snow.png'),
         type: 'texture'
       },
+      {
+        name: 'starsTokenTexture',
+        source: require('./textures/tokens/stars.png'),
+        type: 'texture'
+      },
 
       // Audios
-      {
-        name: 'atmoRain',
-        source: require('./audios/atmo-rain.mp3').default,
-        options: { loop: true, lock: true, volumeDelta: -20, fadeIn: 1, fadeOut: 1 }
-      },
-      { name: 'waterTrace1', source: require('./audios/water-01.mp3').default, options: TRACE_AUDIO_OPTIONS },
-      { name: 'waterTrace2', source: require('./audios/water-02.mp3').default, options: TRACE_AUDIO_OPTIONS },
       // { name: 'iceTrace1', source: require('./audios/ice-01.mp3').default, options: TRACE_AUDIO_OPTIONS },
       // { name: 'iceTrace2', source: require('./audios/ice-02.mp3').default, options: TRACE_AUDIO_OPTIONS },
       // { name: 'iceTrace3', source: require('./audios/ice-03.mp3').default, options: TRACE_AUDIO_OPTIONS },
@@ -229,11 +236,56 @@ export default [
       },
 
       // audios
+      {
+        name: 'atmoRain',
+        source: require('./audios/atmo-rain.mp3').default,
+        options: { loop: true, lock: true, volumeDelta: -20, fadeIn: 1, fadeOut: 1 }
+      },
+      { name: 'waterTrace1', source: require('./audios/water-01.mp3').default, options: TRACE_AUDIO_OPTIONS },
+      { name: 'waterTrace2', source: require('./audios/water-02.mp3').default, options: TRACE_AUDIO_OPTIONS },
       { name: 'testAudio', source: require('./audios/test.mp3').default },
       {
         name: 'pin', source: require('./audios/pin.mp3').default,
         options: { volumeDelta: -20 }
       },
+      // {
+      //   name: 'fwCrackle1', source: require('./audios/fireworks/crackle1.mp3').default
+      // },
+      {
+        name: 'fwCrackle2', source: require('./audios/fireworks/crackle2.mp3').default
+      },
+      {
+        name: 'fwHeavyBoom1', source: require('./audios/fireworks/heavy-boom1.mp3').default
+      },
+      {
+        name: 'fwHeavyBoom2', source: require('./audios/fireworks/heavy-boom2.mp3').default
+      },
+      {
+        name: 'fwLightBoom1', source: require('./audios/fireworks/light-boom1.mp3').default
+      },
+      {
+        name: 'fwLightBoom2', source: require('./audios/fireworks/light-boom2.mp3').default
+      },
+      {
+        name: 'fwLightBoom3', source: require('./audios/fireworks/light-boom3.mp3').default
+      },
+      {
+        name: 'fwWhistle1', source: require('./audios/fireworks/whistle1.mp3').default,
+        options: { fadeIn: 0.5, fadeOut: 0.5 }
+      },
+      {
+        name: 'fwWhistle2', source: require('./audios/fireworks/whistle2.mp3').default,
+        options: { fadeIn: 0.5, fadeOut: 0.5 }
+      },
+      // {
+      //   name: 'fwUp1', source: require('./audios/fireworks/up1.mp3').default
+      // },
+      // {
+      //   name: 'fwUp2', source: require('./audios/fireworks/up2.mp3').default
+      // },
+      // {
+      //   name: 'fwUp3', source: require('./audios/fireworks/up3.mp3').default
+      // },
       {
         name: 'uiPaperTurn', source: require('./audios/ui-paper-turn.mp3').default,
         options: { volumeDelta: -10, delay: 0.5 }
@@ -245,6 +297,16 @@ export default [
       {
         name: 'uiHoverWave', source: require('./audios/ui-hover-wave.mp3').default,
         options: { volumeDelta: -30 }
+      },
+
+      // midis
+      {
+        name: 'pianoEtudeN1Piece',
+        source: require('./midis/piano-etude-n1.mid').default
+      },
+      {
+        name: 'LoweTheStarryNightPiece',
+        source: require('./midis/lowe-the-starry-night.mid').default
       }
     ]
   }

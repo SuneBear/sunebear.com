@@ -1,5 +1,7 @@
 import * as Tone from 'tone'
 
+const SYNC_MODE = false
+
 export default class Audio {
 
   constructor(audioPlayers = {}) {
@@ -47,7 +49,6 @@ export default class Audio {
   }
 
   // @TODO:
-  // - Support lock option, ignore duplicate play
   // - Support play post-loaded audio resource
   // - Support deck play an audio series?
   play(name, options = {}) {
@@ -66,10 +67,14 @@ export default class Audio {
       ...player.assetOptions,
       ...options
     }
-    const { delay, startAt, fadeIn, lock, loop, onPlay, chains } = options
+    const { delay, startAt, fadeIn, lock, loop, onPlay, chains, volume } = options
 
     if (typeof loop !== 'undefined') {
       player.loop = loop
+    }
+
+    if (typeof volume !== 'undefined') {
+      player.volume.value = volume
     }
 
     if (typeof fadeIn !== 'undefined') {
@@ -97,7 +102,11 @@ export default class Audio {
       onPlay(player)
     }
 
-    player.start(start + delay, startAt)
+    try {
+      player.start(start + delay, startAt)
+    } catch (error) {
+      console.log(`[Audio Manager] ${name} play`, error)
+    }
 
     return player
   }
@@ -105,6 +114,9 @@ export default class Audio {
   pause() {
     this.lastSeconds = Tone.TransportTime().toSeconds()
     Tone.Transport.pause()
+    if (!SYNC_MODE) {
+      this.stopAll()
+    }
   }
 
   // @FIXME: Seek player buffer to lastSeconds
@@ -125,6 +137,7 @@ export default class Audio {
 
     if (!player) {
       console.warn(`Invaid player name: ${name}`)
+      return
     }
 
     player.stop()
