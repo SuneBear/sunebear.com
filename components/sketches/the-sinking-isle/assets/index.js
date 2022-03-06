@@ -29,7 +29,7 @@ const NEAREST_TEXTURE_OPTIONS = {
 const TRACE_AUDIO_OPTIONS = {
   lock: true,
   fadeIn: 0.5,
-  fadeOut: 1,
+  fadeOut: 0.5,
   volumeDelta: -5,
   envelope: {
     attack: 0.2,
@@ -244,7 +244,7 @@ export default [
       },
       {
         name: 'uiHoverWave', source: require('./audios/ui-hover-wave.mp3').default,
-        options: { volumeDelta: -25 }
+        options: { volumeDelta: -30 }
       }
     ]
   }

@@ -57,7 +57,7 @@ export default class EnviromentTraceBubbles extends Module {
       release(m) {}
     })
 
-    const newSpawnDelay = () => random.range(0.01)
+    const newSpawnDelay = () => random.range(0.05, 0.15)
     let spawnDelay = newSpawnDelay()
     let spawnTime = random.range(0, spawnDelay)
 
@@ -65,7 +65,7 @@ export default class EnviromentTraceBubbles extends Module {
     const tmpArr4D = [0, 0, 0, 0]
 
     const activeMeshes = group.children
-    const newCooldownDelay = () => random.range(0.01, 0.01)
+    const newCooldownDelay = () => random.range(0.01, 0.2)
     let hitCooldownDelay = newCooldownDelay()
     let hitCooldownTime = 0
     const activeEnv = this.enviroment
@@ -74,7 +74,7 @@ export default class EnviromentTraceBubbles extends Module {
     let lastAudioPlayer = null
 
     let lastPos = null
-    const distThreshold = 0.4
+    const distThreshold = 0.8
     const distThresholdSq = distThreshold * distThreshold
 
     this.processWaterBubbles = dt => {
@@ -85,16 +85,20 @@ export default class EnviromentTraceBubbles extends Module {
       const hasMovedFarEnough =
         !lastPos || userPos.distanceToSquared(lastPos) >= distThresholdSq
 
+      const showWater = underPlayer.isInLake
+
       if (lastAudioPlayer) {
+        if (!this.control.isPressed('tap')) {
+          lastAudioPlayer.stop()
+          lastAudioPlayer = null
+        }
         hitCooldownTime += dt
-        if (hitCooldownTime >= hitCooldownDelay) {
+        if (hitCooldownTime >= hitCooldownDelay && lastAudioPlayer?.state === 'stopped') {
           hitCooldownTime %= hitCooldownDelay
           hitCooldownDelay = newCooldownDelay()
           lastAudioPlayer = null
         }
       }
-
-      const showWater = underPlayer.isInLake
 
       if (showWater) {
         spawnTime += dt
@@ -118,7 +122,9 @@ export default class EnviromentTraceBubbles extends Module {
             lastPos = new THREE.Vector3()
           }
           lastPos.copy(userPos)
-          lastAudioPlayer = this.audio.play(random.pick(audioItems))
+          if (this.control.isPressed('tap')) {
+            lastAudioPlayer = this.audio.play(random.pick(audioItems))
+          }
         }
       }
 

@@ -172,7 +172,7 @@ class TheSinkingIsleSketch {
     if (this.debug) {
       const folder = this.debug.addFolder({
         title: 'Dev',
-        expanded: true
+        expanded: false
       })
       folder.addInput(this.config, 'enablePlayground').on('change', e => {
         if (this.config.enablePlayground) {
@@ -183,6 +183,7 @@ class TheSinkingIsleSketch {
       })
       folder.addInput(this.$vm, 'isPlaying')
       folder.addInput(this.$vm.cachedContext, 'isMuteAudio')
+      this.debug.dev = folder
     }
   }
 
