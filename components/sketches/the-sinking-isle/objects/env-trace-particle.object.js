@@ -5,7 +5,7 @@ import fragmentShader from '../shaders/env-trace-particle.frag'
 
 export class EnvTracePrticleObject extends THREE.Sprite {
 
-  constructor(options) {
+  constructor(options = {}) {
 		super()
 
     this.uniforms = {

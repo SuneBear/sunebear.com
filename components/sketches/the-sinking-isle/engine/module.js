@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 
-// @Hack: Import this for IntelliSense
+// @Dev: Import this for IntelliSense
 import { theSinkingIsleSketch } from '../sketch'
 
 // @TODO:

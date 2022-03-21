@@ -36,6 +36,11 @@ export function convertToToonMaterial(obj, params = {}) {
     return originMaterial
   }
 
+  if (params.colorOffset) {
+    const offset = Array.isArray(params.colorOffset) ? params.colorOffset : [0, params.colorOffset, params.colorOffset / 3]
+    originMaterial.color.offsetHSL(...offset)
+  }
+
   // @TIPS: Valid black color is 0x010101
   const outlineColor = (params.outlineColor || params.color) ? new THREE.Color(params.outlineColor || params.color) : originMaterial.color.clone()
   const outlineColorOffset = params.outlineColorOffset !== undefined ? params.outlineColorOffset : -0.5

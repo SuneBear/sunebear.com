@@ -13,6 +13,7 @@ export class BuildingGroupObject extends THREE.Group {
     this.options = {
       materialOptions: {},
       materialOptionsMap: {},
+      waterBuoyancyIntensity: 1,
       ...options
     }
 
@@ -21,7 +22,8 @@ export class BuildingGroupObject extends THREE.Group {
 
     // @TODO: Support config animation
     this.waterBuoyancyAnimation = new WaterBuoyancyAnimation({
-      object: this
+      object: this,
+      intensity: this.options.waterBuoyancyIntensity
     })
 
     this.setupModel()
@@ -33,18 +35,23 @@ export class BuildingGroupObject extends THREE.Group {
     const { onModelSetup, materialOptionsMap } = this.options
     const { scene } = this.model
 
+    // scene.frustumCulled = false
+
     scene.traverse(obj => {
       if (obj.material) {
         obj.renderOrder = RENDER_LAYERS.BUILDING
+        // obj.matrixAutoUpdate = false
+        // obj.frustumCulled = false
         const materialOptions = materialOptionsMap[obj.name]
         convertToToonMaterial(obj, {
           outlineThickness: 0.005,
-          emissiveIntensity: 0.1,
+          emissiveIntensity: 0,
           bumpMap: asset.items.floorOverlayTexture,
           bumpScale: 1,
           // normalMap: asset.items.floorOverlayTexture,
           // normalScale: new THREE.Vector2(0.1, 0.1),
           transparent: false,
+          castShadow: false,
           ...this.options.materialOptions,
           ...materialOptions
         })

@@ -62,7 +62,7 @@ export class EnvTerrainPlaneObject extends THREE.Mesh {
     }
 
     // this.geometry = options.terrainGeo
-    this.geometry = new THREE.PlaneGeometry(width, height, width, height)
+    this.geometry = new THREE.PlaneGeometry(width, height, 1, 1)
 
     this.material = new THREE.ShaderMaterial({
       vertexShader,

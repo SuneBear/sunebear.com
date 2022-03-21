@@ -4,6 +4,7 @@ import { Chapter } from './base'
 import { setupPostProcess } from './post-process'
 import { math } from '../../engine/utils'
 import { BuildingGroupObject } from '../../objects/building.object'
+import { convertToToonMaterial } from '../../objects/mesh-toon.material'
 import { OrbitControls } from '../../utils/hack-deps/three/orbit-controls'
 
 const IS_IN_PROGRESS = true
@@ -62,6 +63,7 @@ export class SuneBearHomeChapter extends Chapter {
     this.model = new BuildingGroupObject({
       model: this.sketch.asset.items.chapterSuneBearHomeModel,
       name: 'suneBearHome',
+      waterBuoyancyIntensity: 3,
       onModelSetup: (obj) => {
         // @FIXME: Resolve z-fighting in safari
         if (this.sketch.$vm.isSafari) {
@@ -186,7 +188,10 @@ export class SuneBearHomeChapter extends Chapter {
     const { renderer } = this
 
     if (renderer.module.usePostprocess) {
+      const lastToneMappingExposure = renderer.toneMappingExposure
+      renderer.toneMappingExposure = 5
       this.postProcess.render()
+      renderer.toneMappingExposure = lastToneMappingExposure
     } else {
       renderer.setRenderTarget(this.renderTarget)
       renderer.clear()

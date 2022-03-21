@@ -26,12 +26,15 @@ export default class BuildingSparkWishBeacon extends Module {
 
   setupFireworks() {
     this.building = this.scene.getObjectByName('sparkWishBeacon')
-    this.group.position.copy(this.building.position)
+    if (this.building) {
+      this.group.position.copy(this.building.position)
+    }
 
     this.fireworksManager = new FireworksManager({
       audioEngine: this.audio,
       sizes: this.sizes,
-      container: this.group
+      container: this.group,
+      pixelRatio: this.config.pixelRatio
     })
   }
 

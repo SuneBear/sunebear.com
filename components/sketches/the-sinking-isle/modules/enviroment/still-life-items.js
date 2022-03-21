@@ -20,7 +20,7 @@ export const generateStillLifeItemsMap = module => {
   const envState = module.enviroment.envState
   const assetItems = module.asset.items
   const uniforms = {
-    ...module.enviromentTrace.getTraceUniforms()
+    ...module.enviromentTrace?.getTraceUniforms()
   }
 
   // Process

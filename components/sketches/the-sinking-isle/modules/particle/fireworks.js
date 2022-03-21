@@ -306,13 +306,14 @@ class FireworksLight {
 
   update = function(dt, time) {
     if (this.light.intensity > 0) {
-      this.light.intensity -= 0.1
+      this.light.intensity -= dt * 5
     } else {
       this.alive = false
     }
   }
 }
 
+// @TODO: Light whole scene not only beacon
 class FireworksLightManager {
   constructor(numOfLights, container) {
     this.lights = []
@@ -355,7 +356,7 @@ class FireworksLightManager {
     }
 
     if (this.hemisphereLight.intensity > 0.5) {
-      this.hemisphereLight.intensity -= 0.1
+      this.hemisphereLight.intensity -= dt * 5
     } else {
       this.hemisphereLight.color.r = 0.66666
       this.hemisphereLight.color.g = 0.4
@@ -604,17 +605,18 @@ class FireworksPatternEffectObject extends THREE.Mesh {
 // @REF: https://tympanus.net/codrops/2022/01/19/animate-anything-along-an-svg-path/
 // @REF: https://github.com/Lallassu/fireworks
 class FireworksPointsObject extends THREE.Points {
-  constructor(particlesAmount, particlePool) {
+  constructor(particlesAmount, particlePool, pixelRatio = 2) {
     super()
 
     this.vs = `
       attribute float size;
       varying vec3 vColor;
+      uniform float pixelRatio;
 
       void main() {
         vColor = color;
         vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
-        gl_PointSize = size * ( 50.0 / -mvPosition.z );
+        gl_PointSize = size * ( 21.0 * pixelRatio / -mvPosition.z );
         gl_Position = projectionMatrix * mvPosition;
       }
     `
@@ -632,7 +634,8 @@ class FireworksPointsObject extends THREE.Points {
     this.frustumCulled = false
 
     this.uniforms = {
-      pointTexture: { value: asset.items.fwSparkTexture }
+      pointTexture: { value: asset.items.fwSparkTexture },
+      pixelRatio: { value: pixelRatio }
     }
 
     this.material = new THREE.ShaderMaterial({
@@ -776,7 +779,7 @@ class FireworksLauncher {
 }
 
 export class FireworksManager {
-  constructor({ audioEngine, sizes, container }) {
+  constructor({ audioEngine, sizes, container, pixelRatio }) {
     this.container = container
     this.sizes = sizes
     this.isPlaying = false
@@ -785,7 +788,7 @@ export class FireworksManager {
     this.vfxSoundManager = new FireworksVFXSoundManager(audioEngine)
     this.lightManager = new FireworksLightManager(10, container)
     this.particlePool = new FireworksParticlePool()
-    this.pointsObject = new FireworksPointsObject(16000, this.particlePool)
+    this.pointsObject = new FireworksPointsObject(16000, this.particlePool, pixelRatio)
     this.launcher = new FireworksLauncher(this)
 
     this.setupEffects()

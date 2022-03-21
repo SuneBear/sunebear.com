@@ -82,6 +82,9 @@ export const setupPostProcess = ({
         outlineMap: {
           value: o.outlineRenderTarget.texture
         },
+        enableOutline: {
+          value: true
+        },
         enableGrainNoise: {
           value: true
         },

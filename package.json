@@ -37,6 +37,7 @@
     "marked": "^3.0.8",
     "normalize-path-scale": "^2.0.0",
     "nuxt": "^2.0.0",
+    "nuxt-user-agent": "^1.2.2",
     "parse-svg-path": "^0.1.2",
     "point-in-polygon": "^1.1.0",
     "simplex-noise": "^3.0.0",

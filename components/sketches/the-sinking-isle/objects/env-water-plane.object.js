@@ -37,7 +37,7 @@ export class EnvWaterPlaneObject extends THREE.Mesh {
       waterOpacity: { value: 0.7 },
       centroidPosition: { value: new THREE.Vector3(0, 0, 0) },
       lakeSize: { value: width / 2 },
-      colorA: { value: new THREE.Color(options.hasIce ? "#698193" : "#12316a") },
+      colorA: { value: new THREE.Color(options.hasIce ? "#698193" : "#0f2959") },
       colorB: { value: new THREE.Color(options.hasIce ? "#a8bec4" : "#49c2ff") },
       environmentSize: {
         value: new THREE.Vector2(width, height)
@@ -62,7 +62,6 @@ export class EnvWaterPlaneObject extends THREE.Mesh {
     // this.userData.shadowCaster = true
     // this.userData.isWater = true
 
-    // @FIXME: Wierd plane stripe in iOS Safari
     this.material = new THREE.ShaderMaterial({
       vertexShader,
       fragmentShader,

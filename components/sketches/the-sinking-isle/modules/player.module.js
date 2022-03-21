@@ -34,10 +34,11 @@ export default class Player extends Module {
     this.instance.rotation.y = Math.PI * 1.25
 
     this.instanceWaterBuoyancyAnimation = new WaterBuoyancyAnimation({
-      object: this.instance
+      object: this.instance,
+      intensity: 3
     })
 
-    this.enviroment.directionLight.target = this.instance
+    this.enviroment && (this.enviroment.directionLight.target = this.instance)
 
     this.scene.add(this.instance)
   }
@@ -60,6 +61,7 @@ export default class Player extends Module {
         convertToToonMaterial(obj, {
           emissive: 0x404040,
           emissiveIntensity: 0.1,
+          transparent: true,
           outlineColor: 0x010101,
           outlineThickness: 0.002
         })
@@ -95,7 +97,7 @@ export default class Player extends Module {
           displacementScale: 20,
           color: 0x870606,
           emissive: 0x870606,
-          emissiveIntensity: 0.2,
+          emissiveIntensity: 0,
           outlineThickness: 0.001
         })
         obj.scale.multiply(new THREE.Vector3(2, 2, 1))
@@ -123,7 +125,7 @@ export default class Player extends Module {
   setupUnderStateSystem() {
     this.instance.underState = {
       isInLake: true,
-      lake: this.enviroment.lakeGeo.lakeInfos[0]
+      lake: this.enviroment?.lakeGeo.lakeInfos[0]
     }
   }
 
@@ -140,8 +142,12 @@ export default class Player extends Module {
     this.minSpeed = 0.0
     this.maxSpeed = 3
     // @Config: Final factor for all moveTarget, springPlayerMove
-    this.speedFactor = 0.8 // 0.4
+    this.speedFactor = 1 // 0.4
+    if (this.$vm.$ua.isFromSmartphone()) {
+      this.speedFactor *= 1.2
+    }
 
+    // @TODO: Support boost
     this.boost = 0
     this.boostFactor = 0
     this.boosts = []
@@ -263,12 +269,13 @@ export default class Player extends Module {
     }
     this.speed *= speedMultiplier
     this.boost *= speedMultiplier
+
     let totalSpeed = this.speed + this.boost
     let totalBoost = 0
-    this.boosts.map(boost => {
-      // @TODO: Support boosts
-      totalBoost += boost.value
-    })
+    // @TODO: Support boosts
+    // this.boosts.map(boost => {
+    //   totalBoost += boost.value
+    // })
     let directionIncrease =
       delta * totalSpeed * this.speedFactor +
       totalBoost * this.boostFactor * delta
@@ -278,28 +285,7 @@ export default class Player extends Module {
     }
 
     // Drift
-    const drift = this.$vm.enablePlayerDrift
-    let newDriftSpeed = this.driftSpeed
-    if (this.control.isPressed('tap')) {
-      const mouse = this.control.getMouse()
-      const u = mouse.x
-      const v = mouse.y
-      const dist = math.clamp01(Math.sqrt(u * u + v * v))
-      newDriftSpeed = math.lerp(0.1, 0.75, Math.pow(dist, 0.5))
-    }
-    if (this.isFixedDriftSpeed) {
-      newDriftSpeed = 0.05
-    }
-    const newDriftAngle =
-      this.moveDirectionAngle != null
-        ? this.moveDirectionAngle
-        : this.driftAngle
-    this.driftAngle = math.dampAngle(this.driftAngle, newDriftAngle, 3, delta)
-    this.driftSpeed = math.dampAngle(this.driftSpeed, newDriftSpeed, 5, delta)
-    if (drift) {
-      this.tmpPos3D.set(Math.cos(this.driftAngle), 0, Math.sin(this.driftAngle))
-      userTargetPos.addScaledVector(this.tmpPos3D, delta * this.driftSpeed)
-    }
+    this.updatePlayerDrift()
 
     // Set movement boundary
     // @TEMP: Removed boundary limit
@@ -329,6 +315,37 @@ export default class Player extends Module {
 
     // Apply target to player instance
     this.updateSpringPlayerMoveSystem(delta)
+  }
+
+  updatePlayerDrift() {
+    const drift = this.$vm.enablePlayerDrift
+
+    if (!drift) {
+      return
+    }
+
+    const userTargetPos = this.targetPos
+    let newDriftSpeed = this.driftSpeed
+
+    if (this.control.isPressed('tap')) {
+      const mouse = this.control.getMouse()
+      const u = mouse.x
+      const v = mouse.y
+      const dist = math.clamp01(Math.sqrt(u * u + v * v))
+      newDriftSpeed = math.lerp(0.1, 0.75, Math.pow(dist, 0.5))
+    }
+    if (this.isFixedDriftSpeed) {
+      newDriftSpeed = 0.05
+    }
+
+    const newDriftAngle =
+      this.moveDirectionAngle != null
+        ? this.moveDirectionAngle
+        : this.driftAngle
+    this.driftAngle = math.dampAngle(this.driftAngle, newDriftAngle, 3, delta)
+    this.driftSpeed = math.dampAngle(this.driftSpeed, newDriftSpeed, 5, delta)
+    this.tmpPos3D.set(Math.cos(this.driftAngle), 0, Math.sin(this.driftAngle))
+    userTargetPos.addScaledVector(this.tmpPos3D, delta * this.driftSpeed)
   }
 
   updateSpringPlayerMoveSystem(delta) {
@@ -428,9 +445,19 @@ export default class Player extends Module {
     }
 
     spring.update(delta)
+    this.updateLakeBoundaryEvent()
+    playerMesh.position.copy(spring.position || this.targetPos)
+  }
 
-    // @TODO: Optimize lake boundary limit
-    // @TEMP: Removed boundary limit
+  // @TODO: Optimize lake boundary limit
+  // @TEMP: Removed boundary limit
+  updateLakeBoundaryEvent() {
+    if (this.$vm.cachedContext.hasShownBoundaryStory) {
+      return
+    }
+
+    const { spring } = this
+
     const positionOffset = 2.0
     const springScale = 0.95
     if (
@@ -473,7 +500,5 @@ export default class Player extends Module {
         this.$vm.cachedContext.hasShownBoundaryStory = true
       }
     }
-
-    playerMesh.position.copy(spring.position)
   }
 }

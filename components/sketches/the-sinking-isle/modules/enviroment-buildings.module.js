@@ -16,7 +16,7 @@ const generatePatchOptions = options => {
   }
 }
 
-const BUILDING_PATCH_MAP = {
+export const BUILDING_PATCH_MAP = {
   suneBearHome: generatePatchOptions({
     position: [-10, -0.3, -10],
     rotation: [0, Math.PI / 4, 0]
@@ -56,19 +56,29 @@ export default class EnviromentBuildings extends Module {
       model: this.asset.items.buildingSuneBearHomeModel,
       name: 'suneBearHome',
       materialOptions: {
-        emissiveIntensity: 0.1
+        // emissiveIntensity: 0.1
+        colorOffset: [0, 0.1, 0]
       },
       materialOptionsMap: {
         base: {
-          outlineThickness: 0.0001
+          outlineThickness: 0.0001,
+          // colorOffset: [0, 0.1, -0.02],
+        },
+        sign: {
+          emissiveIntensity: 0.2
+        },
+        'mushroom-cap-bottom-top': {
+          colorOffset: [0, 0.1, 0.1],
         },
         'grass-left': {
           outlineThickness: 0.002,
-          outlineColor: 0x101010
+          outlineColor: 0x101010,
+          colorOffset: [0, 0.1, -0.03],
         },
         'grass-right': {
           outlineThickness: 0.002,
-          outlineColor: 0x101010
+          outlineColor: 0x101010,
+          colorOffset: [0, 0.1, -0.03],
         }
       },
       portal: {
@@ -99,7 +109,7 @@ export default class EnviromentBuildings extends Module {
         }
 
         if (obj.name.includes('face') || obj.name.includes('Zai')) {
-          obj.material.userData.outlineParameters.thickness = 0
+          obj.material.userData.outlineParameters && (obj.material.userData.outlineParameters.thickness = 0)
         }
 
         if (obj.name.includes('Base_0')) {
@@ -108,11 +118,12 @@ export default class EnviromentBuildings extends Module {
       },
       materialOptions: {
         castShadow: false,
-        emissiveIntensity: 0.05
+        colorOffset: [0, 0.1, 0],
+        // emissiveIntensity: 0.05
       },
       materialOptionsMap: {
         Ground_L_Base_0: {
-          castShadow: true
+          // castShadow: true
         }
       },
       portalPosition: new THREE.Vector3(),
@@ -140,7 +151,8 @@ export default class EnviromentBuildings extends Module {
       model: this.asset.items.buildingSparkWishBeaconModel,
       name: 'sparkWishBeacon',
       materialOptions: {
-        // emissiveIntensity: 0.4
+        emissiveIntensity: 0.1,
+        colorOffset: [0, 0.15, 0]
       },
       materialOptionsMap: {
         Stone: {
@@ -155,7 +167,7 @@ export default class EnviromentBuildings extends Module {
       },
       portal: {
         name: 'stars',
-        position: new THREE.Vector3(3, 4.2, 4),
+        position: new THREE.Vector3(0.6, 3, 1),
         needAnimateY: true,
         onOpened: () => {
           this.$vm.currentActionMode = 'viewSpark'

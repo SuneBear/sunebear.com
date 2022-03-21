@@ -70,7 +70,7 @@ export default {
     publicPath: '/_nuxt/'
   },
 
-  modules: ['@nuxtjs/i18n', '@nuxt/content'],
+  modules: ['nuxt-user-agent', '@nuxtjs/i18n', '@nuxt/content'],
 
   content: {
     liveEdit: false,
@@ -90,6 +90,12 @@ export default {
     vueI18n: {
       fallbackLocale: 'zh-Hans',
       silentFallbackWarn: true
+    }
+  },
+
+  watchers: {
+    webpack: {
+      ignored: /node_modules/
     }
   },
 

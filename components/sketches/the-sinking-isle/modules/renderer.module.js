@@ -70,6 +70,7 @@ export default class Renderer extends Module {
     })
     this.instance.module = this
     this.instance.autoClear = false
+    this.instance.info.autoReset = false
     this.instance.domElement.style.position = 'absolute'
     this.instance.domElement.style.top = 0
     this.instance.domElement.style.left = 0
@@ -182,9 +183,10 @@ export default class Renderer extends Module {
         minFilter: THREE.LinearFilter,
         magFilter: THREE.LinearFilter,
         format: THREE.RGBFormat,
-        encoding: THREE.sRGBEncoding
+        encoding: THREE.sRGBEncoding,
       }
     )
+    this.spriteShadowRenderTarget.samples = 4
 
     this.outlineRenderTarget = new RenderTargetClass(
       this.sizes.width,
@@ -194,6 +196,7 @@ export default class Renderer extends Module {
         encoding: THREE.sRGBEncoding
       }
     )
+    this.outlineRenderTarget.samples = 4
 
     this.postProcess.bloomComposer = new EffectComposer(this.instance)
     this.postProcess.bloomComposer.renderToScreen = false
@@ -239,7 +242,7 @@ export default class Renderer extends Module {
         value: true
       },
       enableOutline: {
-        value: true
+        value: false
       },
       enableGrainNoise: {
         value: false
@@ -348,6 +351,10 @@ export default class Renderer extends Module {
   }
 
   renderOutline() {
+    if (this.$vm.isSafari || !this.postProcess.finalPass.uniforms.enableOutline.value) {
+      return
+    }
+
     this.camera.layers.set(RENDER_LAYERS.OUTLINE)
 
     this.instance.setRenderTarget(this.outlineRenderTarget)
@@ -415,14 +422,18 @@ export default class Renderer extends Module {
   }
 
   renderBloom() {
-    if (this.usePostprocess) {
-      // Render single layer
-      this.camera.layers.set(RENDER_LAYERS.BLOOM)
-      this.postProcess.bloomComposer.render()
-      this.instance.clearDepth()
-      // Render all layers
+    if (!this.usePostprocess || !this.postProcess.finalPass.uniforms.enableBloom.value) {
       this.camera.layers.enableAll()
+      return
     }
+
+    // Render single layer
+    this.camera.layers.set(RENDER_LAYERS.BLOOM)
+    this.postProcess.bloomComposer.render()
+    this.instance.clearDepth()
+
+    // Render all layers
+    this.camera.layers.enableAll()
   }
 
   render() {
@@ -430,9 +441,8 @@ export default class Renderer extends Module {
 
     this.renderBloom()
     this.renderShadows()
-    if (!this.$vm.isSafari) {
-      this.renderOutline()
-    }
+    this.renderOutline()
+    this.instance.info.reset()
 
     if (this.usePostprocess) {
       this.postProcess.composer.render()

@@ -118,7 +118,11 @@ export default {
     },
 
     enableDebug() {
-      return __DEBUG__ || this.$route.query.debug
+      return __DEBUG__ || this.$route.query.debug !== undefined
+    },
+
+    enableStats() {
+      return this.$route.query.stats !== undefined
     },
 
     enableUserInput() {
@@ -155,7 +159,7 @@ export default {
 
   watch: {
     loadProgress() {
-      if (this.loadProgress >=1) {
+      if (this.loadProgress >= 1) {
         this.handleLoaded()
       }
     },

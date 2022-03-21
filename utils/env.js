@@ -4,6 +4,13 @@ export const isMobile = (ua = process.client && navigator.userAgent) => {
   )
 }
 
-export const isSafari = (ua = process.client && navigator.userAgent) => {
-  return /^((?!chrome|android).)*safari/i.test(ua)
+export const isWeChat = (ua = process.client && navigator.userAgent) => {
+  return /(micromessenger|webbrowser)/.test(
+    ua.toLocaleLowerCase()
+  )
+}
+
+export const isSafari = (ua = (process.client && navigator.userAgent) || '') => {
+  // Treat WeChat as Safari
+  return /^((?!chrome|android).)*safari/i.test(ua) || isWeChat(ua)
 }

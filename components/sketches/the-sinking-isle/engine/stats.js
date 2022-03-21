@@ -8,6 +8,7 @@ export default class Stats {
     this.active = false
     this.max = 80
     this.ignoreMaxed = true
+    this.enableRenderPanel = false
 
     if (_active) {
       this.activate()
@@ -33,10 +34,12 @@ export default class Stats {
     this.render.extension = this.render.context.getExtension(
       'EXT_disjoint_timer_query_webgl2'
     )
-    this.render.panel = this.instance.addPanel(
-      new StatsJs.Panel('Render (ms)', '#f8f', '#212')
-    )
-    this.render.panel.dom.style.display = 'none'
+    if (this.enableRenderPanel) {
+      this.render.panel = this.instance.addPanel(
+        new StatsJs.Panel('Render (ms)', '#f8f', '#212')
+      )
+      this.render.panel.dom.style.display = 'none'
+    }
 
     const webGL2 =
       typeof WebGL2RenderingContext !== 'undefined' &&
@@ -81,7 +84,7 @@ export default class Stats {
     }
 
     // If query result available or no query yet
-    if (queryResultAvailable || !this.render.query) {
+    if ((this.enableRenderPanel && !this.render.query) || queryResultAvailable) {
       // Create new query
       this.queryCreated = true
       this.render.query = this.render.context.createQuery()

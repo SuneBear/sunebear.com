@@ -4,6 +4,7 @@ import Module from '../engine/module'
 
 // Like sprite object renderer, but for Vue
 // @TODO: Control object visibility in different chapters
+// @TODO: Support CSS2DObject frustum culling
 export default class DOMRenderer extends Module {
 
   constructor(sketch) {

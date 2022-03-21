@@ -44,6 +44,9 @@ export default {
     position absolute
     transition: 100ms
 
+    /.is-in-safari &
+      transition: none
+
   .move-cursor
     border: dotted 2px alpha(white, 0.5)
     width: 36px

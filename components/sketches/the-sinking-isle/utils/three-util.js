@@ -46,7 +46,7 @@ export function clearGroup(g) {
 
 export function pruneUserData(obj) {
   const userData = obj.userData
-  Object.keys(userData).forEach(k => {
+  Object.keys(userData).forEach((k) => {
     if (k.startsWith('_')) {
       delete userData[k]
     } else if (k === 'name' && userData.name === obj.name) {
@@ -85,7 +85,7 @@ export function quaternionFromNormal(normal, quaternion) {
 
 export function setPointsToBufferPosition(geometry, points) {
   const vertices = points
-    .map(p => {
+    .map((p) => {
       if (Array.isArray(p)) return p
       return p.toArray()
     })
@@ -94,4 +94,34 @@ export function setPointsToBufferPosition(geometry, points) {
     'position',
     new THREE.Float32BufferAttribute(vertices, 3)
   )
+}
+
+export const cloneMaterial = (object) => {
+  const c = object
+  const oldMat = c.material
+  c.material = oldMat.clone()
+  c.material.uniforms = Object.assign({}, oldMat.uniforms)
+  for (let p in oldMat.uniforms) {
+    const oldV = oldMat.uniforms[p].value
+    if (
+      oldV.isColor ||
+      oldV.isMatrix3 ||
+      oldV.isMatrix4 ||
+      oldV.isVector2 ||
+      oldV.isVector3 ||
+      oldV.isVector4
+    ) {
+      c.material.uniforms[p] = Object.assign({}, c.material.uniforms[p], {
+        value: oldV.clone(),
+      })
+    } else if (Array.isArray(oldV)) {
+      c.material.uniforms[p] = Object.assign({}, c.material.uniforms[p], {
+        value: oldV.slice(),
+      })
+    } else {
+      c.material.uniforms[p] = Object.assign({}, c.material.uniforms[p], {
+        value: oldV,
+      })
+    }
+  }
 }

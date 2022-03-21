@@ -29,7 +29,7 @@ export default class AnimalFishShoal extends Module {
     this.boidsManager = new BoidsManager({
       player: this.player,
       boidModel: this.asset.items.boidFishModel,
-      depthBound: [ this.enviroment.receiveShadowPlane.position.y + 0.5, 0.5 ],
+      depthBound: [ this.enviroment?.receiveShadowPlane?.position.y + 0.5, 0.5 ],
       container: group,
       random
     })

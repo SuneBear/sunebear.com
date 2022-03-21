@@ -84,6 +84,9 @@ export default {
     .svg-symbol
       filter: drop-shadow(3px 3px 0 var(--shadow))
 
+      /.is-in-safari &
+        filter: none !important
+
   &.is-flip-x
     .svg-symbol
       transform: scaleX(-1)

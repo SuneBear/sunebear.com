@@ -121,7 +121,7 @@ export default {
   bottom: 2rem
   z-index: 23333
   // Hide tweak pane
-  display: none
+  // display: none
 
 // Print scrollable content
 @media print

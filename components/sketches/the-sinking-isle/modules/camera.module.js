@@ -11,7 +11,7 @@ export default class CameraModule extends Module {
     super(sketch)
 
     // Set up
-    this.mode = 'debug' // default | debug
+    this.mode = 'default' // default | debug
     this.defaultPresetIndex = 0
     this.params = {
       panInstensity: 1
@@ -32,8 +32,9 @@ export default class CameraModule extends Module {
       this.sizes.width / this.sizes.height,
       // @REF: https://en.wikipedia.org/wiki/Z-fighting
       10,
-      1000
+      500
     )
+    this.instance.matrixAutoUpdate = false
     this.instance.rotation.reorder('YXZ')
     this.instance.module = this
 
@@ -61,37 +62,47 @@ export default class CameraModule extends Module {
     ]
 
     // Default
-    this.modes.default = {}
-    this.modes.default.instance = this.instance.clone()
-    this.modes.default.instance.rotation.reorder('YXZ')
+    this.modes.default = {
+      active: this.mode === 'default'
+    }
+    if (this.modes.default.active) {
+      this.modes.default.instance = this.instance.clone()
+      this.modes.default.instance.rotation.reorder('YXZ')
+      this.modes.default.instance.rotation.x = -0.6199845444616007
+      this.modes.default.instance.rotation.y = -0.03346963950405697
+    }
 
     // Debug
-    this.modes.debug = {}
-    this.modes.debug.instance = this.instance.clone()
-    this.modes.debug.instance.rotation.reorder('YXZ')
+    this.modes.debug = {
+      active: this.mode === 'debug'
+    }
+    if (this.modes.debug.active) {
+      this.modes.debug.instance = this.instance.clone()
+      this.modes.debug.instance.rotation.reorder('YXZ')
 
-    this.modes.debug.orbitControls = new OrbitControls(
-      this.modes.debug.instance,
-      this.container
-    )
-    this.modes.debug.orbitControls.mouseButtons = {
-      LEFT: THREE.MOUSE.PAN,
-      MIDDLE: THREE.MOUSE.DOLLY,
-      RIGHT: THREE.MOUSE.ROTATE
+      this.modes.debug.orbitControls = new OrbitControls(
+        this.modes.debug.instance,
+        this.container
+      )
+      this.modes.debug.orbitControls.mouseButtons = {
+        LEFT: THREE.MOUSE.PAN,
+        MIDDLE: THREE.MOUSE.DOLLY,
+        RIGHT: THREE.MOUSE.ROTATE
+      }
+      this.modes.debug.orbitControls.touches = {
+        ONE: THREE.TOUCH.DOLLY_PAN,
+        TWO: THREE.TOUCH.ROTATE
+      }
+      this.modes.debug.orbitControls.enabled = true
+      this.modes.debug.orbitControls.enableRotate = __DEBUG__
+      this.modes.debug.orbitControls.enableZoom = __DEBUG__
+      this.modes.debug.orbitControls.enablePan = false
+      this.modes.debug.orbitControls.screenSpacePanning = false
+      this.modes.debug.orbitControls.enableDamping = true
+      this.modes.debug.orbitControls.enableKeys = false
+      this.modes.debug.orbitControls.zoomSpeed = 0.25
+      this.modes.debug.orbitControls.update()
     }
-    this.modes.debug.orbitControls.touches = {
-      ONE: THREE.TOUCH.DOLLY_PAN,
-      TWO: THREE.TOUCH.ROTATE
-    }
-    this.modes.debug.orbitControls.enabled = this.modes.debug.active
-    this.modes.debug.orbitControls.enableRotate = __DEBUG__
-    this.modes.debug.orbitControls.enableZoom = __DEBUG__
-    this.modes.debug.orbitControls.enablePan = false
-    this.modes.debug.orbitControls.screenSpacePanning = false
-    this.modes.debug.orbitControls.enableDamping = true
-    this.modes.debug.orbitControls.enableKeys = false
-    this.modes.debug.orbitControls.zoomSpeed = 0.25
-    this.modes.debug.orbitControls.update()
 
     this.switchPresetByIndex(this.defaultPresetIndex)
   }
@@ -130,6 +141,9 @@ export default class CameraModule extends Module {
   }
 
   listenModePresetSwitch() {
+    if (!this.modes.debug.active) {
+      return
+    }
     // @FIXME: Invalid in prod
     this.control.on('keydown.camera', key => {
       if (typeof key !== 'number') {
@@ -141,7 +155,7 @@ export default class CameraModule extends Module {
   }
 
   async switchPresetByIndex(index) {
-    const camera = this.modes.debug.instance
+    const camera = this.modes[this.mode].instance
 
     // Update preset
     this.curPreset = this.modePresets[math.clamp(index, 0, 2)]
@@ -157,8 +171,8 @@ export default class CameraModule extends Module {
       this.offset?.set(0, 0, 0)
     }
 
-    this.instance.updateMatrix() // To be used in projection
-    this.instance.updateMatrixWorld() // To be used in projection
+    this.instance.updateMatrix()
+    this.instance.updateMatrixWorld()
 
     // Anime preset
     if (this.switchPresetAnimer) {
@@ -192,11 +206,15 @@ export default class CameraModule extends Module {
     this.instance.aspect = this.sizes.width / this.sizes.height
     this.instance.updateProjectionMatrix()
 
-    this.modes.default.instance.aspect = this.sizes.width / this.sizes.height
-    this.modes.default.instance.updateProjectionMatrix()
+    if (this.modes.default.active) {
+      this.modes.default.instance.aspect = this.sizes.width / this.sizes.height
+      this.modes.default.instance.updateProjectionMatrix()
+    }
 
-    this.modes.debug.instance.aspect = this.sizes.width / this.sizes.height
-    this.modes.debug.instance.updateProjectionMatrix()
+    if (this.modes.debug.active) {
+      this.modes.debug.instance.aspect = this.sizes.width / this.sizes.height
+      this.modes.debug.instance.updateProjectionMatrix()
+    }
   }
 
   update(delta) {
@@ -205,14 +223,27 @@ export default class CameraModule extends Module {
     this.updatePlayerFollowSystem(delta)
 
     // Update debug orbit controls
-    this.modes.debug.orbitControls.update()
+    if (this.modes.debug.active) {
+      this.modes.debug.orbitControls.update()
+    }
+
+    // Update default matrix
+    if (this.modes.default.active) {
+      this.modes.default.instance.updateMatrix()
+      this.modes.default.instance.updateMatrixWorld()
+    }
 
     // Apply coordinates
     this.instance.updateMatrix() // To be used in projection
     this.instance.updateMatrixWorld() // To be used in projection
+    // this.instance.updateProjectionMatrix()
   }
 
   updateParallexEffect() {
+    if (!this.$vm.isShowMainMenu) {
+      return
+    }
+
     const { width, height } = this.sizes
 
     const panX =
@@ -324,11 +355,6 @@ export default class CameraModule extends Module {
       constantZoomFactor
     camera.zoom = cameraZoom
 
-    if (__DEBUG__) {
-      controlCamera.updateMatrix()
-      controlCamera.updateMatrixWorld()
-    }
-    camera.updateProjectionMatrix()
     this.projScreenMatrix.multiplyMatrices(
       camera.projectionMatrix,
       camera.matrixWorldInverse
@@ -337,6 +363,6 @@ export default class CameraModule extends Module {
   }
 
   destroy() {
-    this.modes.debug.orbitControls.destroy()
+    this.modes.debug.orbitControls?.destroy()
   }
 }

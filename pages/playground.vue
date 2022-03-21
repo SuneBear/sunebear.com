@@ -37,6 +37,7 @@ page-wrapper(
         cear-sprite.anim-glimmer( name="still-ground-items"  style="--glimmer-opacity: 0.5")
       .row.no-gutters.mt-6
         message-bubble-popover(
+          v-if="!isSafari"
           v-model="isShowMessagePopover"
           :needScheduleUpdate="false"
           :message="bubbleMessage"
@@ -114,7 +115,7 @@ page-wrapper(
       .row.no-gutters
         cear-button( icon="leaf-fill") Default
         cear-button( vertShakeHover squigglyHover size="medium" circle icon="leaf-fill" shadow="var(--primary)")
-        cear-button( squiggly vertShake size="big" round iconShadow="var(--mark)" icon="rainy-fill")
+        cear-button( vertShake squiggly size="big" round iconShadow="var(--mark)" icon="rainy-fill")
         cear-button( round shadow="var(--brand)" border="var(--primary)" icon="apps-fill")
         cear-button( type="brand-light" size="big" icon="bear-smile-fill") Brand Light
         cear-button( type="brand-light" round iconShadow="var(--mark)" icon="footprint-line")
@@ -146,7 +147,7 @@ page-wrapper(
             el-input( v-model="storyInputMessage" @keyup.enter.native="handleCreateMessage" placeholder="Chat with Bear" )
               el-button.send-button( slot="append" type="primary" @click="handleCreateMessage" :disabled="!storyInputMessage" ) Enter
 
-    .section.mt-16
+    .section.mt-16( v-if="!isSafari" )
       .d-flex.mb-8.align-center
         cear-sine-wave( style="width: 40px" isLine :randomness="0" :isCurve="false" :needAnimate="false" :amplitudeX="8" :lineWidth="1" :amplitudeY="16")
         .text-h5.mx-4 cear-sine-wave

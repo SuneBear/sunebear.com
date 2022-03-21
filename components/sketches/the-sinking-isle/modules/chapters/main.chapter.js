@@ -12,7 +12,7 @@ export class MainChapter extends Chapter {
   }
 
   beforeEnter() {
-    this.controls.enabled = __DEBUG__
+    this.controls && (this.controls.enabled = __DEBUG__)
   }
 
   afterEntered() {
@@ -25,7 +25,7 @@ export class MainChapter extends Chapter {
   }
 
   beforeLeave() {
-    this.controls.enabled = false
+    this.controls && (this.controls.enabled = false)
 
     // @hack: hide dom renderer
     this.sketch.scene.traverse((object) => {

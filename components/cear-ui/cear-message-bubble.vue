@@ -22,10 +22,13 @@
           .typing-dot
           .typing-dot
         //- @FIXME: duration param is invalid, support dynamic duration based on message height
-        transition( name="cear-fade" )
+        //- transition( name="cear-fade" )
+        //- @TODO: Improve expand performance
+        el-collapse-transition
           .content-wrapper(
-            :style="{ transitionDuration: `${isShowActionBar ? 1600 : 800}ms` }"
             v-show="status !== 'typing'"
+            :style="{ transitionDuration: `${isShowActionBar ? 1000 : 800}ms` }"
+            :class="{ 'is-show':  status !== 'typing'}"
           )
             readable-render(
               :content="finalMessage"
@@ -146,7 +149,7 @@ export default {
 
     isShowActionBar() {
       return [
-        this.status !== 'typing' ,
+        // this.status !== 'typing' ,
         !this.isActionPerformed || (this.isActionPerformed && this.isPersistantAction),
         this.actions.length
       ].every(fn => fn)
@@ -258,8 +261,8 @@ $userWidth = 68px
 
   .typing-indicator
     position relative
-    height: 26px
     margin-top: 3px
+    height: 26px
 
   .typing-dot
     animation: typing-dot-frames .75s cubic-bezier(.445,.05,.55,.95) infinite;
@@ -275,6 +278,17 @@ $userWidth = 68px
 
     &:nth-child(3n)
       animation-delay: .5s
+
+  .content-wrapper
+    position relative
+    overflow: hidden
+    height: 0px
+    min-height: 29px
+    // display: none
+
+    &.is-show
+      will-change: auto
+      height: auto
 
   .action-item
     pointer-events: initial

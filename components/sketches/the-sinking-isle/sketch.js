@@ -16,8 +16,8 @@ import SubmitFrameModule from './modules/submit-frame.module'
 import RendererModule from './modules/renderer.module'
 import DOMRendererModule from './modules/dom-renderer.module'
 import DOMSoundModule from './modules/dom-sound.module'
-import EnviromentGround from './modules/enviroment-ground.module'
-import EnviromentTraceDataTexutreModule from './modules/enviroment-trace.module'
+// import EnviromentGround from './modules/enviroment-ground.module'
+import EnviromentTraceDataTextureModule from './modules/enviroment-trace.module'
 import EnviromentTraceBubblesModule from './modules/enviroment-trace-bubbles.module'
 import EnviromentModule from './modules/enviroment.module'
 import EnviromentGridModule from './modules/enviroment-grid.module'
@@ -46,14 +46,15 @@ class TheSinkingIsleSketch {
     // Dev, Config
     this.config = {
       seed: Random.getRandomSeed(),
-      debug: true,
       width: 1440,
       height: 900,
-      pixelRatio: Math.min(Math.max(window.devicePixelRatio, 1), 2),
+      pixelRatio: math.clamp(window.devicePixelRatio, 1, 1.5),
       worldSize: 256,
       lakeDepth: 100,
       fps: HIGH_FPS,
       brandHex: cssVar('--brand'),
+      debug: undefined,
+      stats: false,
       enablePlayground: false
     }
     this.debug = null
@@ -94,12 +95,17 @@ class TheSinkingIsleSketch {
     this.setupCamera()
     this.setupRenderer()
     this.setupEnviroment()
+
     this.setupPlayer()
     this.setupAnimal()
     this.setupOtherModules()
 
     this.resize()
     this.play()
+
+    // @Dev: Only play single module
+    // this.module.pause()
+    // this.module.get(RendererModule).play()
   }
 
   async loadAssets() {
@@ -158,12 +164,17 @@ class TheSinkingIsleSketch {
 
   async setupDebug() {
     this.config.debug = this.$vm.enableDebug
+    this.config.stats = this.$vm.enableStats
 
     if (this.config.debug) {
       this.debug = new Pane()
       this.debug.containerElem_.style.width = '320px'
       // Replaced stats.js with tweakpane/plugin-essentials
-      // this.stats = new StatsManager(false)
+      if (this.config.stats) {
+        this.stats = new StatsManager(true)
+      } else {
+        this.debug.containerElem_.style.display = 'none'
+      }
     }
 
     if (this.debug) {
@@ -216,8 +227,8 @@ class TheSinkingIsleSketch {
 
   // @FIXME: Correct typo, enable spell checking
   setupEnviroment() {
-    this.enviromentGround = this.module.add(EnviromentGround)
-    this.enviromentTrace = this.module.add(EnviromentTraceDataTexutreModule)
+    // this.enviromentGround = this.module.add(EnviromentGround)
+    this.enviromentTrace = this.module.add(EnviromentTraceDataTextureModule)
     this.enviroment = this.module.add(EnviromentModule)
 
     this.module.add(EnviromentTraceBubblesModule)
@@ -261,8 +272,9 @@ class TheSinkingIsleSketch {
       if (this.config.enablePlayground) {
         this.module.add(TestModule)
       }
-      if (DEBUG_CHAPTER) {
-        this.$vm.currentChapter = DEBUG_CHAPTER
+
+      if (DEBUG_CHAPTER || this.$vm.$route.query.chapter) {
+        this.$vm.currentChapter = DEBUG_CHAPTER || this.$vm.$route.query.chapter
       }
     })
   }
@@ -292,18 +304,20 @@ class TheSinkingIsleSketch {
 
   stop() {
     this.module.stop()
+    // @TODO: Destroy the sketch
   }
 
   @autobind
-  update(frame) {
+  update(delta, frame) {
     if (!this.$vm.isPlaying) {
       return
     }
 
-    const delta = 1 / this.config.fps
-    // const delta = this.time.getDelta()
+    // delta = 1 / this.config.fps
+    // delta = this.time.getDelta()
+
     // Clamp delta time for long frames
-    this.delta = math.clamp(delta, 1 / 60, 1 / 20)
+    this.delta = math.clamp(delta, 1 / 120, 1 / 10)
     this.time.elapsedTime += this.delta
 
     this.module.update(this.delta, this.time.elapsedTime, this.clock.oldTime)

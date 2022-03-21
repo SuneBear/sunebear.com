@@ -32,7 +32,7 @@ export default class Enviroment extends Module {
     this.setupReceiveShadowPlane()
     this.setupNoiseMask()
     // this.setupOctopus()
-    this.setupPostUnderWaterDistort()
+    // this.setupPostUnderWaterDistort()
   }
 
   setupScene() {
@@ -171,8 +171,8 @@ export default class Enviroment extends Module {
             value: this.asset.items.waterDistortTexture
           },
           ...this.getEnvDataTextureUniforms(),
-          ...this.enviromentGround.getGroundUniforms(),
-          ...this.enviromentTrace.getTraceUniforms()
+          ...this.enviromentTrace?.getTraceUniforms(),
+          ...this.enviromentGround?.getGroundUniforms()
         }
       })
       mesh.layers.set(RENDER_LAYERS.WATER)
@@ -215,7 +215,7 @@ export default class Enviroment extends Module {
           value: this.asset.items.floorOverlayTexture
         },
         ...this.getEnvDataTextureUniforms(),
-        ...this.enviromentTrace.getTraceUniforms()
+        ...this.enviromentTrace?.getTraceUniforms()
       }
     })
     this.terrain.layers.set(RENDER_LAYERS.GROUND)

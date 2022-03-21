@@ -31,8 +31,8 @@
       v-if="needAnimate"
     )
       transition( name="el-fade-in" )
-        cear-button.mr-4( v-if="currentMessageRaw && (!currentMessageRaw.autoSwitch || nextMessages.length)" size="small" @click="switchNext(true)") {{ $t('action.continue') }}
-        cear-button.mr-4( v-else-if="!hasFinished" size="small" @click="clearPlayQueue") {{ $t('action.skip') }}
+        cear-button.mr-4( v-if="currentMessageRaw && (nextMessages.length)" size="small" @click="switchNext(true)") {{ $t('action.continue') }}
+        cear-button.mr-4( v-else-if="currentMessageRaw && currentMessageRaw.autoSwitch && !hasFinished" size="small" @click="clearPlayQueue") {{ $t('action.skip') }}
     cear-button.ml-4( v-else="needAnimate" size="small" @click="clearAll" ) {{ $t('story.clear') }}
 </template>
 

@@ -180,6 +180,9 @@ export default {
       margin-right: 4px
       margin-bottom: 6px
 
+      /.is-in-safari &
+        filter: none !important
+
       &[class*="-ghost"]
         margin-bottom: 4px
 

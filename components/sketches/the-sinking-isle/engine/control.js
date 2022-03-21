@@ -83,7 +83,7 @@ export default class Control extends EventEmitter {
     this.$canvas.addEventListener(
       'contextmenu',
       this.handleContextmenu,
-      eventOptions
+      false
     )
     this.$canvas.addEventListener('touchstart', this.handleTouchstart, {
       passive: false

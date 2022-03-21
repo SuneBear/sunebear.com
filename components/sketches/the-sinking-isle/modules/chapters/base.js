@@ -11,10 +11,11 @@ export class Chapter extends EventEmitter {
     this.scene = new THREE.Scene()
     this.camera = new THREE.PerspectiveCamera(30, sketch.sizes.width / sketch.sizes.height, 4)
 
-    this.renderTarget = new THREE.WebGLMultisampleRenderTarget(
+    this.renderTarget = new THREE.WebGLRenderTarget(
       sketch.sizes.width,
       sketch.sizes.height
     )
+    this.renderTarget.samples = 4
   }
 
   // Transition Hook

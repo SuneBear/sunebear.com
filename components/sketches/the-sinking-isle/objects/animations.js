@@ -30,7 +30,8 @@ export class WaterBuoyancyAnimation extends ObjectAnimation {
     const { intensity, object } = this.options
 
     object.position.y = object.position.y + Math.cos(this.elapsed) * 0.002 * intensity
-    object.rotation.x = object.rotation.x + Math.cos(this.elapsed * 0.5) * 0.001 * intensity
+    // object.position.x = object.position.x + Math.cos(this.elapsed) * 0.1 * intensity
+    object.rotation.x = object.rotation.x + Math.cos(this.elapsed * 0.5) * 0.0001 * intensity
     object.rotation.z = object.rotation.z + Math.sin(this.elapsed * 0.5) * 0.0001 * intensity
   }
 
@@ -54,7 +55,7 @@ export class BloomPulseAnimation extends ObjectAnimation {
 
     const { intensity, object } = this.options
 
-    // @FIXME: Let shaderMaterial support emissiveIntensity param
+    // @FIXME: Let shaderMaterial support emissiveIntensity param via color.offsetHSL
     if (object.userData.type === 'meshSprite') {
       let value = object.material.uniforms.animateProgress.value
       value += Math.sin(this.elapsed) * 0.01 * intensity

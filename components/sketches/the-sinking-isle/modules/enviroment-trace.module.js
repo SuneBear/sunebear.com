@@ -4,7 +4,7 @@ import easeDisappear from 'eases/sine-in'
 import Module from '../engine/module'
 import { math, ObjectPool } from '../engine/utils'
 import { EnvTracePrticleObject } from '../objects/env-trace-particle.object'
-import { removeFromArray } from '../utils/three-util'
+import { removeFromArray, cloneMaterial } from '../utils/three-util'
 
 export default class EnviromentTrace extends Module {
   constructor(sketch) {
@@ -40,12 +40,19 @@ export default class EnviromentTrace extends Module {
     this.tmpVec2Arr = [0, 0]
     this.lastPosition = new THREE.Vector3()
     this.hasLastPosition = false
+    const meshSeed = new EnvTracePrticleObject({
+      map: this.softMap
+    })
+    cloneMaterial(meshSeed)
+    const material = meshSeed.material
 
     this.particlePool = new ObjectPool({
       create: () => {
-        const mesh = new EnvTracePrticleObject({
-          map: this.softMap
-        })
+        // const mesh = new EnvTracePrticleObject({
+        //   map: this.softMap
+        // })
+        const mesh = new THREE.Sprite(material)
+        cloneMaterial(mesh)
 
         mesh.userData = {
           time: 0,
@@ -144,7 +151,7 @@ export default class EnviromentTrace extends Module {
       this.hasLastPosition = true
     }
 
-    this.activeParticles.map(mesh => {
+    this.activeParticles.map((mesh) => {
       const p = mesh.userData
       p.time += delta
       const maxVel = 0.15

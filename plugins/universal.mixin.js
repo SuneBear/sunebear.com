@@ -7,7 +7,7 @@ const componentMixin = {
   data() {
     return {
       paperName: 'solar-dotted',
-      isSafari: isSafari(),
+      isSafari: isSafari(this.$ua?.original()),
       isShowHeader: true,
       isShowFooter: true
     }
