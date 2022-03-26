@@ -1,6 +1,6 @@
 import * as Tone from 'tone'
 
-import Module from '../engine/module'
+import Module from './base'
 
 export default class DOMSound extends Module {
 

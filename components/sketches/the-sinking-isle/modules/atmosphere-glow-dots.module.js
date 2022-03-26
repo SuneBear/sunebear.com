@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 
-import Module from '../engine/module'
+import Module from './base'
 import { Random, math, ObjectPool, getEasePlayhead } from '../engine/utils'
 import { detachObject } from '../utils/three-util'
 import { RENDER_LAYERS } from '../utils/constants'

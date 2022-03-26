@@ -2,22 +2,28 @@
 .click-effect(
   :style="rootStyle"
 )
-  .plug-ones-wrapper(
-    v-if="type === 'plus-ones'"
-  )
-    .plus-ones(
-      ref="plusOnes"
-    )
+  .effect-content(
+    :class="[ 'type-' + type ]"
+    :style="contentStyle"
+    ref="content"
+  ) {{ finalText }}
 </template>
 
 <script>
 import gsap from 'gsap'
+import { random } from '~/utils/random'
 
 export default {
   props: {
     type: {
       type: String,
-      default: 'plus-ones'
+      default: 'plus-ones',
+      validator: (val) => {
+        return [
+          'plus-ones',
+          'text'
+        ].includes(val)
+      }
     },
 
     x: {
@@ -28,6 +34,19 @@ export default {
     y: {
       type: Number,
       default: 0
+    },
+
+    noise: {
+      type: Number,
+      default: 0.1
+    },
+
+    text: {
+      type: [ String, Array ]
+    },
+
+    contentStyle: {
+      type: Object
     }
   },
 
@@ -38,9 +57,26 @@ export default {
   computed: {
     rootStyle() {
       return {
-        left: `${this.x}px`,
+        left: `${this.finalX}px`,
         top: `${this.y}px`
       }
+    },
+
+    finalX() {
+      const offset = this.noise * 200
+      return this.x + random.range(-offset, offset)
+    },
+
+    finalText() {
+      if (!this.text) {
+        return
+      }
+
+      if (Array.isArray(this.text)) {
+        return random.pick(this.text)
+      }
+
+      return this.text
     }
   },
 
@@ -50,12 +86,15 @@ export default {
 
   methods: {
     playEffect() {
-      if (this.type === 'plus-ones') {
-        this.playPlusOnesEffect()
+      if (
+        this.type === 'plus-ones' ||
+        this.type === 'text'
+      ) {
+        this.playSwingUpEffect()
       }
     },
 
-    playPlusOnesEffect() {
+    playSwingUpEffect() {
       const keyframes = [
         /*  0 */ 0.0, //s
         /*  1 */ 0.2, //s
@@ -78,38 +117,38 @@ export default {
         delay: (keyframes[start] - keyframes[4]) * (1 / playspeed),
         duration: (keyframes[end] - keyframes[start]) * (1 / playspeed)
       })
-      const plusOnes = this.$refs.plusOnes
-      gsap.to(plusOnes, {
+      const content = this.$refs.content
+      gsap.to(content, {
         '--ratio-scale': 0.5,
         ease: 'elastic',
         ...timespan(4, 14)
       })
-      gsap.to(plusOnes, {
+      gsap.to(content, {
         '--ratio-offset-y': 1,
         ease: 'none',
         ...timespan(4, 14)
       })
-      gsap.to(plusOnes, {
+      gsap.to(content, {
         '--ratio-offset-x': 0.5,
         ease: 'sine.inOut',
         ...timespan(5, 8)
       })
-      gsap.to(plusOnes, {
+      gsap.to(content, {
         '--ratio-offset-x': -0.25,
         ease: 'sine.inOut',
         ...timespan(8, 11)
       })
-      gsap.to(plusOnes, {
+      gsap.to(content, {
         '--ratio-offset-x': 0.15,
         ease: 'sine.inOut',
         ...timespan(11, 13)
       })
-      gsap.to(plusOnes, {
+      gsap.to(content, {
         '--ratio-offset-x': 0,
         ease: 'sine.inOut',
         ...timespan(13, 14)
       })
-      gsap.to(plusOnes, {
+      gsap.to(content, {
         opacity: 0,
         ease: 'none',
         ...timespan(12, 14),
@@ -132,8 +171,12 @@ export default {
   position absolute
   pointer-events: none
   white-space: pre
+  z-index: 202
 
-.plus-ones
+.effect-content
+  null
+
+.type-plus-ones
   --content: '🐸 +1s'
   --color-primary: #eefae7
   --color-secondary: #383838
@@ -160,4 +203,21 @@ export default {
     color: var(--color-secondary)
     font-size: var(--size)
     padding: 0.25em 0.5em
+
+.type-text
+  --size: 40px
+  --ratio-offset-y: 0
+  --ratio-offset-x: 0
+  --ratio-scale: 0
+  position: absolute
+  line-height: calc(var(--size) * 1.2)
+  top: 50%
+  left: 50%
+  font-size: var(--size)
+  transform: \
+    translate(-50%, -70%) \
+    translate(calc(var(--size) * var(--ratio-offset-x)), calc(var(--size) * -3 * var(--ratio-offset-y))) \
+    rotate(calc(-20deg * var(--ratio-offset-x))) \
+    scale(var(--ratio-scale)) \
+
 </style>

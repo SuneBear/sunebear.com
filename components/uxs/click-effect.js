@@ -10,6 +10,8 @@ export const emitClickEffect = (_options) => {
     y: 0,
     throttle: 200,
     type: 'plus-ones',
+    text: null,
+    contentStyle: null,
     ..._options
   }
 

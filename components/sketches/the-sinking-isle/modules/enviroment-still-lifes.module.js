@@ -3,7 +3,7 @@ import * as eases from 'eases'
 
 import { addSampleData } from './enviroment/still-life-types'
 import { generateStillLifeItemsMap } from './enviroment/still-life-items'
-import Module from '../engine/module'
+import Module from './base'
 import { math } from '../engine/utils'
 import { MeshSpriteObject } from '../objects/mesh-sprite.object'
 import { detachObject } from '../utils/three-util'

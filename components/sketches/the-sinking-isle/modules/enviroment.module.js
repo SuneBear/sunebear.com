@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import Module from '../engine/module'
+import Module from './base'
 
 import { EnvironmentGrid } from './enviroment/env-grid'
 import { generateEnvSamples } from './enviroment/generate-env-samples'

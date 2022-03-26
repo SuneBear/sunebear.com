@@ -1,5 +1,5 @@
 import anime from 'animejs'
-import Module from '../engine/module'
+import Module from './base'
 import { math, getEasePlayhead } from '../engine/utils'
 
 let tweenerUid = 0

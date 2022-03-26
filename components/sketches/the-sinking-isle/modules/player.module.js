@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import Module from '../engine/module'
+import Module from './base'
 import { math } from '../engine/utils'
 
 import { CharacterPhysicsSpring } from './character/character-physics-spring'
@@ -204,7 +204,7 @@ export default class Player extends Module {
     const userTargetPos = this.targetPos
     let speedMultiplier = 1
 
-    this.raycaster.setFromCamera(this.control.getMouse(), this.camera)
+    this.raycaster.setFromCamera(this.control.getMouse().multiplyScalar(0.5), this.camera)
     const hit = this.raycaster.ray.intersectPlane(
       this.mousePlane,
       this.mousePlaneTarget
@@ -255,6 +255,7 @@ export default class Player extends Module {
     if (this.control.isPressed('tap')) {
       forceApplied = true
       if (!this.boatPaddleClipAction.isRunning()) {
+        this.$vm.cachedContext.tourDistance += 1
         this.boatPaddleClipAction.reset().play()
       }
       this.speed = math.damp(this.speed, this.maxSpeed, 5, delta)

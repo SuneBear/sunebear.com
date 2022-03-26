@@ -3,10 +3,12 @@ import gsap from 'gsap'
 import { Chapter } from './base'
 import { setupPostProcess } from './post-process'
 import { math } from '../../engine/utils'
+import { SceneObjectInteractionSystem } from '../../objects/object-interaction-system'
 import { BuildingGroupObject } from '../../objects/building.object'
+import { AttentionIndicatorObject } from '../../objects/vue-2d.object'
 import { convertToToonMaterial } from '../../objects/mesh-toon.material'
 import { OrbitControls } from '../../utils/hack-deps/three/orbit-controls'
-
+import { emitClickEffect } from '~/components/uxs/click-effect'
 const IS_IN_PROGRESS = true
 
 export class SuneBearHomeChapter extends Chapter {
@@ -20,6 +22,7 @@ export class SuneBearHomeChapter extends Chapter {
     this.setupLight()
     this.setupModel()
     this.setupTransition()
+    this.setupEvents()
     // this.setupTest()
   }
 
@@ -63,7 +66,7 @@ export class SuneBearHomeChapter extends Chapter {
     this.model = new BuildingGroupObject({
       model: this.sketch.asset.items.chapterSuneBearHomeModel,
       name: 'suneBearHome',
-      waterBuoyancyIntensity: 3,
+      waterBuoyancyIntensity: 2,
       onModelSetup: (obj) => {
         // @FIXME: Resolve z-fighting in safari
         if (this.sketch.$vm.isSafari) {
@@ -78,8 +81,8 @@ export class SuneBearHomeChapter extends Chapter {
       },
       materialOptions: {
         castShadow: false,
-        outlineThickness: 0.005,
-        emissiveIntensity: 0.05
+        outlineThickness: 0.006,
+        emissiveIntensity: 0.03
       }
     })
 
@@ -135,27 +138,73 @@ export class SuneBearHomeChapter extends Chapter {
     this.scene.add(cube)
   }
 
+  setupEvents() {
+    this.sceneObjectInteractionSystem = new SceneObjectInteractionSystem({
+      scene: this.scene,
+      camera: this.camera,
+      control: this.sketch.control
+    })
+
+    const cear = this.scene.getObjectByName('sleepingcat2')
+    const box = this.scene.getObjectByName('box')
+
+    const clickCearEffect = (event) => {
+      emitClickEffect({
+        type: 'text',
+        text: ['🍤', '🧶', '😻', '💤', '🌿'],
+        x: event.x,
+        y: event.y
+      })
+    }
+
+    cear.onPointerOver = () => {
+      cear.scale.set(1.05, 1.05, 1.05)
+    }
+    cear.onPointerOut = () => {
+      cear.scale.set(1, 1, 1)
+    }
+    cear.onClick = (cursor) => {
+      if (!this.$vm.cachedContext.hasIntroducedCear) {
+        this.$vm.$story.add({
+          message: this.$vm.$t('story.bear.suneBearHome.cearIntro')
+        })
+        this.$vm.cachedContext.hasIntroducedCear = true
+      }
+      clickCearEffect(cursor)
+    }
+
+    box.add(new AttentionIndicatorObject({
+      animation: null,
+      icon: 'lock-2-fill',
+      onClick: () => {
+        this.$vm.$message.error(this.$vm.$t('tsi.chapter-shb.needKey'))
+      }
+    }))
+  }
+
   beforeEnter() {
-    this.controls.enabled = true
+    super.beforeEnter()
+    this.sceneObjectInteractionSystem.play()
     this.progressFadeIn.restart(true)
   }
 
   beforeLeave() {
-    this.controls.enabled = false
+    super.beforeLeave()
+    this.sceneObjectInteractionSystem.pause()
     this.progressFadeOut.restart(true)
   }
 
   startOnboarding() {
-    if (!this.sketch.$vm.cachedContext.hasVisitedSuneBearHome) {
+    if (!this.$vm.cachedContext.hasVisitedSuneBearHome) {
       if (IS_IN_PROGRESS) {
-        this.sketch.$vm.$story.add({
+        this.$vm.$story.add({
           user: 'bear',
-          message: this.sketch.$vm.$t('story.bear.suneBearHome.inProgress')
+          message: this.$vm.$t('story.bear.suneBearHome.inProgress')
         })
       } else {
         // @TODO
       }
-      this.sketch.$vm.cachedContext.hasVisitedSuneBearHome = true
+      this.$vm.cachedContext.hasVisitedSuneBearHome = true
     }
   }
 
@@ -167,6 +216,7 @@ export class SuneBearHomeChapter extends Chapter {
   }
 
   update(delta) {
+    super.update()
     this.progressTransition.progress(this.progress)
     this.updateModel(delta)
     this.updateControl()

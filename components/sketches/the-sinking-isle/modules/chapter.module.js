@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import gsap from 'gsap'
-import Module from '../engine/module'
+import Module from './base'
 
 import { MainChapter } from './chapters/main.chapter'
 import { SuneBearHomeChapter } from './chapters/sune-bear-home.chapter'

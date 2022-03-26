@@ -1,41 +1,11 @@
 import * as THREE from 'three'
 
-// @Dev: Import this for IntelliSense
-import { theSinkingIsleSketch } from '../sketch'
-
 // @TODO:
 // - Do more in lifecycles, like register/remove data, events, animations
 // - Freeze common managers, can use Object.defineProperty
 export default class Module {
 
-  constructor(sketch = theSinkingIsleSketch, attributes) {
-    // Common managers or modules
-    this.sketch = sketch
-    this.debug = sketch.debug
-    this.stats = sketch.stats
-    this.config = sketch.config
-
-    this.control = sketch.control
-    this.audio = sketch.audio
-    this.asset = sketch.asset
-    this.time = sketch.time
-    this.sizes = sketch.sizes
-
-    this.scene = sketch.scene
-    this.camera = sketch.camera
-    this.renderer = sketch.renderer
-    this.tween = sketch.tween
-    this.submitFrame = sketch.submitFrame
-    this.player = sketch.player
-    this.enviromentGround = sketch.enviromentGround
-    this.enviromentTrace = sketch.enviromentTrace
-    this.enviroment = sketch.enviroment
-
-    this.container = sketch.container
-    this.$vm = sketch.$vm
-
-    this.random = sketch.random
-
+  constructor(attributes) {
     // States
     this.enabled = true
     this.priority = 0

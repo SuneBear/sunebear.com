@@ -46,7 +46,7 @@ export default class Control extends EventEmitter {
     // @TODO: Add can repeat method with pressedKeys
     this.isKeyRepeat = true
     this.isEnableTap = true
-    this.needPressdMove = true
+    this.needPressdMove = false
 
     // this.handleKeydown = this.handleKeydown.bind(this)
     // this.handleKeyup = this.handleKeyup.bind(this)
@@ -93,7 +93,7 @@ export default class Control extends EventEmitter {
 
     // Tap
     // window.addEventListener("touchend", this.handleTap, eventOptions)
-    window.addEventListener('click', this.handleTap, eventOptions)
+    this.$canvas.parentElement.addEventListener('click', this.handleTap, eventOptions)
     // this.$canvas.addEventListener("mousedown", this.handleTap, eventOptions)
   }
 
@@ -187,8 +187,8 @@ export default class Control extends EventEmitter {
     cursor.fromCenter.x = cursor.x -  width / 2
     cursor.fromCenter.y = -(cursor.y - height / 2)
 
-    cursor.ratio.fromCenter.x = cursor.fromCenter.x / width
-    cursor.ratio.fromCenter.y = cursor.fromCenter.y / height
+    cursor.ratio.fromCenter.x = cursor.fromCenter.x / width * 2
+    cursor.ratio.fromCenter.y = cursor.fromCenter.y / height * 2
 
     return this.cursor
   }
@@ -388,8 +388,8 @@ export default class Control extends EventEmitter {
     this.pan.mobileLimit = 0.5
     this.pan.easing = 1
     this.pan.amplitude = {}
-    this.pan.amplitude.x = 0.1
-    this.pan.amplitude.y = 0.1
+    this.pan.amplitude.x = 0.05
+    this.pan.amplitude.y = 0.05
 
     this.pan.deviceOrientationCallback = (event) => {
       let x = 0
@@ -468,6 +468,6 @@ export default class Control extends EventEmitter {
     this.$canvas.removeEventListener('touchstart', this.handleTouchstart)
     window.removeEventListener('touchend', this.handleTouchend)
     window.removeEventListener('touchmove', this.handleTouchmove)
-    window.removeEventListener('click', this.handleTap)
+    this.$canvas.parentElement.removeEventListener('click', this.handleTap)
   }
 }

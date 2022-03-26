@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import Module from '../engine/module'
+import Module from './base'
 import { Random } from '../engine/utils'
 import { BuildingGroupObject } from '../objects/building.object'
 import { AttentionIndicatorObject, BubbleMessageObject } from '../objects/vue-2d.object'

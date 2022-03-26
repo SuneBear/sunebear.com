@@ -217,12 +217,13 @@ class TheSinkingIsleSketch {
 
     const rendererModule = this.module.add(RendererModule)
     this.renderer = rendererModule.instance
-    this.control = new ControlManager(this.renderer.domElement, this.sizes)
     this.container.appendChild(this.renderer.domElement)
+    this.control = new ControlManager(this.renderer.domElement, this.sizes)
 
     this.module.set({ control: this.control })
 
-    this.module.add(DOMRendererModule)
+    const domRendererModule = this.module.add(DOMRendererModule)
+    this.domRenderer = domRendererModule.instance
   }
 
   // @FIXME: Correct typo, enable spell checking

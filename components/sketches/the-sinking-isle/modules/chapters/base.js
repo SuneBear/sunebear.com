@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import { __DEBUG__ } from '~/utils/dev'
 import EventEmitter from '../../engine/utils/event-emitter'
 
 // Chapter is just sub-scene
@@ -7,7 +8,9 @@ export class Chapter extends EventEmitter {
     super()
 
     this.sketch = sketch
+    this.$vm = this.sketch.$vm
     this.renderer = sketch.renderer
+    this.domRenderer = sketch.domRenderer
     this.scene = new THREE.Scene()
     this.camera = new THREE.PerspectiveCamera(30, sketch.sizes.width / sketch.sizes.height, 4)
 
@@ -20,19 +23,41 @@ export class Chapter extends EventEmitter {
 
   // Transition Hook
   async beforeEnter() {
-
+    this.controls && (this.controls.enabled = true || __DEBUG__)
+    this.hideCSS2DObject()
   }
 
   async afterEntered() {
-
+    this.showCSS2DObject()
   }
 
   async beforeLeave() {
-
+    this.controls && (this.controls.enabled = false)
   }
 
   async afterLeft() {
+    this.hideCSS2DObject()
+  }
 
+  showCSS2DObject() {
+    // Re-display dom renderer
+    this.scene.traverse((object) => {
+      if (object.isCSS2DObject) {
+        if (object.userData.lastVisible !== undefined) {
+          object.visible = object.userData.lastVisible
+        }
+      }
+    })
+  }
+
+  hideCSS2DObject() {
+    // @hack: hide dom renderer
+    this.scene.traverse((object) => {
+      if (object.isCSS2DObject && object.visible) {
+        object.userData.lastVisible = object.visible
+        object.visible = false
+      }
+    })
   }
 
   // Viewport
@@ -43,5 +68,6 @@ export class Chapter extends EventEmitter {
 
   // Render Loop
   update(delta) {
+    this.domRenderer.render(this.scene, this.camera)
   }
 }

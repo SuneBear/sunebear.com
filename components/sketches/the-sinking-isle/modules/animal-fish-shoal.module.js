@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import Module from '../engine/module'
+import Module from './base'
 import { Random } from '../engine/utils'
 import { RENDER_LAYERS } from '../utils/constants'
 import { BoidsManager } from './animal/boids'

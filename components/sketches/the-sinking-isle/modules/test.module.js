@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import anime from 'animejs'
-import Module from '../engine/module'
+import Module from './base'
 import { Color, lock, math, getEasePlayhead } from '../engine/utils'
 import { convertToToonMaterial } from '../objects/mesh-toon.material'
 

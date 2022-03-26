@@ -99,6 +99,7 @@ export default {
         tourDistance: 0,
 
         // Runtime
+        hasIntroducedCear: false,
         hasFinishedOnboard: false,
         hasShownBoundaryStory: false,
         hasVisitedSuneBearHome: false

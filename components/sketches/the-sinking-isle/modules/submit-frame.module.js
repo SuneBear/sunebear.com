@@ -1,4 +1,4 @@
-import Module from '../engine/module'
+import Module from './base'
 
 export default class SubmitFrameModule extends Module {
 

@@ -1,6 +1,7 @@
 export const RENDER_LAYERS = {
   ENTIRE: 0,
   DEFAULT: 0,
+
   // Objects, layers.set
   WATER: 3,
   GROUND: 100,
@@ -9,7 +10,9 @@ export const RENDER_LAYERS = {
   PLAYER: 110,
   BUILDING: 150,
   NOISE_MASK: 200,
+
   // Effects, layers.enable
+  HANDLER: 800,
   OUTLINE: 900,
   SHADOW: 1000,
   GRAY: 1100,

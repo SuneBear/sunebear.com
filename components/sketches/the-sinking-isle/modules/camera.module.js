@@ -3,7 +3,7 @@ import anime from 'animejs'
 import { __DEBUG__ } from '~/utils/dev'
 
 import { OrbitControls } from '../utils/hack-deps/three/orbit-controls'
-import Module from '../engine/module'
+import Module from './base'
 import { math } from '../engine/utils'
 
 export default class CameraModule extends Module {

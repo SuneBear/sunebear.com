@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { CSS2DRenderer, CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer'
-import Module from '../engine/module'
+import Module from './base'
 
 // Like sprite object renderer, but for Vue
 // @TODO: Control object visibility in different chapters
@@ -21,7 +21,7 @@ export default class DOMRenderer extends Module {
   }
 
   update(delta) {
-    this.instance.render(this.scene, this.camera)
+    // this.instance.render(this.scene, this.camera)
   }
 
 }

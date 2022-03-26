@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import * as eases from 'eases'
 
-import Module from '../engine/module'
+import Module from './base'
 import { Random, math, ObjectPool } from '../engine/utils'
 import CapsuleBufferGeometry from '../utils/hack-deps/three/capsule-geometry'
 import { detachObject, quaternionFromNormal } from '../utils/three-util'

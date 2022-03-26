@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import easeAppear from 'eases/sine-out'
 import easeDisappear from 'eases/sine-in'
-import Module from '../engine/module'
+import Module from './base'
 import { math, ObjectPool } from '../engine/utils'
 import { EnvTracePrticleObject } from '../objects/env-trace-particle.object'
 import { removeFromArray, cloneMaterial } from '../utils/three-util'

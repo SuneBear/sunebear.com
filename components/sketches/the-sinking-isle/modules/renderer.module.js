@@ -7,7 +7,7 @@ import { FXAAShader } from 'three/examples/jsm/shaders/FXAAShader.js'
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js'
 import * as EssentialsPlugin from '@tweakpane/plugin-essentials'
 
-import Module from '../engine/module'
+import Module from './base'
 import vertexShader from '../shaders/base.vert'
 import fragmentShader from '../shaders/post-processing.frag'
 import { OutlineEffect } from '../utils/hack-deps/three/outline-effect'

@@ -22,6 +22,9 @@ export default {
   'tsi.wishInput.storyMessage': '{text} \n <text-meta>点亮@花火灯塔</text-meta>',
   'tsi.wishInput.storyMessageBearReply': '祝福你',
 
+  'tsi.chapter-shb.needKey': '箱子钥匙掉到湖中了，无法打开～',
+  'tsi.chapter-shb.notThatKey': '并不是这把钥匙～',
+
   'action.readMore': '阅读更多',
   'action.exit': '离开',
   'action.skip': '跳过',

@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 
-import Module from '../engine/module'
+import Module from './base'
 import { RENDER_LAYERS } from '../utils/constants'
 
 // Getting only ground render texture

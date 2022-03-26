@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { MathUtils } from 'three'
 import { GridBounds } from './enviroment/env-grid'
-import Module from '../engine/module'
+import Module from './base'
 import { Random, ObjectPool } from '../engine/utils'
 import { getLakeObject } from '../utils/water-util'
 import { spliceOne } from '../utils/array'

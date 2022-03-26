@@ -29,7 +29,8 @@ export default {
       intro: '在花火灯塔可以赏烟火，写下对未来的祝福'
     },
     suneBearHome: {
-      inProgress: '我家正在装修，等装好后送你一些礼物哦'
+      inProgress: '我家正在装修，等装好后送你一些礼物哦',
+      cearIntro: '这是我的室友 Cear，每天睡 16 小时，我很羡慕他'
     }
   },
 

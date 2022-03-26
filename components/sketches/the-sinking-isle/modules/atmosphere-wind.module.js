@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 
-import Module from '../engine/module'
+import Module from './base'
 import { Random, math, getEasePlayhead } from '../engine/utils'
 import { Line3D } from '../objects/line-3d.object'
 import { getPathFromSVG } from '../utils/svg-path'

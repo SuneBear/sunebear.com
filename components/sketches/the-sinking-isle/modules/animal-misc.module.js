@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import Module from '../engine/module'
+import Module from './base'
 import { PlayableMeshSpriteObject } from '../objects/mesh-sprite.object'
 import { parseSpritesheets } from '../utils/spritesheet'
 
