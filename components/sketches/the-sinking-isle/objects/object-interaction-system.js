@@ -20,7 +20,8 @@ export class SceneObjectInteractionSystem {
     this.raycaster.layers.set(RENDER_LAYERS.HANDLER)
 
     this.bindEvents()
-    this.play()
+    this.isListening = false
+    // this.play()
   }
 
   bindEvents() {

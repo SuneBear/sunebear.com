@@ -142,7 +142,7 @@ export const generateEnvDataTextureMap = ({
       }
       tex.needsUpdate = true
       renderer.initTexture(tex)
-      tex.image = null
+      // tex.image = null
       return tex
     })
   }

@@ -15,7 +15,13 @@ export default {
   'tsi.menu.intro': '介绍',
   'tsi.menu.setting': '设置',
   'tsi.menu.sound': '声音',
+  'tsi.menu.map': '地图',
   'tsi.snowfallSpace.intro': '雪花如叶子一般独特，却同柳絮一样转瞬即逝 \n 来*❄雪花落语❄*倾听它的声音',
+
+  "tsi.building.suneBearHome": "舒乐熊之屋",
+  "tsi.building.snowfallSpace": "雪花落语",
+  "tsi.building.sparkWishBeacon": "花火灯塔",
+  "tsi.building.theEndIsle": "离岛起源",
 
   'tsi.wishInput.placeholder': '许个愿或祝福吧',
   'tsi.wishInput.confirmText': '点亮',

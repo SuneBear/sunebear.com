@@ -71,6 +71,10 @@
                 )
 
       transition( name="el-fade-in" )
+        .menu-tab.tab-map( v-if="currentTabId === 'map'" )
+          tsi-mini-map
+
+      transition( name="el-fade-in" )
         .menu-tab.tab-story( v-if="currentTabId === 'story'" )
           //- .tab-title {{ currentTab.name }}
           cear-story(
@@ -107,7 +111,8 @@ export default {
     return {
       tabs: [
         { name: this.$t('story.history'), id: 'story', icon: 'chat-history-fill' },
-        { name: this.$t('tsi.title'), tooltip: this.$t('tsi.menu.setting'), id: 'main', icon: 'settings-2-fill' }
+        { name: '', tooltip: this.$t('tsi.menu.map'), id: 'map', icon: 'treasure-map-fill' },
+        { name: this.$t('tsi.title'), tooltip: this.$t('tsi.menu.setting'), id: 'main', icon: 'settings-2-fill' },
       ],
       currentTabId: null
     }
@@ -224,6 +229,9 @@ export default {
     right: 2rem
     font-size: s('min(8vw, 45px)')
     pointer-events: initial
+    max-width: 30vw
+    justify-content: flex-end
+    flex-wrap: wrap
 
     .shadow-handler
       margin-left: 1rem

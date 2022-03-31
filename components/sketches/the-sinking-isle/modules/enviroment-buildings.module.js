@@ -28,9 +28,12 @@ export const BUILDING_PATCH_MAP = {
     scale: 0.85
   }),
   sparkWishBeacon: generatePatchOptions({
-    position: [-5, 1, -50],
+    position: [-5, 1, -65],
     rotation: [0, -Math.PI / 4, 0]
-  })
+  }),
+  // theEndIsle: generatePatchOptions({
+  //   position: [20, 1, 100],
+  // })
 }
 
 export default class EnviromentBuildings extends Module {
