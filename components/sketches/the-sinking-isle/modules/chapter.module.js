@@ -4,6 +4,7 @@ import Module from './base'
 
 import { MainChapter } from './chapters/main.chapter'
 import { SuneBearHomeChapter } from './chapters/sune-bear-home.chapter'
+import { TheOriginChapter } from './chapters/the-origin.chapter'
 
 import postVertexShader from '../shaders/base.vert'
 import postFragmentShader from '../shaders/post-chapter.frag'
@@ -15,6 +16,7 @@ export default class ChapterModule extends Module {
     this.chapters = []
     this.lastChapter = this.$vm.currentChapter
     this.currentChapter = this.$vm.currentChapter
+    this.isLocalDebug = this.$vm.$route.query.chapter && this.debug
 
     this.setupChapters()
     this.setupRender()
@@ -87,7 +89,7 @@ export default class ChapterModule extends Module {
   }
 
   setupChapters() {
-    const chapterClasses = [MainChapter, SuneBearHomeChapter]
+    const chapterClasses = [MainChapter, SuneBearHomeChapter, TheOriginChapter]
     chapterClasses.map(Class => {
       const ins = new Class({ sketch: this })
       this.chapters.push(ins)
@@ -111,6 +113,8 @@ export default class ChapterModule extends Module {
       console.warn(`Chapter: ${chapter} was invalid name`)
     }
 
+    const duration = this.isLocalDebug ? 0.01 : 1
+
     this.$vm.isSwitchingChapter = true
     gsap.killTweensOf(this.postUniforms.progress)
     this.currentChapter = chapter
@@ -122,7 +126,7 @@ export default class ChapterModule extends Module {
     this.postUniforms.texture2.value = this.$currentChapter.renderTarget
     gsap.to(this.postUniforms.progress, {
       value: 1,
-      duration: 1,
+      duration,
       onComplete: () => {
         this.postUniforms.texture1.value = this.$currentChapter.renderTarget
         this.postUniforms.progress.value = 0

@@ -116,7 +116,7 @@ export default class BuildingSparkWishBeacon extends Module {
       return
     }
 
-    this.player.module.setPlayerPositon(-5, -49)
+    this.player.module.setPlayerPositon(-5, -64)
     this.submitFrame.addFrameTask(() => {
       this.$vm.currentActionMode = 'viewSpark'
     })

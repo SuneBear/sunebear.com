@@ -56,6 +56,9 @@ export default class DOMSound extends Module {
 
     // UI - Paper Turn
     this.$vm.$watch('currentChapter', () => {
+      if (this.$vm.$route.query.chapter && this.debug) {
+        return
+      }
       this.audio.play('uiPaperTurn')
     })
   }

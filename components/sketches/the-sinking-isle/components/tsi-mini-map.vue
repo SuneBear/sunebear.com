@@ -24,10 +24,9 @@ const BUILDING_ICON_MAP = {
   'suneBearHome': 'home-heart-fill',
   'snowfallSpace': 'snowfalke-line',
   'sparkWishBeacon': 'galaxy-tri',
-  'theEndIsle': 'drop-fill'
+  'theOriginIsle': 'drop-fill'
 }
 
-// @TODO: Add ticker when need realtime updates
 export default {
 
   data() {
@@ -42,6 +41,9 @@ export default {
       if (!val) {
         this.getMapData()
       }
+    },
+    '$tsi.cachedContext.tourDistance' () {
+      this.getMapData()
     }
   },
 
@@ -80,7 +82,7 @@ export default {
 
     getMapCanvas() {
       if (this.mapCanvas) {
-        return
+        return this.mapCanvas
       }
 
       const canvas = document.createElement('canvas')
@@ -105,10 +107,9 @@ export default {
     },
 
     refreshView() {
-      if (this.$refs.bgLayer.firstChild) {
-        this.$refs.bgLayer.removeChild(this.$refs.bgLayer.firstChild)
+      if (!this.$refs.bgLayer.firstChild) {
+        this.$refs.bgLayer.appendChild(this.mapCanvas)
       }
-      this.$refs.bgLayer.appendChild(this.mapCanvas)
 
       this.$forceUpdate()
     }
@@ -124,9 +125,7 @@ export default {
   background-color: primary(20)
   border: 2px dotted secondary(30)
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.1'%3E%3Cpath d='M0 38.59l2.83-2.83 1.41 1.41L1.41 40H0v-1.41zM0 1.4l2.83 2.83 1.41-1.41L1.41 0H0v1.41zM38.59 40l-2.83-2.83 1.41-1.41L40 38.59V40h-1.41zM40 1.41l-2.83 2.83-1.41-1.41L38.59 0H40v1.41zM20 18.6l2.83-2.83 1.41 1.41L21.41 20l2.83 2.83-1.41 1.41L20 21.41l-2.83 2.83-1.41-1.41L18.59 20l-2.83-2.83 1.41-1.41L20 18.59z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")
-  border-radius: 20% 50% 50% 20% / 20% 20% 30% 50%
-  // clip-path: polygon(50% 0%, 80% 10%, 100% 35%, 100% 70%, 80% 90%, 50% 100%, 20% 90%, 0% 70%, 0% 35%, 20% 10%)
-  // box-shadow: 2px 2px 0 brand(70)
+  border-radius: 57.584% 42.416% 30.1316% 59.8684% / 50.671% 61.7631% 38.2369% 29.329%
   box-shadow: 0 0 14px brand(10)
   color: secondary(90)
 
@@ -154,6 +153,8 @@ export default {
       transform: translate(-50%, -50%) translate(var(--x), var(--y))
 
       &.type-player
+        transition: 318ms
+
         .avatar
           border: 1px solid white
           width: 18px
@@ -203,7 +204,7 @@ export default {
           margin-left: 8px
 
         .cear-icon
-          font-size: 0.8em
+          font-size: 0.9em
 
     .bg-layer
       canvas

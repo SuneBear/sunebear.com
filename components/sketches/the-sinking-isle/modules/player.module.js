@@ -38,6 +38,8 @@ export default class Player extends Module {
       intensity: 3
     })
 
+    this.totalElapsedSecondsCooldown = 1
+
     this.enviroment && (this.enviroment.directionLight.target = this.instance)
 
     this.scene.add(this.instance)
@@ -195,9 +197,18 @@ export default class Player extends Module {
   }
 
   update(delta, elapsed) {
+    this.updateTotalElapsed(delta)
     this.updateMoveTargetSystem(delta)
     this.instanceWaterBuoyancyAnimation.update(delta)
     this.boatMixer.update(delta)
+  }
+
+  updateTotalElapsed(delta) {
+    this.totalElapsedSecondsCooldown -= delta
+    if (this.totalElapsedSecondsCooldown < 0) {
+      this.totalElapsedSecondsCooldown = 1
+      this.$vm.cachedContext.totalElapsedSeconds++
+    }
   }
 
   updateMoveTargetSystem(delta) {
@@ -498,7 +509,7 @@ export default class Player extends Module {
             }
           ]
         })
-        this.$vm.cachedContext.hasShownBoundaryStory = true
+        this.$vm.cachedContext.hasShownBoundaryStory = Date.now()
       }
     }
   }

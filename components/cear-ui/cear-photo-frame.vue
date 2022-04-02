@@ -47,7 +47,7 @@
       .distort-inner-border(
         :style="applyFilterStyle"
       )
-    .mask-overlay
+    .mask-overlay( v-if="!isShowStaticFrame" )
     .inner-content
       slot
 </template>
@@ -57,6 +57,7 @@ import { random } from '~/utils/random'
 import anime from 'animejs'
 
 // @TODO: Add some frame styles
+// @TODO: Support frame meta - title, date, author...
 export default {
 
   props: {

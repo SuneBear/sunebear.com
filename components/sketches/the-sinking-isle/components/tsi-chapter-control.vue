@@ -34,6 +34,7 @@ export default {}
 <style lang="stylus">
 .tsi-chapter-control
   position absolute
+  z-index: 2
   left: 2rem
   top: 2rem
   transform: scale(0.8)

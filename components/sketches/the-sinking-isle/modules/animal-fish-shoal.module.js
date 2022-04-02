@@ -31,7 +31,10 @@ export default class AnimalFishShoal extends Module {
       boidModel: this.asset.items.boidFishModel,
       depthBound: [ this.enviroment?.receiveShadowPlane?.position.y + 0.5, 0.5 ],
       container: group,
-      random
+      random,
+      onEscape: () => {
+        this.$vm.cachedContext.chaseFishCount++
+      }
     })
 
     this.scene.add(group)

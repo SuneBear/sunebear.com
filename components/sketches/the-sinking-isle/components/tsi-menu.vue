@@ -2,7 +2,11 @@
 .tsi-main-menu( :class="{ 'is-show': value }" )
   client-only
     global-events(
+      :filter="(event) => event.target.tagName !== 'INPUT'"
+      @keyup.enter="hide"
       @keyup.esc="toggle(currentTabId)"
+      @keyup.m="toggle('map')"
+      @keyup.s="toggle('story')"
     )
   .menu-navbar.d-flex
     //- @TODO: Support icon morphing
@@ -13,11 +17,13 @@
     )
       //- @FIXME: dynamic disabled will position a wrong place
       el-tooltip(
-        :content="tab.tooltip || tab.name"
         :disabled="!$tsi.isPlaying"
         :manual="tab.id === currentTabId"
         :value="tab.id !== currentTabId ? undefined : false"
       )
+        .d-flex.align-center( slot="content" )
+          .navbar-kbd {{ tab.shortcut }}
+          | {{ tab.tooltip || tab.name }}
         //- @TODO: Switch a better perf way to apply distory
         //- SVG Filter + Transform will drop sketch fps
         cear-icon(
@@ -110,9 +116,9 @@ export default {
   data() {
     return {
       tabs: [
-        { name: this.$t('story.history'), id: 'story', icon: 'chat-history-fill' },
-        { name: '', tooltip: this.$t('tsi.menu.map'), id: 'map', icon: 'treasure-map-fill' },
-        { name: this.$t('tsi.title'), tooltip: this.$t('tsi.menu.setting'), id: 'main', icon: 'settings-2-fill' },
+        { name: `${this.$t('story.history')}`, shortcut: 'S', id: 'story', icon: 'chat-history-fill' },
+        { name: '', shortcut: 'M', tooltip: `${this.$t('tsi.menu.map')}`, id: 'map', icon: 'treasure-map-fill' },
+        { name: this.$t('tsi.title'), shortcut: 'Esc', tooltip: `${this.$t('tsi.menu.setting')}`, id: 'main', icon: 'settings-2-fill' },
       ],
       currentTabId: null
     }
@@ -219,6 +225,19 @@ export default {
       opacity 1
       pointer-events: initial
       transform: translateY(0%) scale(1)
+
+.navbar-kbd
+  background: primary(70)
+  padding: 2px 4px
+  font-size: 10px
+  height: 16px
+  line-height: 12px
+  border-radius: 2px
+  color: $secondary
+  margin-right: 4px
+
+  @media $mediaInMobile
+    display: none
 
 .tsi-main-menu
   $z-index = 10
@@ -402,6 +421,7 @@ export default {
   &.is-show
     .menu-modal
       z-index: $z-index
-      pointer-events: initial
       background-color: primary(30)
+    .menu-tab > *
+      pointer-events: initial
 </style>

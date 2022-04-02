@@ -58,10 +58,6 @@ export default [
         source: require('./gltfs/building-sunebear-home.glb').default
       },
       {
-        name: 'buildingSparkWishBeaconModel',
-        source: require('./gltfs/building-spark-wish-beacon.glb').default
-      },
-      {
         name: 'playerCharacterModel',
         source: require('./gltfs/player-character.glb').default
       },
@@ -197,6 +193,11 @@ export default [
         type: 'texture'
       },
       {
+        name: 'rainTokenTexture',
+        source: require('./textures/tokens/rain.png'),
+        type: 'texture'
+      },
+      {
         name: 'starsTokenTexture',
         source: require('./textures/tokens/stars.png'),
         type: 'texture'
@@ -220,6 +221,14 @@ export default [
       {
         name: 'chapterSuneBearHomeModel',
         source: require('./gltfs/chapter-sunebear-home.glb').default
+      },
+      {
+        name: 'buildingSparkWishBeaconModel',
+        source: require('./gltfs/building-spark-wish-beacon.glb').default
+      },
+      {
+        name: 'buildingTheOriginIsleModel',
+        source: require('./gltfs/building-the-origin-isle.glb').default
       },
 
       // Textures

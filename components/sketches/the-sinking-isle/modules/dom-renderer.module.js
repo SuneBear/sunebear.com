@@ -3,7 +3,6 @@ import { CSS2DRenderer, CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRe
 import Module from './base'
 
 // Like sprite object renderer, but for Vue
-// @TODO: Control object visibility in different chapters
 // @TODO: Support CSS2DObject frustum culling
 export default class DOMRenderer extends Module {
 

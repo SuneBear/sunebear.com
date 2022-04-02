@@ -204,7 +204,7 @@ export class SuneBearHomeChapter extends Chapter {
       } else {
         // @TODO
       }
-      this.$vm.cachedContext.hasVisitedSuneBearHome = true
+      this.$vm.cachedContext.hasVisitedSuneBearHome = Date.now()
     }
   }
 

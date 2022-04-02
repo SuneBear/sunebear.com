@@ -165,7 +165,7 @@ const mat = [
 // @TODO: Optimize boundary limit
 // @TODO: Add ripple animation, swimming animation
 export class BoidsManager {
-  constructor({ container, player, boidModel, params = boidsParams, random, depthBound }) {
+  constructor({ container, player, boidModel, onEscape, params = boidsParams, random, depthBound }) {
     const boids = []
     const mixers = []
 
@@ -215,6 +215,7 @@ export class BoidsManager {
           ),
           velocity: new THREE.Vector3(),
           maneuverPercent,
+          isEscaping: false,
           speedPercent: random.value(),
           sightRangePercent: random.value(),
           avoidRangePercent: random.value(),
@@ -269,7 +270,13 @@ export class BoidsManager {
           .subVectors(bodyPosition, playerTarget)
           .multiplyScalar(boidsParams.priorities.awayFromPlayer * getValueByPercent(params.ability.speed, boid.speedPercent) / distToPlayer)
         awayFromPlayer.add(pushVec)
+        if (!boid.isEscaping) {
+          onEscape && onEscape()
+          boid.isEscaping = true
+        }
         return awayFromPlayer
+      } else {
+        boid.isEscaping = false
       }
 
       for (

@@ -88,6 +88,9 @@ export default {
   word-break: break-word
   // line-height 1.62
   line-height: 1.8
+  --title-weight: 400
+  --bold-weight: 700
+  --bold-color: #222223
 
   .marked-content > span > *:first-child,
   > *:first-child
@@ -118,15 +121,17 @@ export default {
     white-space: pre-line
 
   a
-    color #111
+    opacity: 0.9
+    border-bottom: 1.5px solid currentColor
     word-wrap break-word
     -moz-text-decoration-color rgba(0, 0, 0, .4)
     text-decoration-color rgba(0, 0, 0, .4)
-    text-decoration: underline
+    text-decoration: none
     &:hover
-      color #555
+      opacity: 0.7
       -moz-text-decoration-color rgba(0, 0, 0, .6)
       text-decoration-color rgba(0, 0, 0, .6)
+
     img
       border none
 
@@ -242,8 +247,8 @@ export default {
   h4,
   h5,
   h6
-    color #222223
-    font-weight: 400
+    color var(--bold-color)
+    font-weight: var(--title-weight)
 
   h4,
   h5,
@@ -256,12 +261,12 @@ export default {
     text-decoration none
   strong,
   b
-    font-weight 700
-    color #222223
+    font-weight var(--bold-weight)
+    color var(--bold-color)
   em,
   i
     font-style italic
-    color #222223
+    color var(--bold-color)
   ul,
   ol
     margin 0 0 24px 6px

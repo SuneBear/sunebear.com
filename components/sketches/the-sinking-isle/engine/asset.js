@@ -55,6 +55,9 @@ export default class Assets extends EventEmitter {
 
       // Trigger
       this.trigger('groupEnd', [this.groups.current])
+      if (this.groups.current.name === 'postload') {
+        this.trigger('postloadEnd', [this.groups.current])
+      }
 
       if (this.groups.assets.length > 0) {
         this.loadNextGroup()

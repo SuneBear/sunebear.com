@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { isSafari } from '~/utils/env'
+import { isSafari, isMobile } from '~/utils/env'
 
 const NAVBAR_OFFSET = 70
 
@@ -8,6 +8,7 @@ const componentMixin = {
     return {
       paperName: 'solar-dotted',
       isSafari: isSafari(this.$ua?.original()),
+      isMobile: isMobile(this.$ua?.original()),
       isShowHeader: true,
       isShowFooter: true
     }

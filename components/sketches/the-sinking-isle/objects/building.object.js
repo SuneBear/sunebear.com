@@ -74,7 +74,6 @@ export class BuildingGroupObject extends THREE.Group {
       needAnimateY: portal.needAnimateY,
       onAnimateOut: portal.onOpened
     })
-    token.scale.setScalar(2)
     token.position.copy(portal.position)
 
     this.token = token

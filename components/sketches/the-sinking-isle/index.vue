@@ -9,6 +9,7 @@
       v-if="isInited"
     )
       tsi-menu(
+        ref="menu"
         v-model="isShowMainMenu"
         :storyRoles="storyRoles"
         :storyMessages="storyMessages"
@@ -18,6 +19,9 @@
       )
       tsi-chapter-control
       tsi-inventory
+      tsi-the-origin(
+        v-if="currentChapter === 'theOrigin'"
+      )
     .dom-renderer( ref="domRenderer" )
     cear-story.is-absolute-center(
       :class="{ 'is-show': !isShowMainMenu }"
@@ -75,6 +79,7 @@ export default {
         x: 0,
         y: 0
       },
+      pageScrollProgress: 0,
 
       // Runtime
       // @values: main | suneBearHome
@@ -96,13 +101,16 @@ export default {
         // Stats
         firstVisitTime: null,
         sparkWishBeaconVisitTime: null,
+        sparkWishBeaconLightTime: null,
+        totalElapsedSeconds: 0,
         tourDistance: 0,
+        chaseFishCount: 0,
 
         // Runtime
         hasIntroducedCear: false,
         hasFinishedOnboard: false,
-        hasShownBoundaryStory: false,
-        hasVisitedSuneBearHome: false
+        hasVisitedSuneBearHome: null,
+        hasShownBoundaryStory: null,
       },
       storyRoles: [],
       storyMessages: []
@@ -130,7 +138,8 @@ export default {
       return (
         !this.isPlayingCutscene &&
         !this.isSwitchingChapter &&
-        !this.isShowMainMenu
+        // Exclude map menu
+        (!this.isShowMainMenu || (this.isShowMainMenu && this.$refs.menu?.currentTabId === 'map'))
       )
     },
 

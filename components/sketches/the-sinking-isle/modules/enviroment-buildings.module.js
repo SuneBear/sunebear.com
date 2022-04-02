@@ -31,9 +31,10 @@ export const BUILDING_PATCH_MAP = {
     position: [-5, 1, -65],
     rotation: [0, -Math.PI / 4, 0]
   }),
-  // theEndIsle: generatePatchOptions({
-  //   position: [20, 1, 100],
-  // })
+  theOriginIsle: generatePatchOptions({
+    position: [20, 0, 90],
+    rotation: [0, Math.PI / 1.5, 0]
+  })
 }
 
 export default class EnviromentBuildings extends Module {
@@ -49,7 +50,11 @@ export default class EnviromentBuildings extends Module {
 
     this.setupSuneBearHome()
     this.setupSnowfallSpace()
-    this.setupSparkWishBeacon()
+    this.asset.on('postloadEnd', () => {
+      this.setupSparkWishBeacon()
+      this.setupTheOriginIsle()
+      this.setupTokens()
+    })
     // this.setupSunkBuildings()
     this.setupTokens()
   }
@@ -129,8 +134,14 @@ export default class EnviromentBuildings extends Module {
           // castShadow: true
         }
       },
-      portalPosition: new THREE.Vector3(),
-      onPortalOpened: null
+      portal: {
+        name: 'snow',
+        position: new THREE.Vector3(0.8, 4, 2),
+        needAnimateY: true,
+        onOpened: () => {
+          this.$vm.$message.error(this.$vm.$t('tsi.snowfallSpace.closing'))
+        }
+      }
     })
 
     // Setup Indicator
@@ -180,6 +191,34 @@ export default class EnviromentBuildings extends Module {
 
     this.applyPatch(this.sparkWishBeacon)
     this.group.add(this.sparkWishBeacon)
+  }
+
+  setupTheOriginIsle() {
+    this.theOriginIsle = new BuildingGroupObject({
+      model: this.asset.items.buildingTheOriginIsleModel,
+      name: 'theOriginIsle',
+      materialOptions: {
+      },
+      materialOptionsMap: {
+        'Circle007_0': {
+          emissiveIntensity: 0.01,
+          transparent: true
+        }
+      },
+      portal: {
+        name: 'rain',
+        position: new THREE.Vector3(-5.4, 3, 3),
+        needAnimateY: true,
+        onOpened: () => {
+          this.$vm.currentChapter = 'theOrigin'
+        }
+      },
+    })
+
+    // this.player.module.setPlayerPositon(22, 90)
+
+    this.applyPatch(this.theOriginIsle)
+    this.group.add(this.theOriginIsle)
   }
 
   setupTheSinkingIsle() {}
@@ -309,6 +348,10 @@ export default class EnviromentBuildings extends Module {
     object.position.fromArray(patch.position)
     object.rotation.fromArray(patch.rotation)
     object.scale.setScalar(patch.scale)
+    if (object.token) {
+      object.token.scale.setScalar(1/patch.scale)
+    }
+
   }
 
   update(delta) {

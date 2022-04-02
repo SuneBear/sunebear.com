@@ -7,6 +7,8 @@ export class Chapter extends EventEmitter {
   constructor({ sketch }) {
     super()
 
+    this.name = 'default'
+
     this.sketch = sketch
     this.$vm = this.sketch.$vm
     this.renderer = sketch.renderer
@@ -64,6 +66,14 @@ export class Chapter extends EventEmitter {
   resize() {
     this.camera.aspect = this.sketch.sizes.width / this.sketch.sizes.height
     this.camera.updateProjectionMatrix()
+  }
+
+  pureRender() {
+    const { renderer } = this
+    renderer.setRenderTarget(this.renderTarget)
+    renderer.clear()
+    renderer.render(this.scene, this.camera)
+    renderer.setRenderTarget(null)
   }
 
   // Render Loop

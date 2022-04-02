@@ -84,17 +84,17 @@ export default {
         padding-left: 2vw
 
   .global-frame.cear-photo-frame
-    .mask-distort-border
-      // border-radius: 20px
-
-    .distort-inner-border
-      --distort-border-width: 10px
-
-    .mask-wrapper
+    > .mask-wrapper
       background-color: brand(5)
 
       @media $mediaInMobile
         border: none
+
+      > .mask-distort-border
+        // border-radius: 20px
+
+        .distort-inner-border
+          --distort-border-width: 10px
 
     &,
     .inner-content,

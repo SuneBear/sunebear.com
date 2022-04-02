@@ -302,6 +302,7 @@ export default class Control extends EventEmitter {
     }
     this.tapState.multitouch = e.touches.length > 1
     this.trigger('touchmove', [this.tapState])
+    this.trigger('mousemove', [this.tapState])
   }
 
   @autobind

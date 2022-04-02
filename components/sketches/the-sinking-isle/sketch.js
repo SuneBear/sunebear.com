@@ -89,8 +89,8 @@ class TheSinkingIsleSketch {
     // try to use DI to eliminate circular deps
     await this.loadAssets()
     this.setupEvents()
-    this.setupAudio()
     this.setupDebug()
+    this.setupAudio()
     this.setupTween()
     this.setupCamera()
     this.setupRenderer()
@@ -257,11 +257,7 @@ class TheSinkingIsleSketch {
     this.module.add(AtmosphereWindModule)
 
     // Postload module
-    this.asset.on('groupEnd', async group => {
-      if (group.name !== 'postload') {
-        return
-      }
-
+    this.asset.on('postloadEnd', async group => {
       this.audio.setupPlayers(this.asset.getAudioItems())
 
       const modules = await Promise.all([

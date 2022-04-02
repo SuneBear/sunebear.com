@@ -19,15 +19,20 @@ export default {
 
   methods: {
 
-    handleConfirm (text, needStoryMessage) {
-      if (needStoryMessage) {
+    handleConfirm (text) {
+      if (!this.$tsi.cachedContext.sparkWishBeaconLightTime) {
+        this.$tsi.cachedContext.sparkWishBeaconLightTime = Date.now()
         this.$tsi.$story.add({
           user: 'user',
-          message: this.$t('tsi.wishInput.storyMessage', { text })
+          message: this.$t('tsi.wishInput.storyMessage', { text }),
+          text,
+          tag: 'sparkWishBeaconLightTime',
+          silent: true
         })
         this.$tsi.$story.add({
           user: 'bear',
-          message: this.$t('tsi.wishInput.storyMessageBearReply')
+          message: this.$t('tsi.wishInput.storyMessageBearReply'),
+          silent: true
         })
       }
       this.$tsi.$emit('sparkWishConfirm', text)
