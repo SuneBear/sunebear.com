@@ -343,6 +343,7 @@ export default {
       })
         .fromTo('.split-text, .hero-illustration', { opacity: 1 }, {
           opacity: 0,
+          // scale: 0.5,
           duration: 4.5
         }, 0.1)
 
@@ -356,10 +357,11 @@ export default {
           y: 'random(0, 150)',
           x: 'random(0, 150)',
           opacity: 0,
+          scale: 0.5,
           rotation: 'random(0, 180)',
           duration: 1,
           stagger: {
-            each: 0.06,
+            each: 0.07,
             from: 'end'
           },
         }, 0.2)

@@ -30,7 +30,7 @@
 <figure-image
   caption="我们来帮你 · 上海抗疫互助截图"
   ratio="1252/1356"
-  href="http://139.198.183.93/help/"
+  href="https://www.daohouer.com"
   src="/content-images/tsi-the-origin/shanghai-seek-help-screenshot.png"
 />
 

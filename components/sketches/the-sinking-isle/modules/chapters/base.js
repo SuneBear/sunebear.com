@@ -60,6 +60,8 @@ export class Chapter extends EventEmitter {
         object.visible = false
       }
     })
+    // @forceUpdate domRenderer
+    this.updateDomRenderer()
   }
 
   // Viewport
@@ -76,8 +78,12 @@ export class Chapter extends EventEmitter {
     renderer.setRenderTarget(null)
   }
 
+  updateDomRenderer() {
+    this.domRenderer.render(this.scene, this.camera)
+  }
+
   // Render Loop
   update(delta) {
-    this.domRenderer.render(this.scene, this.camera)
+    this.updateDomRenderer()
   }
 }
