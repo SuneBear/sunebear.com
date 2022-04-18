@@ -33,7 +33,7 @@ void main () {
 
   // Tone Mapping
   #if defined(TONE_MAPPING)
-    gl_FragColor.rgb = linearToneMapping(gl_FragColor.rgb, toneMappingExposure / 4.5);
+    gl_FragColor.rgb = linearToneMapping(gl_FragColor.rgb, toneMappingExposure / 5.0);
   #endif
 
   // Shadow

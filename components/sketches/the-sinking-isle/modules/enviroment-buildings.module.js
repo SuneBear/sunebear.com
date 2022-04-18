@@ -90,7 +90,7 @@ export default class EnviromentBuildings extends Module {
         }
       },
       portal: {
-        name: 'sun',
+        name: 'mushroomHouse',
         position: new THREE.Vector3(-4, 6, 4),
         needAnimateY: true,
         onOpened: () => {

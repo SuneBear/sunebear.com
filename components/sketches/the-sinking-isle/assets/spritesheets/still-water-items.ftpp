@@ -1,0 +1,66 @@
+{
+  "meta": {
+    "version": "0.6.7"
+  },
+  "savePath": "/Users/sunebear/Code/Zworks/Wsune/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets",
+  "images": [
+    {
+      "name": "linglan.png",
+      "path": "/Users/sunebear/Code/Zworks/Wsune/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-water-items/linglan.png",
+      "folder": ""
+    },
+    {
+      "name": "linglan2.png",
+      "path": "/Users/sunebear/Code/Zworks/Wsune/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-water-items/linglan2.png",
+      "folder": ""
+    },
+    {
+      "name": "loutus_leaf_2.png",
+      "path": "/Users/sunebear/Code/Zworks/Wsune/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-water-items/loutus_leaf_2.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite26.png",
+      "path": "/Users/sunebear/Code/Zworks/Wsune/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-water-items/sprite26.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite32.png",
+      "path": "/Users/sunebear/Code/Zworks/Wsune/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-water-items/sprite32.png",
+      "folder": ""
+    },
+    {
+      "name": "sprite33.png",
+      "path": "/Users/sunebear/Code/Zworks/Wsune/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets/sources/still-water-items/sprite33.png",
+      "folder": ""
+    }
+  ],
+  "folders": [],
+  "packOptions": {
+    "textureName": "still-water-items",
+    "textureFormat": "png",
+    "removeFileExtension": false,
+    "prependFolderName": true,
+    "base64Export": false,
+    "tinify": false,
+    "tinifyKey": "2gVj1w9tmHbh4Hk45PZy7kg5pZz8WVtp",
+    "scale": 1,
+    "filter": "none",
+    "exporter": "JSON (array)",
+    "fileName": "pack-result",
+    "savePath": "/Users/sunebear/Code/Zworks/Wsune/sunebear.com/components/sketches/the-sinking-isle/assets/spritesheets",
+    "width": 2048,
+    "height": 2048,
+    "fixedSize": false,
+    "powerOfTwo": false,
+    "padding": 0,
+    "extrude": 0,
+    "allowRotation": false,
+    "allowTrim": false,
+    "trimMode": "trim",
+    "alphaThreshold": "0",
+    "detectIdentical": true,
+    "packer": "MaxRectsBin",
+    "packerMethod": "BestShortSideFit"
+  }
+}

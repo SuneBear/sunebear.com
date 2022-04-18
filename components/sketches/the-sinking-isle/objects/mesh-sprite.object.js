@@ -8,6 +8,8 @@ import { random } from '../engine/utils'
 const planeGeo = new THREE.PlaneGeometry(1, 1, 1, 1)
 planeGeo.translate(0, 0.5, 0)
 
+// @TODO: Add a new uniform for distort
+// @TODO: Support convert svg icon to sprite and apply hand-drawn processing
 function createSpriteMaterial(uniforms) {
   return new THREE.ShaderMaterial({
     extensions: {

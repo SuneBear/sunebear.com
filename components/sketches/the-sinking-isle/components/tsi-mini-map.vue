@@ -20,9 +20,10 @@
 
 <script>
 
+// @TODO: Replace icon with token texture
 const BUILDING_ICON_MAP = {
-  'suneBearHome': 'home-heart-fill',
-  'snowfallSpace': 'snowfalke-line',
+  'suneBearHome': 'mushroom',
+  'snowfallSpace': 'snowflake-plate',
   'sparkWishBeacon': 'galaxy-tri',
   'theOriginIsle': 'drop-fill'
 }
@@ -205,7 +206,7 @@ export default {
           margin-left: 8px
 
         .cear-icon
-          font-size: 0.9em
+          font-size: 1.05em
 
     .bg-layer
       canvas

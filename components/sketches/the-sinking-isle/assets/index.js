@@ -183,13 +183,18 @@ export default [
         type: 'texture'
       },
       {
-        name: 'sunTokenTexture',
-        source: require('./textures/tokens/sun.png'),
+        name: 'mushroomHouseTokenTexture',
+        source: require('./textures/tokens/mushroom-house.png'),
+        type: 'texture'
+      },
+      {
+        name: 'frogPrinceTokenTexture',
+        source: require('./textures/tokens/frog-prince.png'),
         type: 'texture'
       },
       {
         name: 'snowTokenTexture',
-        source: require('./textures/tokens/snow.png'),
+        source: require('./textures/tokens/snowflake-2.png'),
         type: 'texture'
       },
       {

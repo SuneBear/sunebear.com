@@ -24,7 +24,9 @@ export const ALL_TOKEN_NAMES = [
   'flower',
   'insect',
   'snow',
-  'stars'
+  'stars',
+  'frogPrince',
+  'mushroomHouse',
 ]
 
 function getTokenMapByName (name) {
@@ -56,7 +58,7 @@ export class TokenObject extends THREE.Group {
     normalTokenMesh.material.map = getTokenMapByName(this.options.name)
     this.tokenBody = convertToMeshSprite({ object: normalTokenMesh, uniforms: {
       // @Hack: emissiveIntensity is invalid, use tintColor to mock that reducing brightness/exposure
-      tintColor: { value: new THREE.Color(0xbbbbbb) }
+      tintColor: { value: new THREE.Color(0xc5c5c5) }
     } })
     this.tokenBody.name = this.options.name
     this.tokenBody.material.depthTest = false

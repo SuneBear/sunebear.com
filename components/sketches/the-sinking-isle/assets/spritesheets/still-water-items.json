@@ -1,24 +1,24 @@
 {
   "frames": [
     {
-      "filename": "sprite156.png",
+      "filename": "linglan2.png",
       "frame": {
-        "x": 2,
-        "y": 2,
-        "w": 319,
-        "h": 227
+        "x": 0,
+        "y": 0,
+        "w": 300,
+        "h": 382
       },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 319,
-        "h": 227
+        "w": 300,
+        "h": 382
       },
       "sourceSize": {
-        "w": 319,
-        "h": 227
+        "w": 300,
+        "h": 382
       },
       "pivot": {
         "x": 0.5,
@@ -26,24 +26,24 @@
       }
     },
     {
-      "filename": "sprite30.png",
+      "filename": "loutus_leaf_2.png",
       "frame": {
-        "x": 325,
-        "y": 2,
-        "w": 319,
-        "h": 217
+        "x": 0,
+        "y": 382,
+        "w": 350,
+        "h": 350
       },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 319,
-        "h": 217
+        "w": 350,
+        "h": 350
       },
       "sourceSize": {
-        "w": 319,
-        "h": 217
+        "w": 350,
+        "h": 350
       },
       "pivot": {
         "x": 0.5,
@@ -51,74 +51,24 @@
       }
     },
     {
-      "filename": "sprite157.png",
+      "filename": "linglan.png",
       "frame": {
-        "x": 648,
-        "y": 2,
-        "w": 284,
-        "h": 197
+        "x": 300,
+        "y": 0,
+        "w": 160,
+        "h": 317
       },
       "rotated": false,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 284,
-        "h": 197
+        "w": 160,
+        "h": 317
       },
       "sourceSize": {
-        "w": 284,
-        "h": 197
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "sprite175.png",
-      "frame": {
-        "x": 936,
-        "y": 2,
-        "w": 180,
-        "h": 256
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 180,
-        "h": 256
-      },
-      "sourceSize": {
-        "w": 180,
-        "h": 256
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "sprite213.png",
-      "frame": {
-        "x": 648,
-        "y": 203,
-        "w": 176,
-        "h": 239
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 176,
-        "h": 239
-      },
-      "sourceSize": {
-        "w": 176,
-        "h": 239
+        "w": 160,
+        "h": 317
       },
       "pivot": {
         "x": 0.5,
@@ -128,8 +78,8 @@
     {
       "filename": "sprite33.png",
       "frame": {
-        "x": 828,
-        "y": 203,
+        "x": 0,
+        "y": 732,
         "w": 95,
         "h": 275
       },
@@ -151,11 +101,11 @@
       }
     },
     {
-      "filename": "sprite104.png",
+      "filename": "sprite26.png",
       "frame": {
-        "x": 325,
-        "y": 223,
-        "w": 151,
+        "x": 0,
+        "y": 1007,
+        "w": 26,
         "h": 256
       },
       "rotated": false,
@@ -163,86 +113,11 @@
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
-        "w": 151,
+        "w": 26,
         "h": 256
       },
       "sourceSize": {
-        "w": 151,
-        "h": 256
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "sprite270.png",
-      "frame": {
-        "x": 480,
-        "y": 223,
-        "w": 146,
-        "h": 69
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 146,
-        "h": 69
-      },
-      "sourceSize": {
-        "w": 146,
-        "h": 69
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "sprite174.png",
-      "frame": {
-        "x": 480,
-        "y": 296,
-        "w": 141,
-        "h": 256
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 141,
-        "h": 256
-      },
-      "sourceSize": {
-        "w": 141,
-        "h": 256
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "sprite4.png",
-      "frame": {
-        "x": 625,
-        "y": 446,
-        "w": 129,
-        "h": 256
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 129,
-        "h": 256
-      },
-      "sourceSize": {
-        "w": 129,
+        "w": 26,
         "h": 256
       },
       "pivot": {
@@ -253,8 +128,8 @@
     {
       "filename": "sprite32.png",
       "frame": {
-        "x": 758,
-        "y": 446,
+        "x": 0,
+        "y": 1263,
         "w": 47,
         "h": 252
       },
@@ -269,206 +144,6 @@
       "sourceSize": {
         "w": 47,
         "h": 252
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "small-rock1.png",
-      "frame": {
-        "x": 625,
-        "y": 706,
-        "w": 121,
-        "h": 75
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 121,
-        "h": 75
-      },
-      "sourceSize": {
-        "w": 121,
-        "h": 75
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "lily1.png",
-      "frame": {
-        "x": 2,
-        "y": 233,
-        "w": 85,
-        "h": 40
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 85,
-        "h": 40
-      },
-      "sourceSize": {
-        "w": 85,
-        "h": 40
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "sprite37.png",
-      "frame": {
-        "x": 91,
-        "y": 233,
-        "w": 77,
-        "h": 149
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 77,
-        "h": 149
-      },
-      "sourceSize": {
-        "w": 77,
-        "h": 149
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "sprite271.png",
-      "frame": {
-        "x": 2,
-        "y": 277,
-        "w": 73,
-        "h": 124
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 73,
-        "h": 124
-      },
-      "sourceSize": {
-        "w": 73,
-        "h": 124
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "sprite31.png",
-      "frame": {
-        "x": 172,
-        "y": 233,
-        "w": 72,
-        "h": 186
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 72,
-        "h": 186
-      },
-      "sourceSize": {
-        "w": 72,
-        "h": 186
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "lily3.png",
-      "frame": {
-        "x": 248,
-        "y": 386,
-        "w": 44,
-        "h": 24
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 44,
-        "h": 24
-      },
-      "sourceSize": {
-        "w": 44,
-        "h": 24
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "lily2.png",
-      "frame": {
-        "x": 248,
-        "y": 233,
-        "w": 31,
-        "h": 13
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 31,
-        "h": 13
-      },
-      "sourceSize": {
-        "w": 31,
-        "h": 13
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    {
-      "filename": "sprite26.png",
-      "frame": {
-        "x": 248,
-        "y": 414,
-        "w": 26,
-        "h": 256
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 26,
-        "h": 256
-      },
-      "sourceSize": {
-        "w": 26,
-        "h": 256
       },
       "pivot": {
         "x": 0.5,
@@ -482,8 +157,8 @@
     "image": "still-water-items.png",
     "format": "RGBA8888",
     "size": {
-      "w": 1118,
-      "h": 783
+      "w": 460,
+      "h": 1515
     },
     "scale": 1
   }
