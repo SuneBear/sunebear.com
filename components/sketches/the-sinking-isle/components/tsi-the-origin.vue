@@ -3,7 +3,7 @@ transition()
   .tsi-the-end( :class="{ 'is-inited': isInited }" )
     .screen.screen-hero.start-trigger
       split-text.text-desc( text="当白熊没有冰川，将会如何在湖中生活？" :progress="heroDescProgress" )
-      split-text.text-name.mt-4.d-flex.align-center(
+      split-text.text-name.mt-9.d-flex.align-center(
         :text="`～ ${$t('tsi.title')} ～`"
         :progress="heroNameProgress"
       )
@@ -514,6 +514,8 @@ export default {
 
     .text-desc
       font-size: 36px
+      line-height: 1.3
+
       @media $mediaInMobile
         font-size: 32px
 
