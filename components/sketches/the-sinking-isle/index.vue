@@ -19,8 +19,12 @@
       )
       tsi-chapter-control
       tsi-inventory
+      //- Chapters
       tsi-the-origin(
         v-if="currentChapter === 'theOrigin'"
+      )
+      tsi-snowfall-space(
+        v-else-if="currentChapter === 'snowfallSpace'"
       )
     .dom-renderer( ref="domRenderer" )
     cear-story.is-absolute-center(

@@ -16,7 +16,6 @@ export default {
   'tsi.menu.setting': '设置',
   'tsi.menu.sound': '声音',
   'tsi.menu.map': '地图',
-  'tsi.snowfallSpace.intro': '雪花如叶子一般独特，却同柳絮一样转瞬即逝 \n 来*❄雪花落语❄*倾听它的声音',
 
   "tsi.building.suneBearHome": "舒乐熊之屋",
   "tsi.building.snowfallSpace": "雪花落语",
@@ -28,7 +27,9 @@ export default {
   'tsi.wishInput.storyMessage': '{text} \n <text-meta>第一次点亮@花火灯塔</text-meta>',
   'tsi.wishInput.storyMessageBearReply': '祝福你',
 
+  'tsi.snowfallSpace.intro': '雪花如叶子一般独特，却同柳絮一样转瞬即逝 \n 来*❄雪花落语❄*倾听它的声音',
   'tsi.snowfallSpace.closing': '由于疫情原因，展会暂时关闭 :(',
+  'tsi.snowfallSpace.wip': '展会正在策划中，当前展示仅为测试效果',
 
   'tsi.chapter-shb.needKey': '箱子钥匙掉到湖中了，无法打开～',
   'tsi.chapter-shb.notThatKey': '并不是这把钥匙～',

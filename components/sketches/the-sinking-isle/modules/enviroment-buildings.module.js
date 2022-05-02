@@ -139,7 +139,7 @@ export default class EnviromentBuildings extends Module {
         position: new THREE.Vector3(0.8, 4, 2),
         needAnimateY: true,
         onOpened: () => {
-          this.$vm.$message.error(this.$vm.$t('tsi.snowfallSpace.closing'))
+          this.$vm.currentChapter = 'snowfallSpace'
         }
       }
     })

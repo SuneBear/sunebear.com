@@ -4,6 +4,7 @@ import Module from './base'
 
 import { MainChapter } from './chapters/main.chapter'
 import { SuneBearHomeChapter } from './chapters/sune-bear-home.chapter'
+import { SnowfallSpaceChapter } from './chapters/snowfall-space.chapter'
 import { TheOriginChapter } from './chapters/the-origin.chapter'
 
 import postVertexShader from '../shaders/base.vert'
@@ -26,11 +27,11 @@ export default class ChapterModule extends Module {
   }
 
   get $lastChapter() {
-    return this.chapters.find(el => el.name === this.lastChapter)
+    return this.chapters.find((el) => el.name === this.lastChapter)
   }
 
   get $currentChapter() {
-    return this.chapters.find(el => el.name === this.currentChapter)
+    return this.chapters.find((el) => el.name === this.currentChapter)
   }
 
   setupRender() {
@@ -43,9 +44,9 @@ export default class ChapterModule extends Module {
       time: { value: 0 },
 
       // @REF: https://tympanus.net/Development/webGLImageTransitions/index.html
-      width: { value: 4, },
-      scaleX: { value: 4.5, },
-      scaleY: { value: 5, },
+      width: { value: 4 },
+      scaleX: { value: 4.5 },
+      scaleY: { value: 5 },
 
       resolution: {
         value: new THREE.Vector4(1, 1, 1, 1)
@@ -89,8 +90,13 @@ export default class ChapterModule extends Module {
   }
 
   setupChapters() {
-    const chapterClasses = [MainChapter, SuneBearHomeChapter, TheOriginChapter]
-    chapterClasses.map(Class => {
+    const chapterClasses = [
+      MainChapter,
+      SuneBearHomeChapter,
+      SnowfallSpaceChapter,
+      TheOriginChapter
+    ]
+    chapterClasses.map((Class) => {
       const ins = new Class({ sketch: this })
       this.chapters.push(ins)
     })
@@ -109,7 +115,7 @@ export default class ChapterModule extends Module {
       return
     }
 
-    if (!this.chapters.find(el => el.name === chapter)) {
+    if (!this.chapters.find((el) => el.name === chapter)) {
       console.warn(`Chapter: ${chapter} was invalid name`)
     }
 
@@ -140,7 +146,7 @@ export default class ChapterModule extends Module {
   resize() {
     const { width, height } = this.sizes
     this.renderer.setSize(width, height)
-    this.chapters.map(el => el.resize && el.resize(width, height))
+    this.chapters.map((el) => el.resize && el.resize(width, height))
   }
 
   update(delta, elapsed) {

@@ -36,6 +36,10 @@ timeline:
     title: '🦠 武汉因新冠疫情封城，在老家避难 3 个月'
     tags: [ 'covid-19' ]
 
+  - date: '2022-04-27'
+    title: '🚑 上海封城期间，低血糖晕厥，人生第一次坐救护车'
+    tags: [ 'covid-19', 'ambulance' ]
+
   - date: '2043-02-10'
     title: '✨ 希望这时能有一些完整的交互作品，以及不要再见证历史了'
     tags: [ 'wish' ]
