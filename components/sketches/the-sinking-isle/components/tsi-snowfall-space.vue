@@ -1,7 +1,7 @@
 <template lang="pug">
 transition( name="el-fade-in" appear)
   .tsi-snowfall-space
-    .loading-wrapper ❄️ Loading...
+    .loading-wrapper.anim-glimmer Loading...
     iframe(
       :src="cineShaderUrl"
       allow="xr-spatial-tracking"

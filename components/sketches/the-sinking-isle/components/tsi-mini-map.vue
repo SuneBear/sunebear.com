@@ -130,6 +130,7 @@ export default {
   border-radius: 57.584% 42.416% 30.1316% 59.8684% / 50.671% 61.7631% 38.2369% 29.329%
   box-shadow: 0 0 14px brand(10)
   color: secondary(90)
+  overflow: hidden
 
   .map-main
     position relative
@@ -141,7 +142,6 @@ export default {
       position: absolute
       width: 100%
       height: 100%
-      overflow: hidden
 
     .elements-layer
       z-index: 2

@@ -2,7 +2,7 @@
 transition()
   .tsi-the-end( :class="{ 'is-inited': isInited }" )
     .screen.screen-hero.start-trigger
-      split-text.text-desc( text="当白熊没有冰川，将会如何在湖中生活？" :progress="heroDescProgress" )
+      split-text.text-desc( :text="$t('tsi.theOrigin.hero.desc')" :progress="heroDescProgress" )
       split-text.text-name.mt-9.d-flex.align-center(
         :text="`～ ${$t('tsi.title')} ～`"
         :progress="heroNameProgress"
@@ -11,11 +11,11 @@ transition()
         name="flood-fill"
       )
       split-text.text-intro.mt-4(
-        text="一次对生活的异想"
+        :text="$t('tsi.theOrigin.hero.intro')"
         :progress="heroIntroProgress"
       )
       .scroll-down-tips.fade
-        .text-tips 滑动了解背后的故事
+        .text-tips {{ $t('tsi.theOrigin.hero.scrollTips') }}
         cear-icon.anim-suspend(
           name="arrow-drop-down"
         )
@@ -25,7 +25,7 @@ transition()
         :content="behindMarkdown"
       )
       .scroll-down-tips
-        .text-tips 滑动展开名单
+        .text-tips {{ $t('tsi.theOrigin.behind.scrollTips') }}
         cear-icon.anim-suspend(
           name="arrow-drop-down"
         )
@@ -54,7 +54,7 @@ transition()
                 template(v-else) {{ pName }}
               .is-secondary( v-if="sName" ) {{ sName }}
     .screen.screen-stats.end-trigger
-      .stats-thanks 绝了 · 这有一个回顾彩蛋
+      .stats-thanks {{ $t('tsi.theOrigin.stats.title') }}
       quick-reader.mt-6(
         :content="$t('tsi.theOrigin.theRoadNotTaken').split(' ')"
       )

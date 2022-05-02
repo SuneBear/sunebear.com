@@ -34,6 +34,11 @@ export default {
   'tsi.chapter-shb.needKey': '箱子钥匙掉到湖中了，无法打开～',
   'tsi.chapter-shb.notThatKey': '并不是这把钥匙～',
 
+  'tsi.theOrigin.hero.desc': '当白熊没有冰川，将会如何在湖中生活？',
+  'tsi.theOrigin.hero.intro': '一次对生活的异想',
+  'tsi.theOrigin.hero.scrollTips': '滑动了解背后的故事',
+  'tsi.theOrigin.behind.scrollTips': '滑动展开名单',
+  'tsi.theOrigin.stats.title': '绝了 · 这有一个回顾彩蛋',
   'tsi.theOrigin.theRoadNotTaken': '黄色的树林里 分出两条路 可惜我不能 同时去涉足 我在那路口 久久伫立 我向着一条路 极目望去 直到它消失在 丛林深处 但我却选了 另外一条路 它荒草萋萋 十分幽寂 显得更诱人 更美丽 虽然在这 两条小路上 都很少留下 旅人的足迹 虽然那天清晨 落叶满地 两条路都未经 脚印污染 留下一条路 等改日再见 但我知道路径 延绵无尽头 恐怕我难以 再回返 也许多少年后 在某个地方 我将轻声叹息 把往事回顾 一片树林里 分出两条路 而我选了人迹 更少的一条 从此决定了 我一生的道路',
   'tsi.theOrigin.statsNormal': '在离岛的 <em>{durationSeconds}</em> 秒中，你荡起了 <em>{tourDistance}</em> 次双桨，有 <em>{chaseFishCount}</em> 条鱼伴你同行，',
   'tsi.theOrigin.statsSpark': '你登上花火灯塔并许愿「<em>{sparkMessage}</em>」',
